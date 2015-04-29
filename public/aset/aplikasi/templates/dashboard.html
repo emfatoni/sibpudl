@@ -1,0 +1,21 @@
+<div class="col-md-12">
+	<h2 class="text-center">Dashboard</h2>
+	<a href="#/add" class="btn btn-primary">Tambah</a>
+	<br><br>
+	<div class="col-md-7">
+		<table class="table table-condensed table-bordered">
+			<tr>
+				<th>ID</th>
+				<th>Nama</th>
+				<th>Email</th>
+				<th>Level</th>
+			</tr>
+			<tr ng-repeat="post in posts">
+				<td>{{post.id}}</td>
+				<td><a href="#/edit/{{post.id}}">{{post.name}}</a></td>
+				<td>{{post.email}}</td>
+				<td>{{post.nerd_level}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
