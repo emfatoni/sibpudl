@@ -13,6 +13,8 @@
 
 Route::get('/', 'LoginController@index');
 
+Route::get('siendo', 'BpudlController@index');
+
 Route::get('home', 'HomeController@index');
 
 Route::controllers([
