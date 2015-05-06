@@ -17,6 +17,8 @@ Route::get('siendo', 'BpudlController@index');
 
 Route::get('home', 'HomeController@index');
 
+Route::resource('donatur', 'DonaturController');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
