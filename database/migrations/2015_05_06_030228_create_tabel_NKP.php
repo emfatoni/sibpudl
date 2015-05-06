@@ -15,24 +15,24 @@ class CreateTabelNKP extends Migration {
 		Schema::create('NKP', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('id_uuk');
+			$table->integer('id_uuk')->unsigned();
 			$table->foreign('id_uuk')->references('id')->on('UUK');
-			$table->date('integer');
-			$table->target_awal('integer');
-			$table->target_revisi('integer');
-			$table->realisasi_bulan_1('integer');
-			$table->realisasi_bulan_2('integer');
-			$table->realisasi_bulan_3('integer');
-			$table->realisasi_bulan_4('integer');
-			$table->realisasi_bulan_5('integer');
-			$table->realisasi_bulan_6('integer');
-			$table->realisasi_bulan_7('integer');
-			$table->realisasi_bulan_8('integer');
-			$table->realisasi_bulan_9('integer');
-			$table->realisasi_bulan_10('integer');
-			$table->realisasi_bulan_11('integer');
-			$table->realisasi_bulan_12('integer');
-			$table->tercapai('integer');
+			$table->integer('tahun');
+			$table->integer('target_awal');
+			$table->integer('target_revisi');
+			$table->integer('realisasi_bulan_1');
+			$table->integer('realisasi_bulan_2');
+			$table->integer('realisasi_bulan_3');
+			$table->integer('realisasi_bulan_4');
+			$table->integer('realisasi_bulan_5');
+			$table->integer('realisasi_bulan_6');
+			$table->integer('realisasi_bulan_7');
+			$table->integer('realisasi_bulan_8');
+			$table->integer('realisasi_bulan_9');
+			$table->integer('realisasi_bulan_10');
+			$table->integer('realisasi_bulan_11');
+			$table->integer('realisasi_bulan_12');
+			$table->integer('tercapai');
 		});
 	}
 

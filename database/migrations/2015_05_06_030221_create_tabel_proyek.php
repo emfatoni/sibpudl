@@ -15,7 +15,7 @@ class CreateTabelProyek extends Migration {
 		Schema::create('proyek', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('id_uuk');
+			$table->integer('id_uuk')->unsigned();
 			$table->foreign('id_uuk')->references('id')->on('UUK');
 			$table->string('pin');
 			$table->date('tanggal_catat');
