@@ -2,11 +2,12 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Donasi;
 use App\Donatur;
 
 use Illuminate\Http\Request;
 
-class DonaturController extends Controller {
+class DonasiController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -15,8 +16,12 @@ class DonaturController extends Controller {
 	 */
 	public function index()
 	{
-		$donaturs = Donatur::all();
-		return $donaturs;
+		$donasis = Donasi::all();
+		foreach($donasis as $donasi){
+			$donatur = Donatur::find($donasi->id_donatur);
+			$donasi["nama_donatur"] = $donatur->nama;
+		}
+		return $donasis;
 	}
 
 	/**
@@ -26,14 +31,14 @@ class DonaturController extends Controller {
 	 */
 	public function create(Request $req)
 	{
-		$new = new Donatur();
-		$new->nama = $req->input('nama');
+		$new = new Donasi();
+		$new->nominal = $req->input('nominal');
+		$new->termin = $req->input('termin');
+		$new->channel = $req->input('channel');
 		$new->jenis = $req->input('jenis');
-		$new->nama_wakil = $req->input('nama_wakil');
-
-		$new->telp = $req->input('telp');
-		$new->email = $req->input('email');
-		$new->alamat_surat = $req->input('alamat_surat');
+		$new->syarat = $req->input('syarat');
+		$new->kota = $req->input('kota');
+		$new->id_donatur = $req->input('id_donatur');
 
 		if($new->save()){
 			return array('status'=>'Saved!');
@@ -59,7 +64,7 @@ class DonaturController extends Controller {
 	 */
 	public function show($id)
 	{
-		return Donatur::find($id);
+		return Donasi::find($id);
 	}
 
 	/**
@@ -70,7 +75,7 @@ class DonaturController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//	
+		//
 	}
 
 	/**
@@ -81,15 +86,15 @@ class DonaturController extends Controller {
 	 */
 	public function update($id)
 	{
-		$edit = Donatur::find($id);
+		$edit = Donasi::find($id);
 		if($edit){
-			$edit->nama = $req->input('nama');
+			$edit->nominal = $req->input('nominal');
+			$edit->termin = $req->input('termin');
+			$edit->channel = $req->input('channel');
 			$edit->jenis = $req->input('jenis');
-			$edit->nama_wakil = $req->input('nama_wakil');
-
-			$edit->telp = $req->input('telp');
-			$edit->email = $req->input('email');
-			$edit->alamat_surat = $req->input('alamat_surat');
+			$edit->syarat = $req->input('syarat');
+			$edit->kota = $req->input('kota');
+			$edit->id_donatur = $req->input('id_donatur');
 
 			if($edit->save()){
 				return array('status'=>'Saved!');
@@ -107,7 +112,7 @@ class DonaturController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$del = Donatur::find($id);
+		$del = Donasi::find($id);
 		if($del){
 			if($del->delete()){
 				return array('status'=>'Deleted!');

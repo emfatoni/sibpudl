@@ -16,14 +16,12 @@ class CreateDonatur extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nama');
-			$table->string('departemen')->nullable();
-			$table->integer('angkatan')->nullable();
-			$table->enum('gender', ['Laki-laki', 'Perempuan']);
+			$table->string('jenis');
+			$table->string('nama_wakil')->nullable();
+			
 			$table->string('telp');
 			$table->string('email');
-			$table->string('alamat_rumah')->nullable();
 			$table->string('alamat_surat')->nullable();
-			$table->string('instansi')->nullable();
 		});
 	}
 

@@ -35,17 +35,18 @@
 		<div class="row" style="padding: 10px;">
 			<div class="col-md-4 col-md-offset-4 white-border">
 				<div class="row" style="padding: 15px;">
-				<form>
+				<form method="POST" action="{{ url('/auth/login') }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="form-group">
 						<label class="white-text">Username</label>
-						<input class="form-control" type="text">
+						<input class="form-control" type="text" name="email" value="{{ old('email') }}">
 					</div>
 					<div class="form-group">
 						<label class="white-text">Password</label>
-						<input class="form-control" type="password">
+						<input class="form-control" type="password" name="password">
 					</div>
 					<div class="form-group">
-						<button class="btn btn-primary pull-right">Login</button>
+						<button type="submit" class="btn btn-primary pull-right">Login</button>
 					</div>
 				</form>
 				</div>

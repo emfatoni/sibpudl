@@ -15,15 +15,16 @@ class CreateDonasi extends Migration {
 		Schema::create('donasi', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->timestamp('tanggal')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->integer('nominal');
 			$table->string('termin');
 			$table->string('channel');
 			$table->string('jenis');
 			$table->string('syarat')->nullable();
 			$table->string('kota')->nullable();
+			
 			$table->integer('id_donatur')->unsigned();
 			$table->foreign('id_donatur')->references('id')->on('donatur');
-			$table->timestamps();
 		});
 	}
 
