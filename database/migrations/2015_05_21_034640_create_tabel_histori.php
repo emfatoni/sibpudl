@@ -12,7 +12,7 @@ class CreateTabelHistori extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('histori', function(Blueprint $table)
+		Schema::create('histori', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('perubahan');
