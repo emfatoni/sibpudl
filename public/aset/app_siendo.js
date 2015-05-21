@@ -70,10 +70,47 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc){
 app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 	$scope.num = 0;
 	var getDonasi = DonasiSvc.all();
+	$scope.angkatan = "";
+	$scope.perwakilan = "";
+	$scope.nama = "";
+	$scope.jenis_lv_1 = "";
+	$scope.jenis_lv_2 = "";
+	$scope.jenis_final = "";
 
 	getDonasi.success(function(response){
 		$scope.donasis = response;
 	});
+
+	$scope.getNama = function(){
+		if($scope.jenis_lv_2 == "Individu"){
+			return "alumni";
+		}else if($scope.jenis_lv_2 == "Program Studi"){
+			return "program studi";
+		}else if($scope.jenis_lv_1 == "Organisasi"){
+			return "organisasi/lembaga/instansi";
+		}else{
+			return "donatur";
+		}
+	};
+
+	$scope.getFresh = function(){
+		$scope.jenis_lv_2 = "";
+		$scope.nama = "";
+		$scope.angkatan = "";
+		$scope.perwakilan = "";
+	}
+
+	$scope.getFresh2 = function(){
+		if($scope.jenis_lv_2 == "Satu ITB"){
+			$scope.nama = "ITB";
+			$scope.angkatan = "";
+			$scope.perwakilan = "";
+		}else{
+			$scope.nama = "";
+			$scope.angkatan = "";
+			$scope.perwakilan = "";	
+		}
+	}
 });
  
 //This will handle all of our routing
@@ -93,7 +130,8 @@ app.config(function($routeProvider, $locationProvider){
 		templateUrl:'aset/siendo/pages/akun.html'
 	});
 	$routeProvider.when('/form_donasi',{
-		templateUrl:'aset/siendo/pages/form_donasi.html'
+		templateUrl:'aset/siendo/pages/form_donasi.html',
+		controller: 'DonasiCtrl'
 	});
 });
 

@@ -32,6 +32,7 @@ class DonasiController extends Controller {
 	public function create(Request $req)
 	{
 		$new = new Donasi();
+		$new->tanggal = $req->input('tanggal');
 		$new->nominal = $req->input('nominal');
 		$new->termin = $req->input('termin');
 		$new->channel = $req->input('channel');
