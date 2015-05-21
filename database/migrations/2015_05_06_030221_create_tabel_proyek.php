@@ -36,6 +36,18 @@ class CreateTabelProyek extends Migration {
 			$table->integer('keuangan_total_realisasi');
 			$table->integer('keuangan_pre_financing');
 			$table->string('status_pekerjaan');
+			$table->integer('persentase_progres_bulan_1');
+			$table->integer('persentase_progres_bulan_2');
+			$table->integer('persentase_progres_bulan_3');
+			$table->integer('persentase_progres_bulan_4');
+			$table->integer('persentase_progres_bulan_5');
+			$table->integer('persentase_progres_bulan_6');
+			$table->integer('persentase_progres_bulan_7');
+			$table->integer('persentase_progres_bulan_8');
+			$table->integer('persentase_progres_bulan_9');
+			$table->integer('persentase_progres_bulan_10');
+			$table->integer('persentase_progres_bulan_11');
+			$table->integer('persentase_progres_bulan_12');
 			$table->integer('persentase_progres_proyek');
 		});
 	}
