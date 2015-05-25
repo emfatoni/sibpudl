@@ -19,8 +19,8 @@ class CreateDonatur extends Migration {
 			$table->string('jenis');
 			$table->string('nama_wakil')->nullable();
 			
-			$table->string('telp');
-			$table->string('email');
+			$table->string('telp')->nullable();
+			$table->string('email')->nullable();
 			$table->string('alamat_surat')->nullable();
 		});
 	}

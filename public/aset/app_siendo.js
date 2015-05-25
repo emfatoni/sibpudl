@@ -70,15 +70,20 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc){
 app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 	$scope.num = 0;
 	var getDonasi = DonasiSvc.all();
+	var getDonatur = DonaturSvc.all();
 	$scope.angkatan = "";
 	$scope.perwakilan = "";
 	$scope.nama = "";
 	$scope.jenis_lv_1 = "";
 	$scope.jenis_lv_2 = "";
 	$scope.jenis_final = "";
+	$scope.is_new = false;
 
 	getDonasi.success(function(response){
 		$scope.donasis = response;
+	});
+	getDonatur.success(function(res){
+		$scope.donaturs = res;
 	});
 
 	$scope.getNama = function(){
@@ -108,8 +113,26 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 		}else{
 			$scope.nama = "";
 			$scope.angkatan = "";
-			$scope.perwakilan = "";	
+			$scope.perwakilan = "";
 		}
+	}
+
+	$scope.freshDonatur = function(){
+		var newDonatur = DonaturSvc.all();
+		newDonatur.success(function(res){
+			$scope.donaturs = res;
+		});
+	}
+
+	$scope.simpan_donatur = function(){
+		var new_donatur = {"nama": $scope.nama+' '+$scope.angkatan, "jenis": $scope.jenis_lv_1+' '+$scope.jenis_lv_2, "nama_wakil": $scope.perwakilan};
+		//alert(new_donatur.nama+","+new_donatur.jenis);
+		var req = DonaturSvc.create(new_donatur);
+		req.success(function(res){
+			alert("Donatur "+res.status);
+			$scope.freshDonatur();
+			$scope.is_new = false;
+		});
 	}
 });
  
