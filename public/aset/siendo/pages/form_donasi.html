@@ -12,7 +12,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-2">Donatur</label>
 				<div class="col-md-10">
-					<select class="form-control">
+					<select ng-model="new_donasi.id_donatur" class="form-control">
 						<option value="">- Pilih Donatur -</option>
 						<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
 					</select>
@@ -109,28 +109,34 @@
 			<div class="form-group" style="border-bottom: 1px solid #222222">
 				<h2>Data Donasi</h2>
 			</div>
+			<div ng-show="false" class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<input type="text" value="{{new_donasi.id_donatur}}" class="form-control" readonly>
+				</div>
+			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Tanggal</label>
 				<div class="col-md-10">
-					<input type="date" name="tanggal" class="form-control">
+					<input type="date" ng-model="new_donasi.tanggal" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Jml. Donasi</label>
 				<div class="col-md-10">
-					<input type="text" name="nominal" class="form-control">
+					<input type="text" ng-model="new_donasi.nominal" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Termin</label>
 				<div class="col-md-10">
-					<input type="text" name="termin" class="form-control">
+					<input type="text" ng-model="new_donasi.termin" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Sistem Donasi</label>
 				<div class="col-md-10">
-					<input type="text" name="channel" class="form-control">
+					<input type="text" ng-model="new_donasi.channel" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
@@ -138,37 +144,37 @@
 				<div class="col-md-10">
 					<div class="radio">
 						<label>
-							<input type="radio" name="jenis" value="Dana Lestari Tidak Bersyarat" checked> Dana Lestari Tidak Bersyarat
+							<input type="radio" ng-model="new_donasi.jenis" name="jenis" value="Dana Lestari Tidak Bersyarat" checked> Dana Lestari Tidak Bersyarat
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="jenis" value="Dana Lestari Bersyarat"> Dana Lestari Bersyarat
+							<input type="radio" ng-model="new_donasi.jenis" name="jenis" value="Dana Lestari Bersyarat"> Dana Lestari Bersyarat
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="jenis" value="Donasi Bersyarat"> Donasi Bersyarat
+							<input type="radio" ng-model="new_donasi.jenis" name="jenis" value="Donasi Bersyarat"> Donasi Bersyarat
 						</label>
 					</div>
 				</div>
 			</div>
-			<div class="form-group">
+			<div ng-show="(new_donasi.jenis == 'Dana Lestari Bersyarat') || (new_donasi.jenis == 'Donasi Bersyarat')" class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
-					<input type="text" name="syarat" class="form-control" placeholder="syarat">
+					<input type="text" ng-model="new_donasi.syarat" class="form-control" placeholder="syarat">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Kota</label>
 				<div class="col-md-10">
-					<input type="text" name="kota" class="form-control" placeholder="kota">
+					<input type="text" ng-model="new_donasi.kota" class="form-control" placeholder="kota">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
-					<button class="btn btn-success">Simpan</button>
+					<button ng-click="simpan_donasi()" class="btn btn-success">Simpan</button>
 					<a href="#/donasi" class="btn btn-warning">Kembali</a>
 				</div>
 			</div>

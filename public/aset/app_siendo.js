@@ -67,7 +67,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc){
 	});
 });
 
-app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
+app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 	$scope.num = 0;
 	var getDonasi = DonasiSvc.all();
 	var getDonatur = DonaturSvc.all();
@@ -78,6 +78,8 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 	$scope.jenis_lv_2 = "";
 	$scope.jenis_final = "";
 	$scope.is_new = false;
+
+	$scope.new_donasi = {"id_donatur": "", "tanggal": "", "nominal": "", "termin": "", "channel": "", "jenis": "", "syarat": "", "kota": ""};
 
 	getDonasi.success(function(response){
 		$scope.donasis = response;
@@ -124,6 +126,16 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 		});
 	}
 
+	$scope.val_donasi = function(){
+		if($scope.new_donasi.id_donatur == ""){
+			return "Tidak ada donatur yang dipilih.";
+		}else if((($scope.new_donasi.jenis=="Dana Lestari Bersyarat")||($scope.new_donasi.jenis=="Donasi Bersyarat"))&&($scope.new_donasi.syarat=="")){
+			return "Syarat belum diisi.";
+		}else{
+			return "";
+		}
+	}
+
 	$scope.simpan_donatur = function(){
 		var new_donatur = {"nama": $scope.nama+' '+$scope.angkatan, "jenis": $scope.jenis_lv_1+' '+$scope.jenis_lv_2, "nama_wakil": $scope.perwakilan};
 		//alert(new_donatur.nama+","+new_donatur.jenis);
@@ -133,6 +145,19 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc){
 			$scope.freshDonatur();
 			$scope.is_new = false;
 		});
+	}
+
+	$scope.simpan_donasi = function(){
+		if($scope.val_donasi() == ""){
+			//console.log($scope.new_donasi);
+			var req = DonasiSvc.create($scope.new_donasi);
+			req.success(function(res){
+				alert("Donasi "+res.status);
+				$location.path('/donasi');
+			});
+		}else{
+			alert($scope.val_donasi());
+		}
 	}
 });
  
