@@ -15,10 +15,6 @@ Route::get('/', 'LoginController@index');
 
 Route::get('siendo', 'BpudlController@index');
 
-Route::get('simon', function () {
-    return view('index_simon');
-});
-
 Route::get('home', 'HomeController@index');
 
 Route::resource('donatur', 'DonaturController');
