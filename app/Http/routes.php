@@ -19,6 +19,7 @@ Route::get('home', 'HomeController@index');
 
 Route::resource('donatur', 'DonaturController');
 Route::resource('donasi', 'DonasiController');
+Route::resource('karyawan', 'KaryawanController');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

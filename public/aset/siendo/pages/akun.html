@@ -1,5 +1,35 @@
 <div class="row">
 	<div class="col-md-12">
-		<h1>Ini Akun :)</h1>
+		<h1 class="text-center">Pengelolaan Akun</h1>
+	</div>
+</div>
+<div class="row" style="margin-top: 30px">
+	<div class="col-md-12">
+		<a href="#/form_akun" class="btn btn-primary pull-right">Tambah Akun</a>
+		<br><br>
+		<table class="table table-condensed table-bordered">
+			<thead>
+				<tr>
+					<th class="text-center">No.</th>
+					<th class="text-center">Nama</th>
+					<th class="text-center">Jabatan</th>
+					<th class="text-center">E-mail</th>
+					<th class="text-center">Telp.</th>
+					<th class="text-center">Alamat</th>
+					<th class="text-center">Peran</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="akun in akuns">
+					<td></td>
+					<td>{{akun.nama}}</td>
+					<td>{{akun.jabatan}}</td>
+					<td></td>
+					<td>{{akun.telp}}</td>
+					<td>{{akun.alamat}}</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>

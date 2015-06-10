@@ -1,12 +1,58 @@
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<h1 class="text-center" style="margin-bottom: 40px">Tambah Donatur</h1>
 
 		<form class="form-horizontal">
 			<div class="form-group">
+				<label class="control-label col-md-2">Jenis</label>
+				<div class="col-md-10">
+					<select ng-model="jenis_lv_1" ng-change="getFresh();" class="form-control">
+						<option value="">- Pilih Jenis -</option>
+						<option value="Personal">Personal</option>
+						<option value="Alumni">Alumni</option>
+						<option value="Organisasi">Organisasi</option>
+					</select>
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Alumni')" class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
-					<input class="form-control">
+					<select ng-change="getFresh2();" ng-model="jenis_lv_2" class="form-control">
+						<option value="">- Pilih Jenis Alumni -</option>
+						<option value="Individu">Individu</option>
+						<option value="Program Studi">Program Studi</option>
+						<option value="Satu ITB">Satu ITB</option>
+					</select>
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Organisasi')" class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<select ng-model="jenis_lv_2" class="form-control">
+						<option value="">- Pilih Jenis Organisasi -</option>
+						<option value="ITB">ITB</option>
+						<option value="Non-ITB">Non-ITB</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- ISIAN -->
+			<div ng-show="((jenis_lv_1 != '')&&(jenis_lv_2 != '')&&(jenis_lv_2 != 'Satu ITB'))||(jenis_lv_1 == 'Personal')" class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<input type="text" ng-model="nama" class="form-control" placeholder="nama {{getNama();}}">
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 != '')" class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<input ng-model="angkatan" type="text" class="form-control" placeholder="angkatan">
+				</div>
+			</div>
+			<div ng-show="((jenis_lv_1=='Organisasi')&&(jenis_lv_2 != ''))||((jenis_lv_1=='Alumni')&&(jenis_lv_2 != 'Individu')&&(jenis_lv_2 != ''))" class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<input type="text" ng-model="perwakilan" class="form-control" placeholder="nama perwakilan">
 				</div>
 			</div>
 		</form>

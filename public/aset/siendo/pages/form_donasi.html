@@ -130,13 +130,18 @@
 			<div class="form-group">
 				<label class="control-label col-md-2">Termin</label>
 				<div class="col-md-10">
-					<input type="text" ng-model="new_donasi.termin" class="form-control">
+					<input type="text" ng-model="new_donasi.termin" class="form-control" placeholder="dicicil berapa kali">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">Sistem Donasi</label>
 				<div class="col-md-10">
-					<input type="text" ng-model="new_donasi.channel" class="form-control">
+					<select ng-model="new_donasi.channel" class="form-control">
+						<option value="">- Pilih Sistem Donasi -</option>
+						<option value="Cash">Cash</option>
+						<option value="Non-cash">Non-cash</option>
+						<option value="Cek">Cek</option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">

@@ -1,0 +1,71 @@
+<div class="row">
+	<div class="col-md-12">
+		<h1 class="text-center" style="margin-bottom: 40px">Tambah Akun</h1>
+
+		<form class="form-horizontal col-md-5">
+			<div class="form-group">
+				<label class="control-label col-md-2">Nama Lengkap</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="nama lengkap" ng-model="newakun.nama">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Jabatan</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="jabatan" ng-model="newakun.jabatan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Telepon</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="nomor telepon/hp" ng-model="newakun.telp">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Alamat</label>
+				<div class="col-md-10">
+					<textarea class="form-control" rows="4" placeholder="alamat lengkap" ng-model="newakun.alamat"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10"></div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">E-mail</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="e-mail untuk login" ng-model="newakun.email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Peran</label>
+				<div class="col-md-10">
+					<select class="form-control" ng-model="newakun.role">
+						<option value="">- Pilih Peran -</option>
+						<option value="Admin BPUDL">Admin BPUDL</option>
+						<option value="Tim Fundrising">Tim Fundrising</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Password</label>
+				<div class="col-md-10">
+					<input type="password" class="form-control" ng-model="newakun.password">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Tulis kembali password</label>
+				<div class="col-md-10">
+					<input type="password" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<button class="btn btn-success" ng-click="simpan_akun()">Simpan</button>
+					<a href="#/akun" class="btn btn-warning">Kembali</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

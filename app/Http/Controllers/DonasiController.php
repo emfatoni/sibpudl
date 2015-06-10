@@ -85,7 +85,7 @@ class DonasiController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $req)
 	{
 		$edit = Donasi::find($id);
 		if($edit){

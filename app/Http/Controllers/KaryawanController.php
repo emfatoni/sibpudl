@@ -2,11 +2,12 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Donatur;
+use App\Karyawan;
+use App\User;
 
 use Illuminate\Http\Request;
 
-class DonaturController extends Controller {
+class KaryawanController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -15,8 +16,8 @@ class DonaturController extends Controller {
 	 */
 	public function index()
 	{
-		$donaturs = Donatur::all();
-		return $donaturs;
+		$karyawans = Karyawan::all();
+		return $karyawans;
 	}
 
 	/**
@@ -26,17 +27,29 @@ class DonaturController extends Controller {
 	 */
 	public function create(Request $req)
 	{
-		$new = new Donatur();
+		$new = new Karyawan();
 		$new->nama = $req->input('nama');
-		$new->jenis = $req->input('jenis');
-		$new->nama_wakil = $req->input('nama_wakil');
-
+		$new->alamat = $req->input('alamat');
 		$new->telp = $req->input('telp');
-		$new->email = $req->input('email');
-		$new->alamat_surat = $req->input('alamat_surat');
+		$new->jabatan = $req->input('jabatan');
+		$email = $req->input('email');
+		$password = $req->input('password');
+		$role = $req->input('role');
 
 		if($new->save()){
-			return array('status'=>'Saved!');
+			//return array('status'=>'saved '.$new->id);
+
+			$new_user = new User();
+			$new_user->role = $role;
+			$new_user->email = $email;
+			$new_user->password = bcrypt($password);
+			$new_user->id_pengguna = $new->id;
+
+			if($new_user->save()){
+				return array('status'=>'Saved!');
+			}
+			$new->delete();
+			return array('status'=>'Fail to make!');
 		}
 		return array('status'=>'Not Saved!');
 	}
@@ -59,7 +72,7 @@ class DonaturController extends Controller {
 	 */
 	public function show($id)
 	{
-		return Donatur::find($id);
+		return Karyawan::find($id);
 	}
 
 	/**
@@ -70,7 +83,7 @@ class DonaturController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//	
+		//
 	}
 
 	/**
@@ -81,15 +94,12 @@ class DonaturController extends Controller {
 	 */
 	public function update($id, Request $req)
 	{
-		$edit = Donatur::find($id);
+		$edit = Karyawan::find($id);
 		if($edit){
 			$edit->nama = $req->input('nama');
-			$edit->jenis = $req->input('jenis');
-			$edit->nama_wakil = $req->input('nama_wakil');
-
+			$edit->alamat = $req->input('alamat');
 			$edit->telp = $req->input('telp');
-			$edit->email = $req->input('email');
-			$edit->alamat_surat = $req->input('alamat_surat');
+			$edit->jabatan = $req->input('jabatan');
 
 			if($edit->save()){
 				return array('status'=>'Saved!');
@@ -107,13 +117,17 @@ class DonaturController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$del = Donatur::find($id);
+		$del = Karyawan::find($id);
 		if($del){
 			if($del->delete()){
 				return array('status'=>'Deleted!');
 			}
 			return array('status'=>'Not Deleted!');
 		}
+		return array('status'=>'Not Deleted!');
+	}
+
+	public function add_user(){
 		return array('status'=>'Not Deleted!');
 	}
 

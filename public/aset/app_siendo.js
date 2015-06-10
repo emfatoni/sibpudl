@@ -54,11 +54,90 @@ app.factory("DonasiSvc", function($http){
 	}
 });
 
+app.factory("AkunSvc", function($http){
+	return{
+		all: function(){
+			var req = $http({method:'GET', url:'karyawan'});
+			return req;
+		},
+		create: function(data){
+			var req = $http({method:'GET', url:'karyawan/create', params:data});
+			return req;
+		},
+		get: function(id){
+			var req = $http.get('karyawan/'+id);
+			return req;
+		},
+		update: function(id, data){
+			var req = $http.put('karyawan/'+id, data);
+			return req;
+		},
+		delete: function(id){
+			var req = $http.delete('karyawan/'+id);
+			return req;
+		}
+	}
+});
+
 app.controller('NavController', function($scope){
 	$scope.halaman = "beranda";
 });
 
 app.controller('DonaturCtrl', function($scope, DonaturSvc){
+	$scope.num = 0;
+	var getDonatur = DonaturSvc.all();
+	$scope.jenis_lv_1 = "";
+	$scope.jenis_lv_2 = "";
+	$scope.nama = "";
+	$scope.angkatan = "";
+
+	getDonatur.success(function(response){
+		$scope.donaturs = response;
+	});
+
+	$scope.fresh_donatur = function(){
+		$scope.a_donatur = {
+			"nama": "",
+			"jenis": "",
+			"nama_wakil": "",
+			"telp": "",
+			"email": "",
+			"alamat_surat": ""
+		};
+	}
+
+	$scope.fresh_donatur();
+
+	$scope.getNama = function(){
+		if($scope.jenis_lv_2 == "Individu"){
+			return "alumni";
+		}else if($scope.jenis_lv_2 == "Program Studi"){
+			return "program studi";
+		}else if($scope.jenis_lv_1 == "Organisasi"){
+			return "organisasi/lembaga/instansi";
+		}else{
+			return "donatur";
+		}
+	};
+
+	$scope.getFresh = function(){
+		$scope.jenis_lv_2 = "";
+		$scope.nama = "";
+		$scope.angkatan = "";
+	}
+
+	$scope.getFresh2 = function(){
+		if($scope.jenis_lv_2 == "Satu ITB"){
+			$scope.nama = "ITB";
+			$scope.angkatan = "";
+		}else{
+			$scope.nama = "";
+			$scope.angkatan = "";
+		}
+	}
+});
+
+app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
 	$scope.num = 0;
 	var getDonatur = DonaturSvc.all();
 
@@ -160,6 +239,34 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 		}
 	}
 });
+
+app.controller('AkunCtrl', function($scope, AkunSvc, $location){
+	$scope.freshAkun = function(){
+		var getAkun = AkunSvc.all();
+		getAkun.success(function(res){
+			$scope.akuns = res;
+		});
+	}
+
+	$scope.freshAkun();
+
+	$scope.newakun = {
+		"nama":"",
+		"jabatan":"",
+		"telp":"",
+		"alamat":"",
+		"email":"",
+		"password":"",
+		"role":""
+	};
+
+	$scope.simpan_akun = function(){
+		var req = AkunSvc.create($scope.newakun);
+		req.success(function(res){
+			alert("Akun "+res.status);
+		});
+	}
+});
  
 //This will handle all of our routing
 app.config(function($routeProvider, $locationProvider){	
@@ -175,11 +282,24 @@ app.config(function($routeProvider, $locationProvider){
 		controller:'DonaturCtrl'
 	});
 	$routeProvider.when('/akun',{
-		templateUrl:'aset/siendo/pages/akun.html'
+		templateUrl:'aset/siendo/pages/akun.html',
+		controller: 'AkunCtrl'
 	});
 	$routeProvider.when('/form_donasi',{
 		templateUrl:'aset/siendo/pages/form_donasi.html',
 		controller: 'DonasiCtrl'
+	});
+	$routeProvider.when('/add_donatur',{
+		templateUrl:'aset/siendo/pages/form_donatur.html',
+		controller: 'DonaturCtrl'
+	});
+	$routeProvider.when('/edit_donatur/:id',{
+		templateUrl:'aset/siendo/pages/form_donatur.html',
+		controller: 'EditDonaturCtrl'
+	});
+	$routeProvider.when('/form_akun',{
+		templateUrl:'aset/siendo/pages/form_akun.html',
+		controller: 'AkunCtrl'
 	});
 });
 

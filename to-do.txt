@@ -1,0 +1,24 @@
+Warning:
+- form donasi belum ada validasi
+- form donatur belum ada validasi
+- Datepicker nggak jalan di Mozilla dam IE
+v Nilai nominal melebihi integer
+- CRUD donasi
+- CRUD donatur
+- Nomor tabel
+- Pake datatable
+
+Pertemuan 28 Mei 2015:
+v termin = cicilan (dicicil berapa kali)
+v sistem pembayaran: dropdown (cash, non-cash, cek)
+- upload data donasi pake Ms. Excel
+- tambah role: fundrising (bisa masukin data donasi tapi harus di-approve oleh BPUDL)
+- login dan kelola akun
+
+Inpoh!
+- buat migration: php artisan make:migration (nama_migration) --create=(nama_tabel)
+- re-migrate: php artisan migrate:refresh
+- buat model: php artisan make:model (NamaModel)
+- buat controller: php artisan make:controller (NamaController)
+- buat ngisi migration: Schema Builder Laravel 5
+- ngecek resource path: php artisan route:list

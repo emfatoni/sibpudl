@@ -16,7 +16,7 @@ class CreateDonasi extends Migration {
 		{
 			$table->increments('id');
 			$table->timestamp('tanggal')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->integer('nominal');
+			$table->bigInteger('nominal');
 			$table->string('termin');
 			$table->string('channel');
 			$table->string('jenis');
