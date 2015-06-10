@@ -16,6 +16,8 @@ Route::get('/', 'LoginController@index');
 Route::get('siendo', 'BpudlController@index');
 
 Route::get('home', 'HomeController@index');
+Route::get('get_user', 'LoginController@get_user');
+Route::get('karyawan/get_user', 'KaryawanController@get_user');
 
 Route::resource('donatur', 'DonaturController');
 Route::resource('donasi', 'DonasiController');
@@ -23,5 +25,5 @@ Route::resource('karyawan', 'KaryawanController');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+	'password' => 'Auth\PasswordController'
 ]);

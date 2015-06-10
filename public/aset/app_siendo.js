@@ -75,12 +75,21 @@ app.factory("AkunSvc", function($http){
 		delete: function(id){
 			var req = $http.delete('karyawan/'+id);
 			return req;
+		},
+		get_user: function(){
+			var req = $http({method:'GET', url:'karyawan/get_user'});
+			return req;
 		}
 	}
 });
 
-app.controller('NavController', function($scope){
+app.controller('NavController', function($scope, AkunSvc){
 	$scope.halaman = "beranda";
+	var getUser = AkunSvc.get_user();
+	getUser.success(function(res){
+		//alert("berhasil "+res.user.nama);
+		$scope.user_aktif = res;
+	});
 });
 
 app.controller('DonaturCtrl', function($scope, DonaturSvc){
@@ -247,6 +256,8 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 			$scope.akuns = res;
 		});
 	}
+
+	
 
 	$scope.freshAkun();
 

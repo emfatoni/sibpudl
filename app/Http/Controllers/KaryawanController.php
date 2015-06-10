@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Karyawan;
 use App\User;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -129,6 +130,19 @@ class KaryawanController extends Controller {
 
 	public function add_user(){
 		return array('status'=>'Not Deleted!');
+	}
+
+	public function get_user(){
+		if (Auth::user())
+        {
+            // Auth::user() returns an instance of the authenticated user...
+            $pengguna = Auth::user();
+            $id_karyawan = $pengguna->id_pengguna;
+            $karyawan = Karyawan::find($id_karyawan);
+            $pengguna["nama"] = $karyawan->nama;
+            return array("user" => $pengguna);
+        }
+        return array("status" => "no user");
 	}
 
 }

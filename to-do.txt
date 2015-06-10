@@ -13,7 +13,7 @@ v termin = cicilan (dicicil berapa kali)
 v sistem pembayaran: dropdown (cash, non-cash, cek)
 - upload data donasi pake Ms. Excel
 - tambah role: fundrising (bisa masukin data donasi tapi harus di-approve oleh BPUDL)
-- login dan kelola akun
+v login dan kelola akun
 
 Inpoh!
 - buat migration: php artisan make:migration (nama_migration) --create=(nama_tabel)

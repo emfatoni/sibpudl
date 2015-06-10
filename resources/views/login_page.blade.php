@@ -35,7 +35,7 @@
 		<div class="row" style="padding: 10px;">
 			<div class="col-md-4 col-md-offset-4 white-border">
 				<div class="row" style="padding: 15px;">
-				<form method="POST" action="{{ url('/auth/login') }}">
+				<form method="POST" action="{{ url('auth/login') }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="form-group">
 						<label class="white-text">Username</label>
