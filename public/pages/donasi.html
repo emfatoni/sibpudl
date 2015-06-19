@@ -2,9 +2,20 @@
 	<div class="col-md-12">
 		<h1 class="text-center" style="margin-bottom: 40px">Pengelolaan Donasi</h1>
 
-		<a href="#/form_donasi" class="btn btn-primary pull-right">Tambah Donasi</a>
+		
 		<br><br>
-		<table id="tabel_donasi" class="table table-bordered table-condensed">
+
+		<!--<table datatable="" dt-options="donasiCtrl.dtOptions" dt-columns="donasiCtrl.dtColumns" class="row-border hover"></table>-->
+
+		<div class="row">
+			<div class="col-md-2"><a href="#/tambah_donasi" class="btn btn-primary">Tambah Donasi</a></div>
+
+			<div class="col-md-3"><input type="text" class="form-control" placeholder="filter and search" ng-model="q"></div>
+
+			<div class="col-md-2 pull-right"><input type="number" class="form-control" ng-model="pageSize"></div>
+		</div>		
+		
+		<table id="tabel_donasi" class="table table-bordered table-condensed" style="margin-top: 20px">
 			<thead>
 				<tr>
 					<th class="text-center" rowspan="2">No.</th>
@@ -25,7 +36,7 @@
 			</thead>
 
 			<tbody>
-				<tr ng-repeat="donasi in donasis">
+				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize" current-page="currentPage" current-page="currentPage">
 					<td>1</td>
 					<td>{{donasi.tanggal}}</td>
 					<td>{{donasi.nama_donatur}}</td>
@@ -40,6 +51,15 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<div class="row">
+			<div class="col-md-12"><span>Current Page: {{currentPage}} </span></div>
+			<div class="text-center col-md-12">
+				<dir-pagination-controls boundary-links="true">
+				</dir-pagination-controls>
+			</div>
+		</div>
+
 	</div>
 </div>
 <script type="text/javascript">

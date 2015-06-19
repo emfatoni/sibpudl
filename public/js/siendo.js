@@ -1,7 +1,11 @@
-var app = angular.module('siendoApp',['ngRoute']);
+var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination']);
  
 app.run(function(){
 	//
+});
+
+app.config(function(paginationTemplateProvider) {
+    paginationTemplateProvider.setPath('dirPagination.tpl.html');
 });
 
 /* ROUTING */
@@ -13,7 +17,7 @@ app.config(function($routeProvider, $locationProvider){
 
 	$routeProvider.when('/donasi',{
 		templateUrl:'pages/donasi.html',
-		controller:'DonasiCtrl',
+		controller:'DonasiCtrl as donasiCtrl',
 		kecuali: '',
 	});
 
@@ -232,6 +236,8 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 	}
 
 	// inisiasi variabel
+	$scope.currentPage = 1;
+	$scope.pageSize = 10;
 	$scope.new_donatur = false;
 	$scope.angkatan = "";
 	$scope.nama = "";

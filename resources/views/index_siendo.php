@@ -9,10 +9,10 @@
 	<link rel="stylesheet" type="text/css" href="datatables/css/jquery.dataTables.css">
 
 	<script src="js/jquery-2.1.3.min.js"></script>
-	<script src="datatables/js/jquery.dataTables.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="js/angular.js"></script>
 	<script src="js/angular-route.js"></script>
+	<script src="js/dirPagination.js"></script>
 
 	<script src="js/siendo.js"></script>
 </head>

@@ -1,0 +1,1 @@
+[{"id":1,"tanggal":"2015-06-17","nominal":200000,"termin":"1 bulan","channel":"Non-cash","jenis":"Dana Lestari Tidak Bersyarat","syarat":"","kota":"Bandung","status":"ditunda","id_donatur":1,"created_at":"2015-06-19 03:21:47","updated_at":"2015-06-19 03:21:47","nama_donatur":"Fulan "}]
