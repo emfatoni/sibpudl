@@ -12,6 +12,8 @@ class Registrar implements RegistrarContract {
 	 * @param  array  $data
 	 * @return \Illuminate\Contracts\Validation\Validator
 	 */
+	protected $loginPath = '/';
+
 	public function validator(array $data)
 	{
 		return Validator::make($data, [

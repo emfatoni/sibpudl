@@ -17,8 +17,7 @@ class KaryawanController extends Controller {
 	 */
 	public function index()
 	{
-		$karyawans = Karyawan::all();
-		return $karyawans;
+		return Karyawan::all();
 	}
 
 	/**
@@ -29,16 +28,17 @@ class KaryawanController extends Controller {
 	public function create(Request $req)
 	{
 		$new = new Karyawan();
+
 		$new->nama = $req->input('nama');
 		$new->alamat = $req->input('alamat');
 		$new->telp = $req->input('telp');
 		$new->jabatan = $req->input('jabatan');
+
 		$email = $req->input('email');
 		$password = $req->input('password');
 		$role = $req->input('role');
 
 		if($new->save()){
-			//return array('status'=>'saved '.$new->id);
 
 			$new_user = new User();
 			$new_user->role = $role;
@@ -49,6 +49,7 @@ class KaryawanController extends Controller {
 			if($new_user->save()){
 				return array('status'=>'Saved!');
 			}
+
 			$new->delete();
 			return array('status'=>'Fail to make!');
 		}
@@ -97,17 +98,34 @@ class KaryawanController extends Controller {
 	{
 		$edit = Karyawan::find($id);
 		if($edit){
+
 			$edit->nama = $req->input('nama');
 			$edit->alamat = $req->input('alamat');
 			$edit->telp = $req->input('telp');
 			$edit->jabatan = $req->input('jabatan');
 
+			$email = $req->input('email');
+			$password = $req->input('password');
+			$role = $req->input('role');
+
 			if($edit->save()){
-				return array('status'=>'Saved!');
+
+				$user = User::where('id_pengguna', '=', $id)->take(1)->get();
+				$temp = $user->toArray();
+				$user = $temp[0];
+
+				$user->email = $email;
+				$user->password = bcrypt($password);
+				$user->role = $role;
+
+				if($user->save()){
+					return array('status'=>'Saved!');	
+				}
+				return array('status'=>'Not Saved!');
 			}
 			return array('status'=>'Not Saved!');
 		}
-		return array('status'=>'Not Saved!');
+		return array('status'=>'Not Found!');
 	}
 
 	/**
@@ -125,24 +143,20 @@ class KaryawanController extends Controller {
 			}
 			return array('status'=>'Not Deleted!');
 		}
-		return array('status'=>'Not Deleted!');
+		return array('status'=>'Not Found!');
 	}
 
-	public function add_user(){
-		return array('status'=>'Not Deleted!');
-	}
-
-	public function get_user(){
-		if (Auth::user())
-        {
-            // Auth::user() returns an instance of the authenticated user...
+	public function get_user()
+	{
+		if (Auth::user()){
+            
             $pengguna = Auth::user();
             $id_karyawan = $pengguna->id_pengguna;
             $karyawan = Karyawan::find($id_karyawan);
             $pengguna["nama"] = $karyawan->nama;
-            return array("user" => $pengguna);
-        }
-        return array("status" => "no user");
-	}
 
+            return $pengguna;
+        }
+        return null;
+	}
 }

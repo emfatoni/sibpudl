@@ -11,18 +11,18 @@
 |
 */
 
-Route::get('/', 'LoginController@index');
+/* HALAMAN */
+Route::get('/', 'MainController@index');
+Route::get('login', 'MainController@login');
 
-Route::get('siendo', 'BpudlController@index');
-
-Route::get('home', 'HomeController@index');
-Route::get('get_user', 'LoginController@get_user');
+/* RESOURCE */
 Route::get('karyawan/get_user', 'KaryawanController@get_user');
 
 Route::resource('donatur', 'DonaturController');
 Route::resource('donasi', 'DonasiController');
 Route::resource('karyawan', 'KaryawanController');
 
+/* DARI LARAVEL 5 */
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController'

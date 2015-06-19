@@ -15,8 +15,7 @@ class DonaturController extends Controller {
 	 */
 	public function index()
 	{
-		$donaturs = Donatur::all();
-		return $donaturs;
+		return Donatur::all();
 	}
 
 	/**
@@ -27,10 +26,10 @@ class DonaturController extends Controller {
 	public function create(Request $req)
 	{
 		$new = new Donatur();
+
 		$new->nama = $req->input('nama');
 		$new->jenis = $req->input('jenis');
 		$new->nama_wakil = $req->input('nama_wakil');
-
 		$new->telp = $req->input('telp');
 		$new->email = $req->input('email');
 		$new->alamat_surat = $req->input('alamat_surat');
@@ -86,7 +85,6 @@ class DonaturController extends Controller {
 			$edit->nama = $req->input('nama');
 			$edit->jenis = $req->input('jenis');
 			$edit->nama_wakil = $req->input('nama_wakil');
-
 			$edit->telp = $req->input('telp');
 			$edit->email = $req->input('email');
 			$edit->alamat_surat = $req->input('alamat_surat');
@@ -96,7 +94,7 @@ class DonaturController extends Controller {
 			}
 			return array('status'=>'Not Saved!');
 		}
-		return array('status'=>'Not Saved!');
+		return array('status'=>'Not Found!');
 	}
 
 	/**
@@ -114,7 +112,7 @@ class DonaturController extends Controller {
 			}
 			return array('status'=>'Not Deleted!');
 		}
-		return array('status'=>'Not Deleted!');
+		return array('status'=>'Not Found!');
 	}
 
 }

@@ -32,6 +32,7 @@ class DonasiController extends Controller {
 	public function create(Request $req)
 	{
 		$new = new Donasi();
+
 		$new->tanggal = $req->input('tanggal');
 		$new->nominal = $req->input('nominal');
 		$new->termin = $req->input('termin');
@@ -39,6 +40,7 @@ class DonasiController extends Controller {
 		$new->jenis = $req->input('jenis');
 		$new->syarat = $req->input('syarat');
 		$new->kota = $req->input('kota');
+		$new->status = $req->input('status');
 		$new->id_donatur = $req->input('id_donatur');
 
 		if($new->save()){
@@ -95,6 +97,7 @@ class DonasiController extends Controller {
 			$edit->jenis = $req->input('jenis');
 			$edit->syarat = $req->input('syarat');
 			$edit->kota = $req->input('kota');
+			$edit->status = $req->input('status');
 			$edit->id_donatur = $req->input('id_donatur');
 
 			if($edit->save()){
@@ -102,7 +105,7 @@ class DonasiController extends Controller {
 			}
 			return array('status'=>'Not Saved!');
 		}
-		return array('status'=>'Not Saved!');
+		return array('status'=>'Not Found!');
 	}
 
 	/**
@@ -120,7 +123,7 @@ class DonasiController extends Controller {
 			}
 			return array('status'=>'Not Deleted!');
 		}
-		return array('status'=>'Not Deleted!');
+		return array('status'=>'Not Found!');
 	}
 
 }

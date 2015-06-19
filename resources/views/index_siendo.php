@@ -4,21 +4,22 @@
 <head>
 	<title>BPUDL</title>
 
-	<link rel="stylesheet" type="text/css" href="aset/css/my-style.css">
-	<link rel="stylesheet" type="text/css" href="aset/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/my-style.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="datatables/css/jquery.dataTables.css">
 
-	<script src="aset/js/jquery-2.1.3.min.js"></script>
-	<script src="aset/bootstrap/js/bootstrap.min.js"></script>
-	<script src="aset/js/angular.js"></script>
-	<script src="aset/js/angular-route.js"></script>
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="datatables/js/jquery.dataTables.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
 
-	<script src="aset/app_siendo.js"></script>
-
+	<script src="js/siendo.js"></script>
 </head>
 
-<body ng-app="siendoApp">
+<body ng-app="siendoApp" ng-controller="MainController">
 	<!-- navbar -->
-	<nav class="navbar navbar-inverse" ng-controller="NavController">
+	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
@@ -44,7 +45,7 @@
 			        <li class="dropdown">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="margin-right: 10px" class="glyphicon glyphicon-user"></span> {{user_aktif.user.nama}} <span class="caret"></span></a>
 				        <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Logout</a></li>
+							<li><a href="<?php echo url('/auth/logout'); ?>">Logout</a></li>
 				            <li><a href="#">Pengaturan Akun</a></li>
 						</ul>
 			        </li>
