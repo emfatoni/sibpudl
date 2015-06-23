@@ -17,6 +17,7 @@ Route::get('login', 'MainController@login');
 
 /* RESOURCE */
 Route::get('karyawan/get_user', 'KaryawanController@get_user');
+Route::post('donasi/import_excel', 'DonasiController@import_excel');
 
 Route::resource('donatur', 'DonaturController');
 Route::resource('donasi', 'DonasiController');

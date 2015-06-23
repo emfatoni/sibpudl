@@ -17,7 +17,13 @@ class KaryawanController extends Controller {
 	 */
 	public function index()
 	{
-		return Karyawan::all();
+		$karyawans = Karyawan::all();
+		foreach ($karyawans as $karyawan){
+			$req = User::where('id_pengguna', '=', $karyawan->id)->take(1)->get()->toArray();
+			$user = $req[0];
+			$karyawan["role"] = $user["role"];
+		}
+		return $karyawans;
 	}
 
 	/**

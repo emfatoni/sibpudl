@@ -14,6 +14,7 @@
 	<script src="js/angular-route.js"></script>
 	<script src="js/dirPagination.js"></script>
 
+	<script src="js/accounting.js"></script>
 	<script src="js/siendo.js"></script>
 </head>
 
@@ -35,7 +36,7 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			    <ul class="nav navbar-nav">
-			    	<li class="{{(halaman=='beranda')?'active':''}}"><a href="#" ng-click="halaman='beranda'">Beranda</a></li>
+			    	<li class="{{(halaman=='beranda')?'active':''}}"><a href="#/" ng-click="halaman='beranda'">Beranda</a></li>
 			        <li class="{{(halaman=='donasi')?'active':''}}"><a href="#/donasi" ng-click="halaman='donasi'">Donasi</a></li>
 			        <li class="{{(halaman=='donatur')?'active':''}}"><a href="#/donatur" ng-click="halaman='donatur'">Donatur</a></li>
 			        <li class="{{(halaman=='akun')?'active':''}}"><a href="#/akun" ng-click="halaman='akun'">Akun</a></li>
@@ -43,7 +44,7 @@
 
 			    <ul class="nav navbar-nav navbar-right">
 			        <li class="dropdown">
-			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="margin-right: 10px" class="glyphicon glyphicon-user"></span> {{user_aktif.user.nama}} <span class="caret"></span></a>
+			        	<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="margin-right: 10px" class="glyphicon glyphicon-user"></span> {{user_aktif.nama}} <span class="caret"></span></a>
 				        <ul class="dropdown-menu" role="menu">
 							<li><a href="<?php echo url('/auth/logout'); ?>">Logout</a></li>
 				            <li><a href="#">Pengaturan Akun</a></li>

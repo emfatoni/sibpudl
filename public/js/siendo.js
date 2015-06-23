@@ -209,7 +209,6 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc){
 		}
 	}
 });
-
 app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
 	$scope.num = 0;
 	var getDonatur = DonaturSvc.all();
@@ -218,7 +217,6 @@ app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
 		$scope.donaturs = response;
 	});
 });
-
 app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 
 	// mengambil data donasi
@@ -335,7 +333,6 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 		}
 	}
 });
-
 app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 	$scope.freshAkun = function(){
 		var getAkun = AkunSvc.all();
@@ -359,6 +356,7 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 		var req = AkunSvc.create($scope.newakun);
 		req.success(function(res){
 			alert("Akun "+res.status);
+			$location.path('/akun');
 		});
 	}
 });

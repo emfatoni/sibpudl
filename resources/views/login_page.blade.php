@@ -4,16 +4,16 @@
 <head>
 	<title>BPUDL</title>
 
-	<link rel="stylesheet" type="text/css" href="aset/css/my-style.css">
-	<link rel="stylesheet" type="text/css" href="aset/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/my-style.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 
-	<script src="aset/js/jquery-2.1.3.min.js"></script>
-	<script src="aset/bootstrap/js/bootstrap.min.js"></script>
-	<script src="aset/js/angular.js"></script>
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/angular.js"></script>
 
 	<style type="text/css">
 		html{
-			background: url(aset/img/villa-merah-dark.jpg) no-repeat center center fixed;
+			background: url(img/villa-merah-dark.jpg) no-repeat center center fixed;
 			-webkit-background-size: cover;
 			-moz-background-size: cover;
 			-o-background-size: cover;

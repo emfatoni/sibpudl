@@ -10,6 +10,7 @@ v Nilai nominal melebihi integer
 - Loading status
 - Halaman loading gagal
 - Logout
+- csrf
 
 Pertemuan 28 Mei 2015:
 v termin = cicilan (dicicil berapa kali)

@@ -126,4 +126,14 @@ class DonasiController extends Controller {
 		return array('status'=>'Not Found!');
 	}
 
+	public function import_excel(Request $req){
+		$file = $req->file('excel');
+
+		\Excel::load($file, function($reader) {
+			$hasil = $reader->toArray();
+			//dd($hasil);
+			echo $hasil[0][2]["satu"];
+		});
+	}
+
 }
