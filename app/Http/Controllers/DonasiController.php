@@ -153,7 +153,7 @@ class DonasiController extends Controller {
 						$donasi->nominal = $row["jumlah_donasi"];
 						$donasi->termin = $row["termin"];
 						$donasi->channel = $row["sistem_donasi"];
-						$donasi->jenis = $row["jenis"];
+						$donasi->jenis = $row["jenis_donasi"];
 						$donasi->syarat = $row["syarat"];
 						$donasi->kota = $row["kota"];
 						$donasi->status = "ditunda";
@@ -171,8 +171,13 @@ class DonasiController extends Controller {
 			// dd($hasil);
 		});
 
-	return redirect('../public/#/donasi');
+		return redirect('../public/#/donasi');
 
+	}
+
+	public function download_template(){
+		$file= public_path()."/template/template_donasi.xlsx";
+		return response()->download($file, "Template Donasi.xlsx");
 	}
 
 }
