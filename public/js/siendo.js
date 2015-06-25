@@ -1,7 +1,37 @@
-var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination']);
+var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit']);
  
 app.run(function(){
 	//
+});
+
+/* FILTER-FILTER */
+app.filter('channel', function(){
+	return function(inputs, channel){
+		var terfilter = [];
+		if(channel === undefined || channel === ''){return inputs;
+		}
+
+		angular.forEach(inputs, function(item) {
+			if(channel === item.channel){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
+app.filter('jenis', function(){
+	return function(inputs, jenis){
+		var terfilter = [];
+		if(jenis === undefined || jenis === ''){return inputs;
+		}
+
+		angular.forEach(inputs, function(item) {
+			if(jenis === item.jenis){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
 });
 
 app.config(function(paginationTemplateProvider) {
@@ -147,6 +177,11 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 		$scope.user_aktif = res;
 	});
 
+	$scope.is_empty = function(variabel){
+		return ((variabel === undefined)||(variabel === ''));
+	}
+
+
 	/*
 	$rootScope.$on('$routeChangeStart', function (event, next) {
         if ($scope.user_aktif.user.role == next.kecuali) {
@@ -208,6 +243,9 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc){
 			$scope.angkatan = "";
 		}
 	}
+
+	// fungsi-fungsi
+	
 });
 app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
 	$scope.num = 0;
@@ -217,13 +255,15 @@ app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
 		$scope.donaturs = response;
 	});
 });
-app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
+app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// mengambil data donasi
 	$scope.get_donasis = function(){
+		$scope.is_loading = true;
 		var req = DonasiSvc.all();
 		req.success(function(res){
 			$scope.donasis = res;
+			$scope.is_loading = false;
 		});
 	}
 	$scope.get_donaturs = function(){
@@ -234,7 +274,8 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 	}
 
 	// inisiasi variabel
-	$scope.currentPage = 1;
+	$scope.is_loading = true;
+	$scope.is_saving = false;
 	$scope.pageSize = 10;
 	$scope.new_donatur = false;
 	$scope.angkatan = "";
@@ -261,6 +302,11 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 	$scope.get_donasis();
 
 	// fungsi-fungsi
+	$scope.get_donasi = function(id_donasi){
+		$anchorScroll('edit-form');
+		$scope.temp_donasi = $filter('filter')($scope.donasis, {id:id_donasi})[0];
+		$scope.temp_donasi.tanggal = new Date($scope.temp_donasi.tanggal);
+	}
 	$scope.get_nama = function(){
 		if($scope.jenis_lv_2 == "Individu"){
 			return "alumni";
@@ -301,35 +347,86 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location){
 		}
 	}
 	$scope.val_donasi = function(){
-		if($scope.temp_donasi.id_donatur == ""){
-			return "Tidak ada donatur yang dipilih.";
-		}else if((($scope.temp_donasi.jenis=="Dana Lestari Bersyarat")||($scope.temp_donasi.jenis=="Donasi Bersyarat"))&&($scope.temp_donasi.syarat=="")){
-			return "Syarat belum diisi.";
+		if($scope.is_empty($scope.temp_donasi.id_donatur)){
+			return "!!! Tidak ada donatur yang dipilih.";
+		}else if($scope.is_empty($scope.temp_donasi.tanggal)){
+			return "!!! Tanggal belum diisi";
+		}else if($scope.is_empty($scope.temp_donasi.nominal)){
+			return "!!! Nominal belum diisi";
+		}else if($scope.is_empty($scope.temp_donasi.termin)){
+			return "!!! Termin belum diisi";
+		}else if($scope.is_empty($scope.temp_donasi.channel)){
+			return "!!! Sistem donasi belum diisi";
+		}else if($scope.is_empty($scope.temp_donasi.jenis)){
+			return "!!! Jenis belum diisi";
+		}else if((($scope.temp_donasi.jenis=="Dana Lestari Bersyarat")||($scope.temp_donasi.jenis=="Donasi Bersyarat"))&&($scope.is_empty($scope.temp_donasi.syarat))){
+			return "!!! Syarat belum diisi.";
+		}else{
+			return "";
+		}
+	}
+	$scope.val_donatur = function(){
+		if($scope.is_empty($scope.jenis_lv_1)){
+			return "!!! Jenis belum diisi";
+		}else if(($scope.is_empty($scope.jenis_lv_2))&&($scope.jenis_lv_1 != 'Personal')){
+			return "!!! Jenis belum diisi";
+		}else if($scope.is_empty($scope.nama)){
+			return "!!! Nama belum diisi";
+		}else if(($scope.jenis_lv_2 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
+			return "!!! Angkatan belum diisi";
 		}else{
 			return "";
 		}
 	}
 	$scope.simpan_donatur = function(){
-		$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
-		$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
-		
-		var req = DonaturSvc.create($scope.temp_donatur);
-		req.success(function(res){
-			alert("Donatur "+res.status);
-			$scope.get_donaturs();
-			$scope.new_donatur = false;
-			$scope.fresh_donatur();
-		});
+		$scope.is_saving = true;
+		var validasi = $scope.val_donatur();
+		if($scope.is_empty(validasi)){
+			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
+			
+			var req = DonaturSvc.create($scope.temp_donatur);
+			req.success(function(res){
+				$scope.is_saving = false;
+				alert("Donatur "+res.status);
+				$scope.get_donaturs();
+				$scope.new_donatur = false;
+				$scope.fresh_donatur();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
 	}
 	$scope.simpan_donasi = function(){
-		if($scope.val_donasi() == ""){
+		$scope.is_saving = true;
+		var validasi = $scope.val_donasi();
+		if($scope.is_empty(validasi)){
 			var req = DonasiSvc.create($scope.temp_donasi);
 			req.success(function(res){
+				$scope.is_saving = false;
 				alert("Donasi "+res.status);
 				$location.path('/donasi');
 			});
 		}else{
-			alert($scope.val_donasi());
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+	$scope.edit_donasi = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_donasi();
+		if($scope.is_empty(validasi)){
+			alert($scope.temp_donasi.tanggal);
+			var req = DonasiSvc.update($scope.temp_donasi.id, $scope.temp_donasi);
+			req.success(function(res){
+				$scope.is_saving = false;
+				$scope.get_donasis();
+				alert("Donasi "+res.status);
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
 		}
 	}
 });

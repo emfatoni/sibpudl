@@ -6,7 +6,8 @@
 
 	<link rel="stylesheet" type="text/css" href="css/my-style.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="datatables/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="css/angular-spinkit.min.css">
+	<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
 
 	<script src="js/jquery-2.1.3.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -15,6 +16,7 @@
 	<script src="js/dirPagination.js"></script>
 
 	<script src="js/accounting.js"></script>
+	<script src="js/angular-spinkit.js"></script>
 	<script src="js/siendo.js"></script>
 </head>
 

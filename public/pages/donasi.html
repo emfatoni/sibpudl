@@ -1,21 +1,88 @@
+<!-- FORM UNTUK EDIT -->
+<div class="row">
+	<div class="col-md-5" id="edit-form">
+		<form>
+			<div class="form-group">
+				<label>Donatur*</label>
+				<select class="form-control" ng-model="temp_donasi.id_donatur">
+					<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>Tanggal*</label>
+				<input type="date" class="form-control" ng-model="temp_donasi.tanggal">
+				<span>format: mm/dd/yyyy</span>
+			</div>
+			<div class="form-group">
+				<label>Jml. Donasi*</label>
+				<input type="text" class="form-control" ng-model="temp_donasi.nominal">
+				<span>{{temp_donasi.nominal | currency: "Rp. "}}</span>
+			</div>
+			<div class="form-group">
+				<label>Termin*</label>
+				<input type="text" class="form-control" ng-model="temp_donasi.termin">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" ng-click="edit_donasi()">Simpan</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- TAMPILAN UTAMA -->
 <div class="row">
 	<div class="col-md-12">
+
 		<h1 class="text-center" style="margin-bottom: 40px">Pengelolaan Donasi</h1>
-
 		
-		<br><br>
+		<br><br> <!-- KARAKTER ENTER -->
 
-		<!--<table datatable="" dt-options="donasiCtrl.dtOptions" dt-columns="donasiCtrl.dtColumns" class="row-border hover"></table>-->
 
+
+		<!-- BAR UNTUK PENCARIAN, TAMBAH DATA, FILTER -->
 		<div class="row">
-			<div class="col-md-2"><a href="#/tambah_donasi" class="btn btn-primary">Tambah Donasi</a></div>
+			<div class="col-md-12">
+				<form class="form-inline">
 
-			<div class="col-md-3"><input type="text" class="form-control" placeholder="filter and search" ng-model="q"></div>
+					<div class="form-group">
+						<a href="#/tambah_donasi" class="btn btn-primary">Tambah Donasi</a>
+					</div>
+					
+					<div class="form-group">
+						<select class="form-control" ng-model="fil_channel">
+							<option value="">- Filter Channel -</option>
+							<option value="Cash">Cash</option>
+							<option value="Non-cash">Non-cash</option>
+							<option value="Cek">Cek</option>
+						</select>
+					</div>
 
-			<div class="col-md-2 pull-right"><input type="number" class="form-control" ng-model="pageSize"></div>
+					<div class="form-group">
+						<select class="form-control" ng-model="fil_jenis">
+							<option value="">- Filter Jenis -</option>
+							<option value="Dana Lestari Tidak Bersyarat">Dana Lestari Tidak Bersyarat</option>
+							<option value="Dana Lestari Bersyarat">Dana Lestari Bersyarat</option>
+							<option value="Donasi Bersyarat">Donasi Bersyarat</option>
+						</select>
+					</div>
+					
+					<div class="form-group pull-right">
+						<label>Cari: </label>
+						<input type="text" class="form-control" placeholder="filter and search" ng-model="q">
+					</div>
+
+					<div class="form-group pull-right" style="margin-right: 15px">
+						<label>Tampilan per Halaman: </label>
+						<input type="number" class="form-control" ng-model="pageSize" style="width: 70px">
+					</div>
+
+				</form>
+			</div>
 		</div>		
 		
-		<table id="tabel_donasi" class="table table-bordered table-condensed" style="margin-top: 20px">
+		<circle-spinner ng-show="is_loading"></circle-spinner>
+
+		<table ng-show="!is_loading" id="tabel_donasi" class="table table-bordered table-condensed table-hover" style="margin-top: 20px">
 			<thead>
 				<tr>
 					<th class="text-center" rowspan="2">No.</th>
@@ -27,6 +94,7 @@
 					<th colspan="3" class="text-center">Jenis</th>
 					<th class="text-center" rowspan="2">Syarat</th>
 					<th class="text-center" rowspan="2">Kota</th>
+					<th class="text-center" rowspan="2">Status</th>
 				</tr>
 				<tr>
 					<th class="text-center">Dana Lestari<br>Tidak Bersyarat</th>
@@ -36,9 +104,9 @@
 			</thead>
 
 			<tbody>
-				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize" current-page="currentPage" current-page="currentPage">
-					<td>1</td>
-					<td>{{donasi.tanggal}}</td>
+				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis">
+					<td>{{$index+1}}</td>
+					<td><a href="" ng-click="get_donasi(donasi.id)">{{donasi.tanggal | date:'dd-MM-yyyy'}}</a></td>
 					<td>{{donasi.nama_donatur}}</td>
 					<td class="text-right">{{donasi.nominal | currency:"Rp. "}}</td>
 					<td>{{donasi.termin}}</td>
@@ -48,12 +116,15 @@
 					<td class="text-center"><i class="{{(donasi.jenis=='Donasi Bersyarat')?'glyphicon glyphicon-ok-sign':''}}"></i></td>
 					<td>{{donasi.syarat}}</td>
 					<td>{{donasi.kota}}</td>
+					<td>
+						<span ng-show="(donasi.status=='disahkan')" class="label label-success">{{donasi.status}}</span>
+						<span ng-show="(donasi.status=='ditunda')" class="label label-danger">{{donasi.status}}</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 
 		<div class="row">
-			<div class="col-md-12"><span>Current Page: {{currentPage}} </span></div>
 			<div class="text-center col-md-12">
 				<dir-pagination-controls boundary-links="true">
 				</dir-pagination-controls>

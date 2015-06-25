@@ -7,6 +7,7 @@
 		<table class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
+					<th>#</th>
 					<th>Nama</th>
 					<th>Jenis</th>
 					<th>Nama Wakil</th>
@@ -18,6 +19,7 @@
 
 			<tbody>
 				<tr ng-repeat="donatur in donaturs">
+					<td>{{$index+1}}</td>
 					<td>{{donatur.nama}}</td>
 					<td>{{donatur.jenis}}</td>
 					<td>{{donatur.nama_wakil}}</td>

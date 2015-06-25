@@ -91,6 +91,7 @@ class DonasiController extends Controller {
 	{
 		$edit = Donasi::find($id);
 		if($edit){
+			$edit->tanggal = $req->input('tanggal');
 			$edit->nominal = $req->input('nominal');
 			$edit->termin = $req->input('termin');
 			$edit->channel = $req->input('channel');
