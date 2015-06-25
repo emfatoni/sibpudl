@@ -1,4 +1,4 @@
-var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit']);
+var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel']);
  
 app.run(function(){
 	//
@@ -274,6 +274,8 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 	}
 
 	// inisiasi variabel
+	$scope.selected_donasi = [];
+	$scope.is_edit = false;
 	$scope.is_loading = true;
 	$scope.is_saving = false;
 	$scope.pageSize = 10;
@@ -304,6 +306,8 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 	// fungsi-fungsi
 	$scope.get_donasi = function(id_donasi){
 		$anchorScroll('edit-form');
+		$scope.is_edit = true;
+
 		$scope.temp_donasi = $filter('filter')($scope.donasis, {id:id_donasi})[0];
 		$scope.temp_donasi.tanggal = new Date($scope.temp_donasi.tanggal);
 	}
@@ -417,17 +421,56 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 		$scope.is_saving = true;
 		var validasi = $scope.val_donasi();
 		if($scope.is_empty(validasi)){
-			alert($scope.temp_donasi.tanggal);
 			var req = DonasiSvc.update($scope.temp_donasi.id, $scope.temp_donasi);
 			req.success(function(res){
 				$scope.is_saving = false;
 				$scope.get_donasis();
 				alert("Donasi "+res.status);
+				$scope.is_edit = false;
 			});
 		}else{
 			$scope.is_saving = false;
 			alert(validasi);
 		}
+	}
+	$scope.del_donasi = function(){
+		$scope.is_saving = true;
+		
+		var req = DonasiSvc.delete($scope.temp_donasi.id);
+		req.success(function(res){
+			$scope.is_saving = false;
+			$scope.get_donasis();
+			alert("Donasi "+res.status);
+			$scope.is_edit = false;
+		});
+	}
+	$scope.sah_donasi = function(){
+		$scope.is_saving = true;
+		$scope.temp_donasi.status = 'disahkan';
+		var req = DonasiSvc.update($scope.temp_donasi.id, $scope.temp_donasi);
+		req.success(function(res){
+			$scope.is_saving = false;
+			$scope.get_donasis();
+			alert("Donasi "+res.status);
+			$scope.is_edit = false;
+		});
+	}
+	$scope.del_donasi_banyak = function(){
+		for(var i=0; i<$scope.selected_donasi.length; i++){
+			var donasi = $scope.selected_donasi[i];
+			DonasiSvc.delete(donasi.id);
+		}
+		$scope.selected_donasi = [];
+		$scope.get_donasis();
+	}
+	$scope.sah_donasi_banyak = function(){
+		for(var i=0; i<$scope.selected_donasi.length; i++){
+			var donasi = $scope.selected_donasi[i];
+			donasi.status = "disahkan";
+			DonasiSvc.update(donasi.id, donasi);
+		}
+		$scope.selected_donasi = [];
+		$scope.get_donasis();
 	}
 });
 app.controller('AkunCtrl', function($scope, AkunSvc, $location){

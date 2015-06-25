@@ -1,29 +1,90 @@
 <!-- FORM UNTUK EDIT -->
-<div class="row">
-	<div class="col-md-5" id="edit-form">
-		<form>
+<div class="row" ng-show="is_edit">
+	<div class="col-md-6" id="edit-form">
+		<h2>Ubah Data Donasi</h2>
+		<br><br>
+		<form class="form-horizontal">
 			<div class="form-group">
-				<label>Donatur*</label>
-				<select class="form-control" ng-model="temp_donasi.id_donatur">
-					<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
-				</select>
+				<label class="control-label col-md-2">Donatur*</label>
+				<div class="col-md-10">
+					<select class="form-control" ng-model="temp_donasi.id_donatur">
+						<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
+					</select>
+				</div>
 			</div>
 			<div class="form-group">
-				<label>Tanggal*</label>
-				<input type="date" class="form-control" ng-model="temp_donasi.tanggal">
-				<span>format: mm/dd/yyyy</span>
+				<label class="control-label col-md-2">Tanggal*</label>
+				<div class="col-md-10">
+					<input type="date" class="form-control" ng-model="temp_donasi.tanggal">
+					<span>format: mm/dd/yyyy</span>
+				</div>
 			</div>
 			<div class="form-group">
-				<label>Jml. Donasi*</label>
-				<input type="text" class="form-control" ng-model="temp_donasi.nominal">
-				<span>{{temp_donasi.nominal | currency: "Rp. "}}</span>
+				<label class="control-label col-md-2">Jml. Donasi*</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" ng-model="temp_donasi.nominal">
+					<span>{{temp_donasi.nominal | currency: "Rp. "}}</span>
+				</div>
 			</div>
 			<div class="form-group">
-				<label>Termin*</label>
-				<input type="text" class="form-control" ng-model="temp_donasi.termin">
+				<label class="control-label col-md-2">Termin*</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" ng-model="temp_donasi.termin">
+				</div>
 			</div>
 			<div class="form-group">
-				<button class="btn btn-primary" ng-click="edit_donasi()">Simpan</button>
+				<label class="control-label col-md-2">Sistem Donasi*</label>
+				<div class="col-md-10">
+					<select ng-model="temp_donasi.channel" class="form-control">
+						<option value="">- Pilih Sistem Donasi -</option>
+						<option value="Cash">Cash</option>
+						<option value="Non-cash">Non-cash</option>
+						<option value="Cek">Cek</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Jenis*</label>
+				<div class="col-md-10">
+					<div class="radio">
+						<label>
+							<input type="radio" ng-model="temp_donasi.jenis" name="jenis" value="Dana Lestari Tidak Bersyarat" checked> Dana Lestari Tidak Bersyarat
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" ng-model="temp_donasi.jenis" name="jenis" value="Dana Lestari Bersyarat"> Dana Lestari Bersyarat
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" ng-model="temp_donasi.jenis" name="jenis" value="Donasi Bersyarat"> Donasi Bersyarat
+						</label>
+					</div>
+				</div>
+			</div>
+			<div ng-show="(temp_donasi.jenis == 'Dana Lestari Bersyarat') || (temp_donasi.jenis == 'Donasi Bersyarat')" class="form-group">
+				<label class="control-label col-md-2">Syarat*</label>
+				<div class="col-md-10">
+					<input type="text" ng-model="temp_donasi.syarat" class="form-control" placeholder="syarat">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Kota</label>
+				<div class="col-md-10">
+					<input type="text" ng-model="temp_donasi.kota" class="form-control" placeholder="kota">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<button class="btn btn-success" ng-click="edit_donasi()">Simpan</button>
+					<button class="btn btn-danger" ng-click="del_donasi()">Hapus Donasi</button>
+					<button ng-show="temp_donasi.status == 'ditunda'" class="btn btn-primary" ng-click="sah_donasi()">Sahkan Donasi</button>
+					<button class="btn btn-warning" ng-click="is_edit=false">Batal</button>
+					<br><br>
+					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -80,11 +141,19 @@
 			</div>
 		</div>		
 		
+		<div ng-show="selected_donasi.length >= 1" class="row" style="margin-top: 15px">
+			<div class="col-md-12">
+				<button ng-click="del_donasi_banyak()" class="btn btn-danger">Hapus Terpilih</button>
+				<button ng-click="sah_donasi_banyak()" class="btn btn-primary">Sahkan Terpilih</button>
+			</div>
+		</div>
+
 		<circle-spinner ng-show="is_loading"></circle-spinner>
 
 		<table ng-show="!is_loading" id="tabel_donasi" class="table table-bordered table-condensed table-hover" style="margin-top: 20px">
 			<thead>
 				<tr>
+					<th class="text-center" rowspan="2"></th>
 					<th class="text-center" rowspan="2">No.</th>
 					<th class="text-center" rowspan="2">Tanggal</th>
 					<th class="text-center" rowspan="2">Nama</th>
@@ -104,7 +173,8 @@
 			</thead>
 
 			<tbody>
-				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis">
+				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donasi">
+					<td><input type="checkbox"></td>
 					<td>{{$index+1}}</td>
 					<td><a href="" ng-click="get_donasi(donasi.id)">{{donasi.tanggal | date:'dd-MM-yyyy'}}</a></td>
 					<td>{{donasi.nama_donatur}}</td>

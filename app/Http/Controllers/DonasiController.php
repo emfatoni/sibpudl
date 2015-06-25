@@ -129,12 +129,50 @@ class DonasiController extends Controller {
 
 	public function import_excel(Request $req){
 		$file = $req->file('excel');
-
+		
 		\Excel::load($file, function($reader) {
-			$hasil = $reader->toArray();
-			//dd($hasil);
-			echo $hasil[0][2]["satu"];
+			
+			$mentah = $reader->toArray();
+			$siap_proses = $mentah[0];
+			$total = count($siap_proses);
+			$tersimpan = 0;
+			
+			for($i=0; $i<count($siap_proses); $i++){
+				
+				$donatur = new Donatur();
+				$donasi = new Donasi();
+				$row = $siap_proses[$i];
+
+				if($row["tanggal"] != null){
+					$donatur->nama = $row["nama"];
+					$donatur->jenis = $row["jenis_donatur"];
+					$donatur->nama_wakil = $row["perwakilan"];
+
+					if($donatur->save()){
+						$donasi->tanggal = $row["tanggal"];
+						$donasi->nominal = $row["jumlah_donasi"];
+						$donasi->termin = $row["termin"];
+						$donasi->channel = $row["sistem_donasi"];
+						$donasi->jenis = $row["jenis"];
+						$donasi->syarat = $row["syarat"];
+						$donasi->kota = $row["kota"];
+						$donasi->status = "ditunda";
+						$donasi->id_donatur = $donatur->id;
+
+						if($donasi->save()){
+							$tersimpan++;
+						}
+					}
+				}
+			}
+			
+			// echo "Total: ".$total."<br>";
+			// echo "Tersimpan: ".$tersimpan."<br>";
+			// dd($hasil);
 		});
+
+	return redirect('../public/#/donasi');
+
 	}
 
 }

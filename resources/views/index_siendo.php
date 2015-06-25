@@ -14,6 +14,7 @@
 	<script src="js/angular.js"></script>
 	<script src="js/angular-route.js"></script>
 	<script src="js/dirPagination.js"></script>
+	<script src="js/selection-model.js"></script>
 
 	<script src="js/accounting.js"></script>
 	<script src="js/angular-spinkit.js"></script>
