@@ -1,13 +1,162 @@
+<!-- FORM UNTUK EDIT -->
+<div class="row" ng-show="is_edit">
+	<div class="col-md-6" id="edit-form">
+		<h2>Ubah Data Donatur</h2>
+		<br><br>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-md-2">Jenis*</label>
+				<div class="col-md-10">
+					<select ng-model="jenis_lv_1" ng-change="fresh_level1();" class="form-control">
+						<option value="">- Pilih Jenis -</option>
+						<option value="Personal">Personal</option>
+						<option value="Alumni">Alumni</option>
+						<option value="Organisasi">Organisasi</option>
+					</select>
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Alumni')" class="form-group">
+				<label class="control-label col-md-2">Jenis Alumni*</label>
+				<div class="col-md-10">
+					<select ng-change="fresh_level2();" ng-model="jenis_lv_2" class="form-control">
+						<option value="">- Pilih Jenis Alumni -</option>
+						<option value="Individu">Individu</option>
+						<option value="Program Studi">Program Studi</option>
+						<option value="Satu ITB">Satu ITB</option>
+					</select>
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Organisasi')" class="form-group">
+				<label class="control-label col-md-2">Jenis Organisasi*</label>
+				<div class="col-md-10">
+					<select ng-model="jenis_lv_2" class="form-control">
+						<option value="">- Pilih Jenis Organisasi -</option>
+						<option value="ITB">ITB</option>
+						<option value="Non-ITB">Non-ITB</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- ISIAN -->
+			<div ng-show="((jenis_lv_1 != '')&&(jenis_lv_2 != '')&&(jenis_lv_2 != 'Satu ITB'))||(jenis_lv_1 == 'Personal')" class="form-group">
+				<label class="control-label col-md-2">Nama*</label>
+				<div class="col-md-10">
+					<input type="text" ng-model="nama" class="form-control" placeholder="nama {{get_nama();}}">
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 != '')" class="form-group">
+				<label class="control-label col-md-2">Angkatan<span ng-show="(jenis_lv_2 != 'Individu')">*</span></label>
+				<div class="col-md-10">
+					<input ng-model="angkatan" type="text" class="form-control" placeholder="angkatan">
+				</div>
+			</div>
+			<div ng-show="((jenis_lv_1=='Organisasi')&&(jenis_lv_2 != ''))||((jenis_lv_1=='Alumni')&&(jenis_lv_2 != 'Individu')&&(jenis_lv_2 != ''))" class="form-group">
+				<label class="control-label col-md-2">Nama Perwakilan</label>
+				<div class="col-md-10">
+					<input type="text" ng-model="temp_donatur.nama_wakil" class="form-control" placeholder="nama perwakilan">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-md-2">Telepon</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" ng-model="temp_donatur.telp">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">E-mail</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" ng-model="temp_donatur.email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Alamat Surat</label>
+				<div class="col-md-10">
+					<textarea class="form-control" ng-model="alamat_surat"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<button class="btn btn-success" ng-click="edit_donatur()">Simpan</button>
+					<button class="btn btn-danger" ng-click="del_donatur()">Hapus Donatur</button>
+					<button class="btn btn-warning" ng-click="is_edit=false">Batal</button>
+					<br><br>
+					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-12">
 		<h1 class="text-center" style="margin-bottom: 40px">Pengelolaan Donatur</h1>
 
-		<a href="#/tambah_donatur" class="btn btn-primary pull-right">Tambah Donatur</a>
 		<br><br>
-		<table class="table table-condensed table-bordered table-striped">
+
+		<!-- BAR UNTUK PENCARIAN, TAMBAH DATA, FILTER -->
+		<div class="row">
+			<div class="col-md-12">
+				<form class="form-inline">
+
+					<div class="form-group">
+						<a href="#/tambah_donatur" class="btn btn-primary">Tambah Donatur</a>
+					</div>
+					
+					<div class="form-group">
+						<select class="form-control" ng-model="fil_jenis">
+							<option value="">- Filter Jenis -</option>
+							<option value="Personal">Personal</option>
+							<option value="Alumni">Alumni</option>
+							<option value="Organisasi">Organisasi</option>
+						</select>
+					</div>
+
+					<div class="form-group" ng-show="fil_jenis === 'Alumni'">
+						<select class="form-control" ng-model="fil_alumni">
+							<option value="">- Filter Jenis Alumni -</option>
+							<option value="Individu">Individu</option>
+							<option value="Program Studi">Program Studi</option>
+							<option value="Satu ITB">Satu ITB</option>
+						</select>
+					</div>
+
+					<div class="form-group" ng-show="fil_jenis === 'Organisasi'">
+						<select class="form-control" ng-model="fil_organisasi">
+							<option value="">- Filter Jenis Organisasi -</option>
+							<option value="ITB">ITB</option>
+							<option value="Non-ITB">Non-ITB</option>
+						</select>
+					</div>
+					
+					<div class="form-group pull-right">
+						<label>Cari: </label>
+						<input type="text" class="form-control" placeholder="filter and search" ng-model="q">
+					</div>
+
+					<div class="form-group pull-right" style="margin-right: 15px">
+						<label>Tampilan per Halaman: </label>
+						<input type="number" class="form-control" ng-model="pageSize" style="width: 70px">
+					</div>
+
+				</form>
+			</div>
+		</div>	
+
+		<div ng-show="selected_donatur.length >= 1" class="row" style="margin-top: 15px">
+			<div class="col-md-12">
+				<button ng-click="del_donatur_banyak()" class="btn btn-danger">Hapus Terpilih</button>
+			</div>
+		</div>
+
+		<circle-spinner ng-show="is_loading"></circle-spinner>
+		
+		<table ng-show="!is_loading" class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
-					<th>#</th>
+					<th>No.</th>
 					<th>Nama</th>
 					<th>Jenis</th>
 					<th>Nama Wakil</th>
@@ -29,5 +178,13 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<div class="row">
+			<div class="text-center col-md-12">
+				<dir-pagination-controls boundary-links="true">
+				</dir-pagination-controls>
+			</div>
+		</div>
+		
 	</div>
 </div>
