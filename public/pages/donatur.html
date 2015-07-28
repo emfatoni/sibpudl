@@ -151,11 +151,14 @@
 			</div>
 		</div>
 
+		<br><br>
+
 		<circle-spinner ng-show="is_loading"></circle-spinner>
 		
 		<table ng-show="!is_loading" class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
+					<th></th>
 					<th>No.</th>
 					<th>Nama</th>
 					<th>Jenis</th>
@@ -167,9 +170,10 @@
 			</thead>
 
 			<tbody>
-				<tr ng-repeat="donatur in donaturs">
+				<tr dir-paginate="donatur in donaturs | filter:q | itemsPerPage: pageSize" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donatur">
+					<td><input type="checkbox"></td>
 					<td>{{$index+1}}</td>
-					<td>{{donatur.nama}}</td>
+					<td><a href="" ng-click="get_donatur(donatur.id)">{{donatur.nama}}</a></td>
 					<td>{{donatur.jenis}}</td>
 					<td>{{donatur.nama_wakil}}</td>
 					<td>{{donatur.telp}}</td>

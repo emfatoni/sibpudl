@@ -192,19 +192,40 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 });
 app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $anchorScroll){
 
-	var get_donaturs = DonaturSvc.all();
+	// mengambil data donatur
+	$scope.get_donaturs = function(){
+		$scope.is_loading = true;
+		var req = DonaturSvc.all();
+		req.success(function(res){
+			$scope.donaturs = res;
+			$scope.is_loading = false;
+		});
+	}
 
+	// variabel
+	$scope.selected_donatur = [];
+	$scope.is_edit = false;
+	$scope.is_loading = true;
+	$scope.is_saving = false;
+	$scope.pageSize = 10;
+	$scope.angkatan = "";
+	$scope.nama = "";
 	$scope.jenis_lv_1 = "";
 	$scope.jenis_lv_2 = "";
-	$scope.nama = "";
-	$scope.angkatan = "";
+	$scope.temp_donatur = {
+			"nama": "",
+			"jenis": "",
+			"nama_wakil": "",
+			"telp": "",
+			"email": "",
+			"alamat_surat": ""
+	};
+	$scope.get_donaturs();
 
-	get_donaturs.success(function(response){
-		$scope.donaturs = response;
-	});
-
+	
+	// fungsi-fungsi
 	$scope.fresh_donatur = function(){
-		$scope.a_donatur = {
+		$scope.temp_donatur = {
 			"nama": "",
 			"jenis": "",
 			"nama_wakil": "",
@@ -212,11 +233,14 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			"email": "",
 			"alamat_surat": ""
 		};
+		$scope.angkatan = "";
+		$scope.nama = "";
+		$scope.jenis_lv_1 = "";
+		$scope.jenis_lv_2 = "";
 	}
-
 	$scope.fresh_donatur();
 
-	$scope.getNama = function(){
+	$scope.get_nama = function(){
 		if($scope.jenis_lv_2 == "Individu"){
 			return "alumni";
 		}else if($scope.jenis_lv_2 == "Program Studi"){
@@ -226,25 +250,80 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 		}else{
 			return "donatur";
 		}
-	};
-
-	$scope.getFresh = function(){
+	}
+	$scope.fresh_level1 = function(){
 		$scope.jenis_lv_2 = "";
 		$scope.nama = "";
 		$scope.angkatan = "";
+		$scope.temp_donatur.nama_wakil = "";
 	}
-
-	$scope.getFresh2 = function(){
+	$scope.fresh_level2 = function(){
 		if($scope.jenis_lv_2 == "Satu ITB"){
 			$scope.nama = "ITB";
 			$scope.angkatan = "";
+			$scope.temp_donatur.nama_wakil = "";
 		}else{
 			$scope.nama = "";
 			$scope.angkatan = "";
+			$scope.temp_donatur.nama_wakil = "";
 		}
 	}
 
 	// fungsi-fungsi
+	$scope.get_donatur = function(id_donatur){
+		$anchorScroll('edit-form');
+		$scope.is_edit = true;
+
+		$scope.temp_donatur = $filter('filter')($scope.donaturs, {id:id_donatur})[0];
+
+		var jenis = $scope.temp_donatur.jenis.split(' ');
+
+		$scope.jenis_lv_1 = jenis[0];
+		if(jenis.length == 3){
+			$scope.jenis_lv_2 = jenis[1]+" "+jenis[2];
+		}else{
+			$scope.jenis_lv_2 = jenis[1];
+		}
+
+		if(jenis[0] === "Alumni"){
+			var nama = $scope.temp_donatur.nama.split(' ');
+			$scope.angkatan = nama.pop();
+		}else{
+			$scope.nama = $scope.temp_donatur.nama;
+		}
+	}
+	$scope.val_donatur = function(){
+		if($scope.is_empty($scope.jenis_lv_1)){
+			return "!!! Jenis belum diisi";
+		}else if(($scope.is_empty($scope.jenis_lv_2))&&($scope.jenis_lv_1 != 'Personal')){
+			return "!!! Jenis belum diisi";
+		}else if($scope.is_empty($scope.nama)){
+			return "!!! Nama belum diisi";
+		}else if(($scope.jenis_lv_2 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
+			return "!!! Angkatan belum diisi";
+		}else{
+			return "";
+		}
+	}
+	$scope.simpan_donatur = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_donatur();
+		if($scope.is_empty(validasi)){
+			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
+			
+			var req = DonaturSvc.create($scope.temp_donatur);
+			req.success(function(res){
+				$scope.is_saving = false;
+				alert("Donatur "+res.status);
+				$scope.get_donaturs();
+				$scope.fresh_donatur();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
 	
 });
 app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
