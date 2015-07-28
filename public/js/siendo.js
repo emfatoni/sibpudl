@@ -287,6 +287,13 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 
 		if(jenis[0] === "Alumni"){
 			var nama = $scope.temp_donatur.nama.split(' ');
+
+			if($scope.jenis_lv_2 != "Satu ITB"){
+				$scope.nama = $scope.temp_donatur.nama.replace(nama[nama.length-1], "");
+			}else{
+				$scope.nama = "ITB";
+			}
+
 			$scope.angkatan = nama.pop();
 		}else{
 			$scope.nama = $scope.temp_donatur.nama;
@@ -305,7 +312,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			return "";
 		}
 	}
-	$scope.simpan_donatur = function(){
+	$scope.add_donatur = function(){
 		$scope.is_saving = true;
 		var validasi = $scope.val_donatur();
 		if($scope.is_empty(validasi)){
@@ -315,6 +322,26 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			var req = DonaturSvc.create($scope.temp_donatur);
 			req.success(function(res){
 				$scope.is_saving = false;
+				alert("Donatur "+res.status);
+				$scope.get_donaturs();
+				$scope.fresh_donatur();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+	$scope.edit_donatur = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_donatur();
+		if($scope.is_empty(validasi)){
+			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
+			
+			var req = DonaturSvc.update($scope.temp_donatur.id, $scope.temp_donatur);
+			req.success(function(res){
+				$scope.is_saving = false;
+				$scope.is_edit = false;
 				alert("Donatur "+res.status);
 				$scope.get_donaturs();
 				$scope.fresh_donatur();
