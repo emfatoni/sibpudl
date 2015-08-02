@@ -1,87 +1,54 @@
+/* INISIASI SISTEM */
 var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel']);
  
 app.run(function(){
 	//
 });
 
-/* FILTER-FILTER */
-app.filter('channel', function(){
-	return function(inputs, channel){
-		var terfilter = [];
-		if(channel === undefined || channel === ''){return inputs;
-		}
 
-		angular.forEach(inputs, function(item) {
-			if(channel === item.channel){
-				terfilter.push(item);
-			}
-		});
-		return terfilter;
-	};
-});
-app.filter('jenis', function(){
-	return function(inputs, jenis){
-		var terfilter = [];
-		if(jenis === undefined || jenis === ''){return inputs;
-		}
-
-		angular.forEach(inputs, function(item) {
-			if(jenis === item.jenis){
-				terfilter.push(item);
-			}
-		});
-		return terfilter;
-	};
-});
-
+/* KONFIGURASI */
+// konfigurasi plugin dirPagination
 app.config(function(paginationTemplateProvider) {
     paginationTemplateProvider.setPath('dirPagination.tpl.html');
 });
 
+
 /* ROUTING */
 app.config(function($routeProvider, $locationProvider){
-
 	$routeProvider.when('/',{
 		templateUrl:'pages/beranda.html'
 	});
-
 	$routeProvider.when('/donasi',{
 		templateUrl:'pages/donasi.html',
 		controller:'DonasiCtrl as donasiCtrl',
 		kecuali: '',
 	});
-
 	$routeProvider.when('/donatur',{
 		templateUrl:'pages/donatur.html',
 		controller:'DonaturCtrl',
 		kecuali: 'Tim Fundrising',
 	});
-
 	$routeProvider.when('/akun',{
 		templateUrl:'pages/akun.html',
 		controller: 'AkunCtrl',
 		kecuali: 'Tim Fundrising',
 	});
-
 	$routeProvider.when('/tambah_donasi',{
 		templateUrl:'pages/form_donasi.html',
 		controller: 'DonasiCtrl',
 		kecuali: '',
 	});
-
 	$routeProvider.when('/tambah_akun',{
 		templateUrl:'pages/form_akun.html',
 		controller: 'AkunCtrl',
 		kecuali: 'Tim Fundrising',
 	});
-
 	/*
 	$routeProvider.when('/tambah_donatur',{
 		templateUrl:'pages/form_donatur.html',
 		controller: 'DonaturCtrl',
 		kecuali: 'Tim Fundrising',
 	});
-
 	$routeProvider.when('/edit_donatur/:id',{
 		templateUrl:'aset/siendo/pages/form_donatur.html',
 		controller: 'EditDonaturCtrl',
@@ -89,7 +56,7 @@ app.config(function($routeProvider, $locationProvider){
 	});*/
 });
 
-/* SERVICES */
+/* FACTORY */
 app.factory("DonaturSvc", function($http){
 	return{
 		all: function(){
@@ -167,7 +134,8 @@ app.factory("AkunSvc", function($http){
 	}
 });
 
-/* CONTROLLERS */
+
+/* MAIN CONTROLLERS */
 app.controller('MainController', function($scope, AkunSvc, $rootScope, $location){
 
 	$scope.halaman = "beranda";
@@ -181,7 +149,6 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 		return ((variabel === undefined)||(variabel === ''));
 	}
 
-
 	/*
 	$rootScope.$on('$routeChangeStart', function (event, next) {
         if ($scope.user_aktif.user.role == next.kecuali) {
@@ -190,6 +157,9 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
     });
 	*/
 });
+
+
+/* KELOLA DONATUR */
 app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// mengambil data donatur
@@ -358,8 +328,70 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			alert(validasi);
 		}
 	}
-	
+	$scope.del_donatur = function(){
+		$scope.is_saving = true;
+
+		if($scope.temp_donatur.punya_donasi){
+			if(confirm("!!! Donatur ini mempunyai beberapa data donasi. Jika donatur ini dihapus maka data donasi miliknya juga terhapus. Anda yakin ingin menghapus donatur ini?") == true){
+				var req = DonaturSvc.delete($scope.temp_donatur.id);
+				req.success(function(res){
+					$scope.is_saving = false;
+					alert("Donatur "+res.status);
+					$scope.get_donaturs();
+					$scope.fresh_donatur();
+					$scope.is_edit = false;
+				});
+			}else{
+
+			}
+		}else{
+			if(confirm("Anda yakin ingin menghapus donatur ini?") == true){
+				var req = DonaturSvc.delete($scope.temp_donatur.id);
+				req.success(function(res){
+					$scope.is_saving = false;
+					alert("Donatur "+res.status);
+					$scope.get_donaturs();
+					$scope.fresh_donatur();
+					$scope.is_edit = false;
+				});
+			}else{
+
+			}
+		}
+	}
 });
+
+
+/* KELOLA DONASI */
+// fungsi filter channel donasi
+app.filter('channel', function(){
+	return function(inputs, channel){
+		var terfilter = [];
+		if(channel === undefined || channel === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			if(channel === item.channel){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
+// fungsi filter jenis donasi
+app.filter('jenis', function(){
+	return function(inputs, jenis){
+		var terfilter = [];
+		if(jenis === undefined || jenis === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			if(jenis === item.jenis){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
+// controller
 app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// mengambil data donasi
@@ -598,6 +630,9 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 		$scope.get_donasis();
 	}
 });
+
+
+/* KELOLA AKUN */
 app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 	$scope.freshAkun = function(){
 		var getAkun = AkunSvc.all();

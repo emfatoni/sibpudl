@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Donatur;
+use App\Donasi;
 
 use Illuminate\Http\Request;
 
@@ -15,7 +16,16 @@ class DonaturController extends Controller {
 	 */
 	public function index()
 	{
-		return Donatur::all();
+		$donaturs = Donatur::all();
+		foreach($donaturs as $donatur){
+			$punya_donasi = Donasi::where('id_donatur', '=', $donatur->id)->count();
+			if($punya_donasi > 0){
+				$donatur["punya_donasi"] = true;
+			}else{
+				$donatur["punya_donasi"] = false;
+			}
+		}
+		return $donaturs;
 	}
 
 	/**
@@ -105,6 +115,14 @@ class DonaturController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		$donasis = Donasi::where('id_donatur', '=', $id)->get();
+		
+		if(count($donasis) > 0){
+			foreach ($donasis as $donasi){
+				$req = $donasi->delete();
+			}
+		}
+
 		$del = Donatur::find($id);
 		if($del){
 			if($del->delete()){
