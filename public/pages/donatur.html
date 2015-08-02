@@ -1,5 +1,5 @@
 <!-- FORM UNTUK EDIT -->
-<div class="row" ng-show="is_edit">
+<div class="row" ng-show="is_edit || is_add">
 	<div class="col-md-6" id="edit-form">
 		<h2>Ubah Data Donatur</h2>
 		<br><br>
@@ -79,9 +79,10 @@
 			<div class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
-					<button class="btn btn-success" ng-click="edit_donatur()">Simpan</button>
+					<button class="btn btn-success" ng-click="add_donatur()" ng-show="is_add">Simpan</button>
+					<button class="btn btn-success" ng-click="edit_donatur()" ng-show="is_edit">Simpan</button>
 					<button class="btn btn-danger" ng-click="del_donatur()">Hapus Donatur</button>
-					<button class="btn btn-warning" ng-click="is_edit=false">Batal</button>
+					<button class="btn btn-warning" ng-click="is_edit=false; is_add=false">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
 				</div>
@@ -102,7 +103,7 @@
 				<form class="form-inline">
 
 					<div class="form-group">
-						<a href="#/tambah_donatur" class="btn btn-primary">Tambah Donatur</a>
+						<a href="" class="btn btn-primary" ng-click="add_donatur_mode();">Tambah Donatur</a>
 					</div>
 					
 					<div class="form-group">

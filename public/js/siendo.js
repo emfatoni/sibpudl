@@ -204,6 +204,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 
 	// variabel
 	$scope.selected_donatur = [];
+	$scope.is_add = false;
 	$scope.is_edit = false;
 	$scope.is_loading = true;
 	$scope.is_saving = false;
@@ -270,6 +271,11 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 	}
 
 	// fungsi-fungsi
+	$scope.add_donatur_mode = function(){
+		$scope.fresh_donatur();
+		$anchorScroll('edit-form');
+		$scope.is_add = true;
+	}
 	$scope.get_donatur = function(id_donatur){
 		$anchorScroll('edit-form');
 		$scope.is_edit = true;
@@ -306,7 +312,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			return "!!! Jenis belum diisi";
 		}else if($scope.is_empty($scope.nama)){
 			return "!!! Nama belum diisi";
-		}else if(($scope.jenis_lv_2 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
+		}else if(($scope.jenis_lv_1 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
 			return "!!! Angkatan belum diisi";
 		}else{
 			return "";
@@ -325,6 +331,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 				alert("Donatur "+res.status);
 				$scope.get_donaturs();
 				$scope.fresh_donatur();
+				$scope.is_add = false;
 			});
 		}else{
 			$scope.is_saving = false;
@@ -352,14 +359,6 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 		}
 	}
 	
-});
-app.controller('EditDonaturCtrl', function($scope, DonaturSvc){
-	$scope.num = 0;
-	var getDonatur = DonaturSvc.all();
-
-	getDonatur.success(function(response){
-		$scope.donaturs = response;
-	});
 });
 app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, $anchorScroll){
 
@@ -482,7 +481,7 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 			return "!!! Jenis belum diisi";
 		}else if($scope.is_empty($scope.nama)){
 			return "!!! Nama belum diisi";
-		}else if(($scope.jenis_lv_2 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
+		}else if(($scope.jenis_lv_1 != 'Organisasi')&&($scope.jenis_lv_1 != 'Personal')&&($scope.jenis_lv_2 != 'Individu')&&($scope.is_empty($scope.angkatan))){
 			return "!!! Angkatan belum diisi";
 		}else{
 			return "";
