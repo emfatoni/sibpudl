@@ -358,6 +358,25 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 
 			}
 		}
+		$scope.is_saving = false;
+	}
+	$scope.del_donaturs = function(){
+		$scope.is_saving = true;
+
+		if(confirm("!!! Beberapa donatur mempunyai data donasi. Jika donatur ini dihapus maka data donasi miliknya juga terhapus. Anda yakin ingin menghapus donatur-donatur ini?") == true){
+
+			for(var i=0; i<$scope.selected_donatur.length; i++){
+				var donasi = $scope.selected_donatur[i];
+				DonaturSvc.delete(donasi.id);
+			}
+
+			// alert("Donatur terhapus");
+			$scope.selected_donatur = [];
+			$scope.get_donaturs();
+		}else{
+
+		}
+		$scope.is_saving = false;
 	}
 });
 
