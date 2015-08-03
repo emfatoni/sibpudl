@@ -1,7 +1,8 @@
 <!-- FORM UNTUK EDIT -->
 <div class="row" ng-show="is_edit || is_add">
 	<div class="col-md-6" id="edit-form">
-		<h2>Ubah Data Donatur</h2>
+		<h2 ng-show="is_edit">Ubah Data Donatur</h2>
+		<h2 ng-show="is_add">Tambah Data Donatur</h2>
 		<br><br>
 		<form class="form-horizontal">
 			<div class="form-group">
@@ -107,7 +108,7 @@
 					</div>
 					
 					<div class="form-group">
-						<select class="form-control" ng-model="fil_jenis">
+						<select class="form-control" ng-model="fil_jenis" ng-change="fil_alumni=''; fil_organisasi=''">
 							<option value="">- Filter Jenis -</option>
 							<option value="Personal">Personal</option>
 							<option value="Alumni">Alumni</option>
@@ -119,8 +120,8 @@
 						<select class="form-control" ng-model="fil_alumni">
 							<option value="">- Filter Jenis Alumni -</option>
 							<option value="Individu">Individu</option>
-							<option value="Program Studi">Program Studi</option>
-							<option value="Satu ITB">Satu ITB</option>
+							<option value="Program">Program Studi</option>
+							<option value="Satu">Satu ITB</option>
 						</select>
 					</div>
 
@@ -167,12 +168,12 @@
 					<th>Telp.</th>
 					<th>Email</th>
 					<th>Alm. Surat</th>
-					<th></th>
+					<!-- <th></th> -->
 				</tr>
 			</thead>
 
 			<tbody>
-				<tr dir-paginate="donatur in donaturs | filter:q | itemsPerPage: pageSize" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donatur">
+				<tr dir-paginate="donatur in donaturs | filter:q | itemsPerPage: pageSize | jenis_donatur: fil_jenis | alumni_donatur: fil_alumni | organisasi_donatur: fil_organisasi" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donatur">
 					<td><input type="checkbox"></td>
 					<td>{{$index+1}}</td>
 					<td><a href="" ng-click="get_donatur(donatur.id)">{{donatur.nama}}</a></td>
@@ -181,7 +182,7 @@
 					<td>{{donatur.telp}}</td>
 					<td>{{donatur.email}}</td>
 					<td>{{donatur.alamat_surat}}</td>
-					<td>{{donatur.punya_donasi}}</td>
+					<!-- <td>{{donatur.punya_donasi}}</td> -->
 				</tr>
 			</tbody>
 		</table>

@@ -160,6 +160,48 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 
 
 /* KELOLA DONATUR */
+app.filter('jenis_donatur', function(){
+	return function(inputs, param){
+		var terfilter = [];
+		if(param === undefined || param === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var jenis = item.jenis.split(' ');
+			if(param === jenis[0]){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
+app.filter('alumni_donatur', function(){
+	return function(inputs, param){
+		var terfilter = [];
+		if(param === undefined || param === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var jenis = item.jenis.split(' ');
+			if(param === jenis[1]){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
+app.filter('organisasi_donatur', function(){
+	return function(inputs, param){
+		var terfilter = [];
+		if(param === undefined || param === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var jenis = item.jenis.split(' ');
+			if(param === jenis[1]){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
 app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// mengambil data donatur
@@ -653,15 +695,23 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 
 /* KELOLA AKUN */
 app.controller('AkunCtrl', function($scope, AkunSvc, $location){
-	$scope.freshAkun = function(){
-		var getAkun = AkunSvc.all();
-		getAkun.success(function(res){
+
+	// ambil semua data akun
+	$scope.get_akuns = function(){
+		var req = AkunSvc.all();
+		req.success(function(res){
 			$scope.akuns = res;
 		});
 	}
-	$scope.freshAkun();
 
-	$scope.newakun = {
+	// variabel-variabel
+	$scope.selected_akuns = [];
+	$scope.is_add = false;
+	$scope.is_edit = false;
+	$scope.is_loading = true;
+	$scope.is_saving = false;
+	$scope.pageSize = 10;
+	$scope.temp_akun = {
 		"nama":"",
 		"jabatan":"",
 		"telp":"",
@@ -670,12 +720,13 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 		"password":"",
 		"role":""
 	};
+	$scope.get_akuns();
 
-	$scope.simpan_akun = function(){
-		var req = AkunSvc.create($scope.newakun);
+	// fungs-fungsi
+	$scope.add_akun = function(){
+		var req = AkunSvc.create($scope.temp_akun);
 		req.success(function(res){
 			alert("Akun "+res.status);
-			$location.path('/akun');
 		});
 	}
 });

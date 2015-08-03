@@ -1,3 +1,76 @@
+<div class="row" ng-show="is_edit || is_add">
+	<div class="col-md-12">
+		<h2 ng-show="is_edit">Ubah Data Akun</h2>
+		<h2 ng-show="is_add">Tambah Data Akun</h2>
+
+		<form class="form-horizontal col-md-5">
+			<div class="form-group">
+				<label class="control-label col-md-2">Nama Lengkap</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="nama lengkap" ng-model="temp_akun.nama">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Jabatan</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="jabatan" ng-model="temp_akun.jabatan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Telepon</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="nomor telepon/hp" ng-model="temp_akun.telp">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Alamat</label>
+				<div class="col-md-10">
+					<textarea class="form-control" rows="4" placeholder="alamat lengkap" ng-model="temp_akun.alamat"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10"></div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">E-mail</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" placeholder="e-mail untuk login" ng-model="temp_akun.email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Peran</label>
+				<div class="col-md-10">
+					<select class="form-control" ng-model="temp_akun.role">
+						<option value="">- Pilih Peran -</option>
+						<option value="Admin BPUDL">Admin BPUDL</option>
+						<option value="Tim Fundrising">Tim Fundrising</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Password</label>
+				<div class="col-md-10">
+					<input type="password" class="form-control" ng-model="temp_akun.password">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Tulis kembali password</label>
+				<div class="col-md-10">
+					<input type="password" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<button class="btn btn-success" ng-click="simpan_akun()">Simpan</button>
+					<a href="#/akun" class="btn btn-warning">Kembali</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-12">
 		<h1 class="text-center">Pengelolaan Akun</h1>
@@ -21,7 +94,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="akun in akuns">
-					<td></td>
+					<td>{{$index+1}}</td>
 					<td>{{akun.nama}}</td>
 					<td>{{akun.jabatan}}</td>
 					<td></td>
