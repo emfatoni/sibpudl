@@ -221,6 +221,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 	$scope.is_loading = true;
 	$scope.is_saving = false;
 	$scope.pageSize = 10;
+	$scope.page_now = 1;
 	$scope.angkatan = "";
 	$scope.nama = "";
 	$scope.jenis_lv_1 = "";
@@ -477,6 +478,7 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 	$scope.is_loading = true;
 	$scope.is_saving = false;
 	$scope.pageSize = 10;
+	$scope.page_now = 1;
 	$scope.new_donatur = false;
 	$scope.angkatan = "";
 	$scope.nama = "";
@@ -698,9 +700,11 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 
 	// ambil semua data akun
 	$scope.get_akuns = function(){
+		$scope.is_loading = true;
 		var req = AkunSvc.all();
 		req.success(function(res){
 			$scope.akuns = res;
+			$scope.is_loading = false;
 		});
 	}
 
@@ -711,6 +715,7 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 	$scope.is_loading = true;
 	$scope.is_saving = false;
 	$scope.pageSize = 10;
+	$scope.repassword = "";
 	$scope.temp_akun = {
 		"nama":"",
 		"jabatan":"",
@@ -723,11 +728,57 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 	$scope.get_akuns();
 
 	// fungs-fungsi
+	$scope.val_akun = function(){
+		var akun = $scope.temp_akun;
+		if($scope.is_empty(akun.nama)){
+			return "!!! Nama belum diisi";
+		}else if($scope.is_empty(akun.telp)){
+			return "!!! Nomor telepon belum diisi";
+		}else if($scope.is_empty(akun.alamat)){
+			return "!!! Alamat belum diisi";
+		}else if($scope.is_empty(akun.email)){
+			return "!!! Alamat E-mail belum diisi";
+		}else if($scope.is_empty(akun.role)){
+			return "!!! Peran belum diisi";
+		}else if($scope.is_empty(akun.password)){
+			return "!!! Password belum diisi";
+		}else if($scope.repassword != akun.password){
+			return "!!! Password berbeda";
+		}else{
+			return "";
+		}
+	}
+	$scope.fresh_akun = function(){
+		$scope.temp_akun = {
+			"nama":"",
+			"jabatan":"",
+			"telp":"",
+			"alamat":"",
+			"email":"",
+			"password":"",
+			"role":""
+		};
+		$scope.repassword = "";
+	}
 	$scope.add_akun = function(){
-		var req = AkunSvc.create($scope.temp_akun);
-		req.success(function(res){
-			alert("Akun "+res.status);
-		});
+		$scope.is_saving = true;
+
+		var validasi = $scope.val_akun();
+
+		if($scope.is_empty(validasi)){
+			var req = AkunSvc.create($scope.temp_akun);
+			req.success(function(res){
+				alert("Akun "+res.status);
+				$scope.get_akuns();
+				$scope.fresh_akun();
+				$scope.is_add = false;
+				$scope.is_saving = false;
+			});
+		}else{
+			alert(validasi);
+			$scope.is_saving = false;
+		}
+		
 	}
 });
 

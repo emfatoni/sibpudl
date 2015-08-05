@@ -175,9 +175,9 @@
 			</thead>
 
 			<tbody>
-				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donasi">
+				<tr dir-paginate="donasi in donasis | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis" selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donasi" current-page="page_now">
 					<td><input type="checkbox"></td>
-					<td>{{$index+1}}</td>
+					<td>{{($index+1)+(pageSize*(page_now-1))}}</td>
 					<td><a href="" ng-click="get_donasi(donasi.id)">{{donasi.tanggal | date:'dd-MM-yyyy'}}</a></td>
 					<td>{{donasi.nama_donatur}}</td>
 					<td class="text-right">{{donasi.nominal | currency:"Rp. "}}</td>
