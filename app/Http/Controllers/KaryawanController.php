@@ -22,6 +22,7 @@ class KaryawanController extends Controller {
 			$req = User::where('id_pengguna', '=', $karyawan->id)->take(1)->get()->toArray();
 			$user = $req[0];
 			$karyawan["role"] = $user["role"];
+			$karyawan["email"] = $user["email"];
 		}
 		return $karyawans;
 	}
@@ -57,7 +58,7 @@ class KaryawanController extends Controller {
 			}
 
 			$new->delete();
-			return array('status'=>'Fail to make!');
+			return array('status'=>'Failed to make!');
 		}
 		return array('status'=>'Not Saved!');
 	}
@@ -103,6 +104,7 @@ class KaryawanController extends Controller {
 	public function update($id, Request $req)
 	{
 		$edit = Karyawan::find($id);
+
 		if($edit){
 
 			$edit->nama = $req->input('nama');
@@ -116,14 +118,22 @@ class KaryawanController extends Controller {
 
 			if($edit->save()){
 
-				$user = User::where('id_pengguna', '=', $id)->take(1)->get();
-				$temp = $user->toArray();
-				$user = $temp[0];
+				$tempuser = User::where('id_pengguna', '=', $id)->take(1)->get();
+
+
+				foreach ($tempuser as $row){
+					$user = $row;
+				}
+				// $temp = $user->toArray();
+				// $user = $temp[0];
 
 				$user->email = $email;
-				$user->password = bcrypt($password);
 				$user->role = $role;
 
+				if($password != ""){
+					$user->password = bcrypt($password);
+				}
+				
 				if($user->save()){
 					return array('status'=>'Saved!');	
 				}

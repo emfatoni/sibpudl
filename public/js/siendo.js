@@ -696,7 +696,7 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 
 
 /* KELOLA AKUN */
-app.controller('AkunCtrl', function($scope, AkunSvc, $location){
+app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchorScroll){
 
 	// ambil semua data akun
 	$scope.get_akuns = function(){
@@ -728,6 +728,11 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 	$scope.get_akuns();
 
 	// fungs-fungsi
+	$scope.get_akun = function(id_akun){
+		$anchorScroll('edit-form');
+		$scope.is_edit = true;
+		$scope.temp_akun = $filter('filter')($scope.akuns, {id:id_akun})[0];
+	}
 	$scope.val_akun = function(){
 		var akun = $scope.temp_akun;
 		if($scope.is_empty(akun.nama)){
@@ -740,9 +745,9 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 			return "!!! Alamat E-mail belum diisi";
 		}else if($scope.is_empty(akun.role)){
 			return "!!! Peran belum diisi";
-		}else if($scope.is_empty(akun.password)){
+		}else if($scope.is_empty(akun.password) && ($scope.is_edit == false)){
 			return "!!! Password belum diisi";
-		}else if($scope.repassword != akun.password){
+		}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
 			return "!!! Password berbeda";
 		}else{
 			return "";
@@ -778,7 +783,25 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location){
 			alert(validasi);
 			$scope.is_saving = false;
 		}
-		
+	}
+	$scope.edit_akun = function(){
+		$scope.is_saving = true;
+
+		var validasi = $scope.val_akun();
+
+		if($scope.is_empty(validasi)){
+			var req = AkunSvc.update($scope.temp_akun.id, $scope.temp_akun);
+			req.success(function(res){
+				alert("Akun "+res.status);
+				$scope.get_akuns();
+				$scope.fresh_akun();
+				$scope.is_edit = false;
+				$scope.is_saving = false;
+			});
+		}else{
+			alert(validasi);
+			$scope.is_saving = false;
+		}
 	}
 });
 
