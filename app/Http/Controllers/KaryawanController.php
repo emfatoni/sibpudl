@@ -45,22 +45,35 @@ class KaryawanController extends Controller {
 		$password = $req->input('password');
 		$role = $req->input('role');
 
-		if($new->save()){
+		if($role != "Donatur"){
+			if($new->save()){
 
+				$new_user = new User();
+				$new_user->role = $role;
+				$new_user->email = $email;
+				$new_user->password = bcrypt($password);
+				$new_user->id_pengguna = $new->id;
+
+				if($new_user->save()){
+					return array('status'=>'Saved!');
+				}
+
+				$new->delete();
+				return array('status'=>'Failed to make!');
+			}
+			return array('status'=>'Not Saved!');
+		}else{
 			$new_user = new User();
 			$new_user->role = $role;
 			$new_user->email = $email;
 			$new_user->password = bcrypt($password);
-			$new_user->id_pengguna = $new->id;
+			$new_user->id_pengguna = $nama;
 
 			if($new_user->save()){
 				return array('status'=>'Saved!');
 			}
-
-			$new->delete();
 			return array('status'=>'Failed to make!');
 		}
-		return array('status'=>'Not Saved!');
 	}
 
 	/**

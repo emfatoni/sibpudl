@@ -1,28 +1,45 @@
 <div class="row" ng-show="is_edit || is_add">
 	<div class="col-md-12">
 		<h2 ng-show="is_edit">Ubah Data Akun</h2>
-		<h2 ng-show="is_add">Tambah Data Akun</h2>
+		<h2 ng-show="is_add && !is_adddonatur">Tambah Data Akun Karyawan</h2>
+		<h2 ng-show="is_add && is_adddonatur">Tambah Data Akun Donatur</h2>
 
 		<form class="form-horizontal col-md-5">
 			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<button ng-show="!is_adddonatur && is_add" class="btn btn-primary" ng-click="is_adddonatur=true">Buat Akun Donatur</button>
+					<button ng-show="is_adddonatur" class="btn btn-primary" ng-click="is_adddonatur=false">Buat Akun Karyawan</button>
+				</div>
+			</div>
+			<div class="form-group" ng-show="is_adddonatur">
+				<label class="control-label col-md-2">Pilih Donatur*</label>
+				<div class="col-md-10">
+					<select class="form-control" ng-model="chosen_donatur" ng-change="get_donatur()">
+						<option value="">- Pilih Donatur -</option>
+						<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Nama Lengkap*</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" placeholder="nama lengkap" ng-model="temp_akun.nama">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Jabatan</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" placeholder="jabatan" ng-model="temp_akun.jabatan">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Telepon*</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" placeholder="nomor telepon/hp" ng-model="temp_akun.telp">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Alamat*</label>
 				<div class="col-md-10">
 					<textarea class="form-control" rows="4" placeholder="alamat lengkap" ng-model="temp_akun.alamat"></textarea>
@@ -73,7 +90,7 @@
 					<button class="btn btn-success" ng-show="is_add" ng-click="add_akun()">Simpan</button>
 					<button class="btn btn-success" ng-show="is_edit" ng-click="edit_akun()">Simpan</button>
 					<button class="btn btn-danger" ng-show="is_edit" ng-click="del_akun()">Hapus</button>
-					<button class="btn btn-warning" ng-click="is_add=false; is_edit=false">Batal</button>
+					<button class="btn btn-warning" ng-click="is_add=false; is_edit=false; chosen_donatur=''; is_adddonatur=false; is_editpwd=false">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
 				</div>
@@ -89,7 +106,7 @@
 </div>
 <div class="row" style="margin-top: 30px">
 	<div class="col-md-12">
-		<a href="" class="btn btn-primary pull-right" ng-click="is_add=true">Tambah Akun</a>
+		<a href="" class="btn btn-primary pull-right" ng-click="is_add=true; fresh_akun()">Tambah Akun</a>
 		<br><br>
 		<circle-spinner ng-show="is_loading"></circle-spinner>
 		<table class="table table-condensed table-bordered" ng-show="!is_loading">

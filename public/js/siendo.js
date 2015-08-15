@@ -696,7 +696,7 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 
 
 /* KELOLA AKUN */
-app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchorScroll){
+app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// ambil semua data akun
 	$scope.get_akuns = function(){
@@ -707,10 +707,18 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchor
 			$scope.is_loading = false;
 		});
 	}
+	$scope.get_donaturs = function(){
+		var req = DonaturSvc.all();
+		req.success(function(res){
+			$scope.donaturs = res;
+		});
+	}
 
 	// variabel-variabel
 	$scope.selected_akuns = [];
+	$scope.chosen_donatur = "";
 	$scope.is_add = false;
+	$scope.is_adddonatur = false;
 	$scope.is_edit = false;
 	$scope.is_editpwd = false;
 	$scope.is_loading = true;
@@ -727,12 +735,23 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchor
 		"role":""
 	};
 	$scope.get_akuns();
+	$scope.get_donaturs();
 
 	// fungs-fungsi
 	$scope.get_akun = function(id_akun){
 		$anchorScroll('edit-form');
 		$scope.is_edit = true;
 		$scope.temp_akun = $filter('filter')($scope.akuns, {id:id_akun})[0];
+	}
+	$scope.get_donatur = function(){
+		var id_donatur = $scope.chosen_donatur;
+
+		if(id_donatur != ""){
+			var tdonatur = $filter('filter')($scope.donaturs, {id:id_donatur})[0];
+			$scope.temp_akun.email = tdonatur.email;
+		}else{
+			$scope.temp_akun.email = "";
+		}
 	}
 	$scope.val_akun = function(){
 		var akun = $scope.temp_akun;
