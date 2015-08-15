@@ -712,6 +712,7 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchor
 	$scope.selected_akuns = [];
 	$scope.is_add = false;
 	$scope.is_edit = false;
+	$scope.is_editpwd = false;
 	$scope.is_loading = true;
 	$scope.is_saving = false;
 	$scope.pageSize = 10;
@@ -800,6 +801,22 @@ app.controller('AkunCtrl', function($scope, AkunSvc, $location, $filter, $anchor
 			});
 		}else{
 			alert(validasi);
+			$scope.is_saving = false;
+		}
+	}
+	$scope.del_akun = function(){
+		$scope.is_saving = true;
+
+		if(confirm("Anda yakin ingin menghapus akun ini?")){
+			var req = AkunSvc.delete($scope.temp_akun.id);
+			req.success(function(res){
+				alert("Akun "+res.status);
+				$scope.get_akuns();
+				$scope.fresh_akun();
+				$scope.is_edit = false;
+				$scope.is_saving = false;
+			});
+		}else{
 			$scope.is_saving = false;
 		}
 	}
