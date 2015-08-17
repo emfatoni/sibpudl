@@ -748,29 +748,52 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 
 		if(id_donatur != ""){
 			var tdonatur = $filter('filter')($scope.donaturs, {id:id_donatur})[0];
-			$scope.temp_akun.email = tdonatur.email;
+			if(tdonatur.email != null){
+				$scope.temp_akun.email = tdonatur.email;
+				$scope.temp_akun.role = "Donatur";
+				$scope.temp_akun.nama = tdonatur.id;
+			}else{
+				alert("!!! Alamat e-mail donatur yang terpilih belum diisi sehingga tidak bisa dibuatkan akun. Harap diisi lebih dahulu di halaman Kelola Donatur.");
+				$scope.temp_akun.email = "";
+				$scope.temp_akun.role = "";
+			}
 		}else{
 			$scope.temp_akun.email = "";
+			$scope.temp_akun.role = "";
 		}
 	}
 	$scope.val_akun = function(){
 		var akun = $scope.temp_akun;
-		if($scope.is_empty(akun.nama)){
-			return "!!! Nama belum diisi";
-		}else if($scope.is_empty(akun.telp)){
-			return "!!! Nomor telepon belum diisi";
-		}else if($scope.is_empty(akun.alamat)){
-			return "!!! Alamat belum diisi";
-		}else if($scope.is_empty(akun.email)){
-			return "!!! Alamat E-mail belum diisi";
-		}else if($scope.is_empty(akun.role)){
-			return "!!! Peran belum diisi";
-		}else if($scope.is_empty(akun.password) && ($scope.is_edit == false)){
-			return "!!! Password belum diisi";
-		}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
-			return "!!! Password berbeda";
+		if(!$scope.is_adddonatur){
+			if($scope.is_empty(akun.nama)){
+				return "!!! Nama belum diisi";
+			}else if($scope.is_empty(akun.telp)){
+				return "!!! Nomor telepon belum diisi";
+			}else if($scope.is_empty(akun.alamat)){
+				return "!!! Alamat belum diisi";
+			}else if($scope.is_empty(akun.email)){
+				return "!!! Alamat E-mail belum diisi";
+			}else if($scope.is_empty(akun.role)){
+				return "!!! Peran belum diisi";
+			}else if($scope.is_empty(akun.password) && ($scope.is_edit == false)){
+				return "!!! Password belum diisi";
+			}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
+				return "!!! Password berbeda";
+			}else{
+				return "";
+			}
 		}else{
-			return "";
+			if($scope.is_empty(akun.email)){
+				return "!!! Alamat E-mail belum diisi";
+			}else if($scope.is_empty(akun.role)){
+				return "!!! Peran belum diisi";
+			}else if($scope.is_empty(akun.password) && ($scope.is_edit == false)){
+				return "!!! Password belum diisi";
+			}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
+				return "!!! Password berbeda";
+			}else{
+				return "";
+			}
 		}
 	}
 	$scope.fresh_akun = function(){

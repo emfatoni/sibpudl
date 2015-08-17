@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Karyawan;
 use App\User;
+use App\Donatur;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -17,14 +18,32 @@ class KaryawanController extends Controller {
 	 */
 	public function index()
 	{
-		$karyawans = Karyawan::all();
+		$users = User::all();
+		foreach($users as $user){
+			$id = $user->id_pengguna;
+			if($user->role != "Donatur"){
+				$karyawan = Karyawan::find($id);
+				$user["nama"] = $karyawan->nama;
+				$user["jabatan"] = $karyawan->jabatan;
+				$user["telp"] = $karyawan->telp;
+				$user["alamat"] = $karyawan->alamat;
+			}else{
+				$donatur = Donatur::find($id);
+				$user["nama"] = $donatur->nama;
+				$user["jabatan"] = "";
+				$user["telp"] = $donatur->telp;
+				$user["alamat"] = $donatur->alamat_surat;
+			}
+		}
+		return $users;
+		/*$karyawans = Karyawan::all();
 		foreach ($karyawans as $karyawan){
 			$req = User::where('id_pengguna', '=', $karyawan->id)->take(1)->get()->toArray();
 			$user = $req[0];
 			$karyawan["role"] = $user["role"];
 			$karyawan["email"] = $user["email"];
 		}
-		return $karyawans;
+		return $karyawans;*/
 	}
 
 	/**
@@ -67,7 +86,7 @@ class KaryawanController extends Controller {
 			$new_user->role = $role;
 			$new_user->email = $email;
 			$new_user->password = bcrypt($password);
-			$new_user->id_pengguna = $nama;
+			$new_user->id_pengguna = $new->nama;
 
 			if($new_user->save()){
 				return array('status'=>'Saved!');
@@ -180,10 +199,16 @@ class KaryawanController extends Controller {
 		if (Auth::user()){
             
             $pengguna = Auth::user();
-            $id_karyawan = $pengguna->id_pengguna;
-            $karyawan = Karyawan::find($id_karyawan);
-            $pengguna["nama"] = $karyawan->nama;
 
+            if($pengguna->role != "Donatur"){
+            	$id_karyawan = $pengguna->id_pengguna;
+            	$karyawan = Karyawan::find($id_karyawan);
+            	$pengguna["nama"] = $karyawan->nama;
+            }else{
+            	$id_donatur = $pengguna->id_pengguna;
+            	$donatur = Donatur::find($id_donatur);
+            	$pengguna["nama"] = $donatur->nama;
+            }
             return $pengguna;
         }
         return null;
