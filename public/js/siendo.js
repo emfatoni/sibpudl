@@ -1,5 +1,5 @@
 /* INISIASI SISTEM */
-var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel']);
+var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel', 'highcharts-ng']);
  
 app.run(function(){
 	//
@@ -16,7 +16,8 @@ app.config(function(paginationTemplateProvider) {
 /* ROUTING */
 app.config(function($routeProvider, $locationProvider){
 	$routeProvider.when('/',{
-		templateUrl:'pages/beranda.html'
+		templateUrl:'pages/beranda.html',
+		controller: 'DashboardCtrl'
 	});
 	$routeProvider.when('/donasi',{
 		templateUrl:'pages/donasi.html',
@@ -862,6 +863,61 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 			$scope.is_saving = false;
 		}
 	}
+});
+
+/* DASHBOARD CONTROLLER */
+app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter){
+
+	// fungsi-fungsi awal
+	$scope.get_tahuns = function(){
+		$scope.tahuns = [];
+		var newlist = $filter('orderBy')($scope.donasis, 'tanggal', false);
+		console.log(newlist);
+	}
+	$scope.get_donasis = function(){
+		var req = DonasiSvc.all();
+		req.success(function(res){
+			$scope.donasis = res;
+			$scope.get_tahuns();
+		});
+	}
+
+	// variabel-variabel
+	$scope.get_donasis();
+	$scope.eitahun_e = [20, 30, 22];
+	$scope.eitahun_i = [20, 2, 22];
+
+	// pembuatan grafik
+	$scope.chart_eitahun = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Endowment Fund',
+        		data: $scope.eitahun_e
+        	},
+        	{
+        		name: 'Hasil Investasi',
+        		data: $scope.eitahun_i
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: ['2010', '2014', '2015']
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+
 });
 
 
