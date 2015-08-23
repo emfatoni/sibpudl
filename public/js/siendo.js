@@ -866,13 +866,44 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 });
 
 /* DASHBOARD CONTROLLER */
+app.filter('tahun', function(){
+	return function(inputs, tahun){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						terfilter.push(item);
+					}
+				}else{
+					if(item_thn >= new_thn){
+						terfilter.push(item);
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					terfilter.push(item);
+				}
+			}
+		});
+		return terfilter;
+	};
+});
 app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter){
 
 	// fungsi-fungsi awal
 	$scope.get_tahuns = function(){
 		$scope.tahuns = [];
 		var newlist = $filter('orderBy')($scope.donasis, 'tanggal', false);
-		console.log(newlist);
 	}
 	$scope.get_donasis = function(){
 		var req = DonasiSvc.all();
@@ -881,11 +912,56 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 			$scope.get_tahuns();
 		});
 	}
+	$scope.get_data_donasi = function(tahuns){
+		var datas = [];
+		// datas = $filter('jenis')($scope.donasis, "Donasi Bersyarat");
+		// console.log(datas);
+		angular.forEach(tahuns, function(val, key){
+			var total = 0;
+			// var tgl = val.tanggal+"";
+			// var thn = tgl.split("-");
+
+			var tot_donasi = $filter('tahun')($scope.donasis, val);
+
+			// console.log(val);
+			// console.log(tot_donasi.length);
+			angular.forEach(tot_donasi, function(item){
+				total += parseInt(item.nominal);
+			});
+
+			datas.push(total);
+		});
+
+		// console.log(datas);
+
+		$scope.chart_eitahun.series[0].data = datas;
+	}
+	$scope.set_tahun = function(){
+		var tahuns = [];
+		var max_tahun = $scope.max_tahun_eitahun;
+		var intval = $scope.interval;
+
+		tahuns.push("< "+(max_tahun-5));
+
+		for(var i=intval-1; i>=0; i--){
+			tahuns.push(max_tahun-i);
+		}
+
+		max_tahun++;
+		tahuns.push("> "+max_tahun);
+
+		$scope.chart_eitahun.xAxis.categories = tahuns;
+		$scope.get_data_donasi(tahuns);
+	}
+	
 
 	// variabel-variabel
 	$scope.get_donasis();
-	$scope.eitahun_e = [20, 30, 22];
-	$scope.eitahun_i = [20, 2, 22];
+	$scope.eitahun_e = [20, 30, 22, 0, 0, 0, 0];
+	$scope.eitahun_i = [20000000, 2000000, 220000000, 0, 0, 0, 0];
+	$scope.tahun_eitahun = [];
+	$scope.interval = 5;
+	$scope.max_tahun_eitahun = 2015;
 
 	// pembuatan grafik
 	$scope.chart_eitahun = {
@@ -908,7 +984,7 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             text: ''
         },
         xAxis: {
-			categories: ['2010', '2014', '2015']
+			categories: $scope.tahun_eitahun
 		},	
 		yAxis: {
 			title: {
