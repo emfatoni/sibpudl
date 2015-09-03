@@ -23,6 +23,8 @@ Route::get('donasi/download_template', 'DonasiController@download_template');
 Route::resource('donatur', 'DonaturController');
 Route::resource('donasi', 'DonasiController');
 Route::resource('karyawan', 'KaryawanController');
+Route::resource('fakultas', 'FakultasController');
+Route::resource('prodi', 'ProdiController');
 
 /* DARI LARAVEL 5 */
 Route::controllers([
