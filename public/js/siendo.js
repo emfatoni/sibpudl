@@ -212,6 +212,19 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 });
 
 /* KELOLA FAKULTAS-PRODI */
+app.filter('fakultas_prodi', function(){
+	return function(inputs, param){
+		var terfilter = [];
+		if(param === undefined || param === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			if(param == item.id_fakultas){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
 app.controller('FakultasCtrl', function($scope, FakultasSvc, ProdiSvc, $filter, $location, $anchorScroll){
 
 	// variabel

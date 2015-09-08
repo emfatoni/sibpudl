@@ -107,8 +107,14 @@
 	</div>
 	<div class="col-md-6">
 		<h3 class="text-center">Program Studi</h3>
-		<button class="btn btn-primary" ng-click="add_prodi_form()">Tambah Program Studi</button>
-		<br><br>
+		<form class="form-inline">
+			<button class="btn btn-primary" ng-click="add_prodi_form()">Tambah Program Studi</button>
+			<select class="form-control" ng-model="fil_fakultas_prodi">
+				<option value="">- Pilih Fakultas -</option>
+				<option ng-repeat="fakultas in fakultass" value="{{fakultas.id}}">{{fakultas.singkatan}}</option>
+			</select>
+		</form>
+		<br>
 		<table class="table tabel-condensed table-hover">
 			<thead>
 				<tr>
@@ -120,7 +126,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="prodi in prodis">
+				<tr ng-repeat="prodi in prodis | fakultas_prodi: fil_fakultas_prodi">
 					<td>{{$index+1}}</td>
 					<td>{{prodi.nama_fakultas}}</td>
 					<td>{{prodi.kode}}</td>
