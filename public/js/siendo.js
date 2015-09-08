@@ -292,6 +292,16 @@ app.controller('FakultasCtrl', function($scope, FakultasSvc, ProdiSvc, $filter, 
 		$scope.is_edit = false;
 		$scope.is_fakultas = false;
 	}
+	$scope.edit_form_fakultas = function(id_fakultas){
+		$scope.temp_fakultas = $filter('filter')($scope.fakultass, {id:id_fakultas})[0];
+		$scope.is_edit = true;
+		$scope.is_fakultas = true;
+	}
+	$scope.edit_form_prodi = function(id_prodi){
+		$scope.temp_prodi = $filter('filter')($scope.prodis, {id:id_prodi})[0];
+		$scope.is_edit = true;
+		$scope.is_fakultas = false;
+	}
 
 	// fungsi database
 	$scope.val_fakultas = function(){
@@ -342,6 +352,66 @@ app.controller('FakultasCtrl', function($scope, FakultasSvc, ProdiSvc, $filter, 
 		}else{
 			$scope.is_saving = false;
 			alert(validasi);
+		}
+	}
+	$scope.edit_data_fakultas = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_fakultas();
+		if($scope.is_empty(validasi)){
+			var req = FakultasSvc.update($scope.temp_fakultas.id, $scope.temp_fakultas);
+			req.success(function(res){
+				$scope.get_fakultass();
+				$scope.is_saving = false;
+				alert("Fakultas "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+	$scope.edit_data_prodi = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_prodi();
+		if($scope.is_empty(validasi)){
+			var req = ProdiSvc.update($scope.temp_prodi.id, $scope.temp_prodi);
+			req.success(function(res){
+				$scope.get_prodis();
+				$scope.is_saving = false;
+				alert("Program Studi "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+	$scope.del_data_fakultas = function(){
+		$scope.is_saving = true;
+		if(confirm("Anda yakin ingin menghapus data Fakultas ini?")){
+			var req = FakultasSvc.delete($scope.temp_fakultas.id);
+			req.success(function(res){
+				$scope.get_fakultass();
+				$scope.is_saving = false;
+				alert("Fakultas "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;	
+		}
+	}
+	$scope.del_data_prodi = function(){
+		$scope.is_saving = true;
+		var req = ProdiSvc.delete($scope.temp_prodi.id);
+		if(confirm("Anda yakin ingin menghapus data Program Studi ini?")){
+			req.success(function(res){
+				$scope.get_prodis();
+				$scope.is_saving = false;
+				alert("Program Studi "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;	
 		}
 	}
 

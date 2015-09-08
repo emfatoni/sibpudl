@@ -26,8 +26,8 @@
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-8">
 					<button class="btn btn-success" ng-show="is_add" ng-click="add_data_fakultas()">Simpan</button>
-					<button class="btn btn-primary" ng-show="is_edit">Simpan Perubahan</button>
-					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-primary" ng-show="is_edit" ng-click="edit_data_fakultas()">Simpan Perubahan</button>
+					<button class="btn btn-danger" ng-click="del_data_fakultas()">Delete</button>
 					<button class="btn btn-warning" ng-click="fresh_fakultas()">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
@@ -67,8 +67,8 @@
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-8">
 					<button class="btn btn-success" ng-show="is_add" ng-click="add_data_prodi()">Simpan</button>
-					<button class="btn btn-primary" ng-show="is_edit">Simpan Perubahan</button>
-					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-primary" ng-show="is_edit" ng-click="edit_data_prodi()">Simpan Perubahan</button>
+					<button class="btn btn-danger" ng-click="del_data_prodi()">Delete</button>
 					<button class="btn btn-warning" ng-click="fresh_fakultas()">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
@@ -99,7 +99,7 @@
 				<tr ng-repeat="fakultas in fakultass">
 					<td>{{$index+1}}</td>
 					<td>{{fakultas.kode}}</td>
-					<td>{{fakultas.singkatan}}</td>
+					<td><a href="" ng-click="edit_form_fakultas(fakultas.id)">{{fakultas.singkatan}}</a></td>
 					<td>{{fakultas.kepanjangan}}</td>
 				</tr>
 			</tbody>
@@ -125,7 +125,7 @@
 					<td>{{prodi.nama_fakultas}}</td>
 					<td>{{prodi.kode}}</td>
 					<td>{{prodi.singkatan}}</td>
-					<td>{{prodi.kepanjangan}}</td>
+					<td><a href="" ng-click="edit_form_prodi(prodi.id)">{{prodi.kepanjangan}}</a></td>
 				</tr>
 			</tbody>
 		</table>
