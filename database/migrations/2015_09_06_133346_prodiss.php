@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProdis extends Migration {
+class Prodiss extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -15,14 +15,12 @@ class CreateProdis extends Migration {
 		Schema::create('prodis', function(Blueprint $table)
 		{
 			$table->increments('id');
-
 			$table->string('kode')->nullable();
 			$table->string('singkatan');
 			$table->string('kepanjangan')->nullable();
 
 			$table->integer('id_fakultas')->unsigned();
 			$table->foreign('id_fakultas')->references('id')->on('fakultass');
-
 			$table->timestamps();
 		});
 	}

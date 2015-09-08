@@ -1,0 +1,133 @@
+<div class="row" id="page-form" ng-show="is_add || is_edit">
+	<div class="col-md-6">
+		<h2><span ng-show="is_edit">Ubah</span><span ng-show="is_add">Tambah</span> Data <span ng-show="is_fakultas">Fakultas</span><span ng-show="!is_fakultas">Program Studi</span></h2>
+		<br><br>
+		<!-- FORM FAKULTAS -->
+		<form class="form-horizontal" ng-show="is_fakultas">
+			<div class="form-group">
+				<label class="control-label col-md-2">Kode Fakultas</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_fakultas.kode">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Singkatan</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_fakultas.singkatan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Kepanjangan</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_fakultas.kepanjangan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-8">
+					<button class="btn btn-success" ng-show="is_add" ng-click="add_data_fakultas()">Simpan</button>
+					<button class="btn btn-primary" ng-show="is_edit">Simpan Perubahan</button>
+					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-warning" ng-click="fresh_fakultas()">Batal</button>
+					<br><br>
+					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
+				</div>
+			</div>
+		</form>
+		<!-- FORM PRODI -->
+		<form class="form-horizontal" ng-show="!is_fakultas">
+			<div class="form-group">
+				<label class="control-label col-md-2">Fakultas</label>
+				<div class="col-md-8">
+					<select class="form-control" ng-model="temp_prodi.id_fakultas">
+						<option value="">- Pilih Fakultas -</option>
+						<option ng-repeat="fakultas in fakultass" value="{{fakultas.id}}">{{fakultas.singkatan}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Kode Prodi</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_prodi.kode">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Singkatan</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_prodi.singkatan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">Kepanjangan</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" ng-model="temp_prodi.kepanjangan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-8">
+					<button class="btn btn-success" ng-show="is_add" ng-click="add_data_prodi()">Simpan</button>
+					<button class="btn btn-primary" ng-show="is_edit">Simpan Perubahan</button>
+					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-warning" ng-click="fresh_fakultas()">Batal</button>
+					<br><br>
+					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12" style="margin-bottom: 30px">
+		<h1 class="text-center">Pengelolaan Data Fakultas dan Prodi</h1>
+	</div>
+	<div class="col-md-6">
+		<h3 class="text-center">Fakultas</h3>
+		<button class="btn btn-primary" ng-click="add_fakultas_form()">Tambah Fakultas</button>
+		<br><br>
+		<table class="table tabel-condensed table-hover">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Kode</th>
+					<th>Singkatan</th>
+					<th>Kepanjangan</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="fakultas in fakultass">
+					<td>{{$index+1}}</td>
+					<td>{{fakultas.kode}}</td>
+					<td>{{fakultas.singkatan}}</td>
+					<td>{{fakultas.kepanjangan}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<h3 class="text-center">Program Studi</h3>
+		<button class="btn btn-primary" ng-click="add_prodi_form()">Tambah Program Studi</button>
+		<br><br>
+		<table class="table tabel-condensed table-hover">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Fakultas</th>
+					<th>Kode</th>
+					<th>Singkatan</th>
+					<th>Kepanjangan</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="prodi in prodis">
+					<td>{{$index+1}}</td>
+					<td>{{prodi.nama_fakultas}}</td>
+					<td>{{prodi.kode}}</td>
+					<td>{{prodi.singkatan}}</td>
+					<td>{{prodi.kepanjangan}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

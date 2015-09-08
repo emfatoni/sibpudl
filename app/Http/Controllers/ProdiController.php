@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Prodi;
+use App\Fakultas;
 
 use Illuminate\Http\Request;
 
@@ -15,7 +16,12 @@ class ProdiController extends Controller {
 	 */
 	public function index()
 	{
-		return Prodi::all();
+		$prodis = Prodi::all();
+		foreach($prodis as $prodi){
+			$fakultas = Fakultas::find($prodi->id_fakultas);
+			$prodi["nama_fakultas"] = $fakultas->singkatan;
+		}
+		return $prodis;
 	}
 
 	/**
@@ -27,7 +33,8 @@ class ProdiController extends Controller {
 	{
 		$new = new Prodi();
 		$new->kode = $req->input('kode');
-		$new->nama = $req->input('nama');
+		$new->singkatan = $req->input('singkatan');
+		$new->kepanjangan = $req->input('kepanjangan');
 		$new->id_fakultas = $req->input('id_fakultas');
 		if($new->save())
 		{
@@ -80,7 +87,8 @@ class ProdiController extends Controller {
 		if($edit)
 		{
 			$edit->kode = $req->input('kode');
-			$edit->nama = $req->input('nama');
+			$edit->singkatan = $req->input('singkatan');
+			$edit->kepanjangan = $req->input('kepanjangan');
 			$edit->id_fakultas = $req->input('id_fakultas');	
 			if($edit->save())
 			{

@@ -44,6 +44,10 @@ app.config(function($routeProvider, $locationProvider){
 		controller: 'AkunCtrl',
 		kecuali: 'Tim Fundrising',
 	});
+	$routeProvider.when('/fakultas',{
+		templateUrl:'pages/fakultas.html',
+		controller: 'FakultasCtrl'
+	});
 	/*
 	$routeProvider.when('/tambah_donatur',{
 		templateUrl:'pages/form_donatur.html',
@@ -134,6 +138,54 @@ app.factory("AkunSvc", function($http){
 		}
 	}
 });
+app.factory("FakultasSvc", function($http){
+	return{
+		all: function(){
+			var req = $http({method:'GET', url:'fakultas'});
+			return req;
+		},
+		create: function(data){
+			var req = $http({method:'GET', url:'fakultas/create', params:data});
+			return req;
+		},
+		get: function(id){
+			var req = $http.get('fakultas/'+id);
+			return req;
+		},
+		update: function(id, data){
+			var req = $http.put('fakultas/'+id, data);
+			return req;
+		},
+		delete: function(id){
+			var req = $http.delete('fakultas/'+id);
+			return req;
+		}
+	}
+});
+app.factory("ProdiSvc", function($http){
+	return{
+		all: function(){
+			var req = $http({method:'GET', url:'prodi'});
+			return req;
+		},
+		create: function(data){
+			var req = $http({method:'GET', url:'prodi/create', params:data});
+			return req;
+		},
+		get: function(id){
+			var req = $http.get('prodi/'+id);
+			return req;
+		},
+		update: function(id, data){
+			var req = $http.put('prodi/'+id, data);
+			return req;
+		},
+		delete: function(id){
+			var req = $http.delete('prodi/'+id);
+			return req;
+		}
+	}
+});
 
 
 /* MAIN CONTROLLERS */
@@ -157,6 +209,142 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
         }
     });
 	*/
+});
+
+/* KELOLA FAKULTAS-PRODI */
+app.controller('FakultasCtrl', function($scope, FakultasSvc, ProdiSvc, $filter, $location, $anchorScroll){
+
+	// variabel
+	$scope.fakultass = {};
+	$scope.prodis = {};
+	$scope.is_loading = false;
+	$scope.is_saving = false;
+	$scope.is_edit = false;
+	$scope.is_add = false;
+	$scope.is_fakultas = false;
+	$scope.temp_fakultas = {
+		"kode": "",
+		"singkatan": "",
+		"kepanjangan": "",
+	};
+	$scope.temp_prodi = {
+		"kode": "",
+		"singkatan": "",
+		"kepanjangan": "",
+		"id_fakultas": "",
+	};
+
+	// fungsi ambil data
+	$scope.get_fakultass = function(){
+		$scope.is_loading = true;
+		var req = FakultasSvc.all();
+		req.success(function(res){
+			$scope.fakultass = res;
+			$scope.is_loading = false;
+		});
+	}
+	$scope.get_prodis = function(){
+		$scope.is_loading = true;
+		var req = ProdiSvc.all();
+		req.success(function(res){
+			$scope.prodis = res;
+			$scope.is_loading = false;
+		});
+	}
+	$scope.get_fakultass();
+	$scope.get_prodis();
+
+	// fungsi tampilan
+	$scope.add_fakultas_form = function(){
+		$scope.is_add = true;
+		$scope.is_fakultas = true;
+		$anchorScroll('page-form');
+		$scope.temp_fakultas = {
+			"kode": "",
+			"singkatan": "",
+			"kepanjangan": "",
+		};
+	}
+	$scope.add_prodi_form = function(){
+		$scope.is_add = true;
+		$scope.is_fakultas = false;
+		$anchorScroll('page-form');
+		$scope.temp_prodi = {
+			"kode": "",
+			"singkatan": "",
+			"kepanjangan": "",
+			"id_fakultas": "",
+		};
+	}
+	$scope.fresh_fakultas = function(){
+		$scope.temp_fakultas = {
+			"kode": "",
+			"singkatan": "",
+			"kepanjangan": "",
+		};
+		$scope.temp_prodi = {
+			"kode": "",
+			"singkatan": "",
+			"kepanjangan": "",
+			"id_fakultas": "",
+		};
+		$scope.is_add = false;
+		$scope.is_edit = false;
+		$scope.is_fakultas = false;
+	}
+
+	// fungsi database
+	$scope.val_fakultas = function(){
+		var i = $scope.temp_fakultas;
+		if($scope.is_empty(i.singkatan)){
+			return "!!! Setidaknya singkatan harus diisi";
+		}else{
+			return "";
+		}
+	}
+	$scope.val_prodi = function(){
+		var i = $scope.temp_prodi;
+		if($scope.is_empty(i.kepanjangan)){
+			return "!!! Setidaknya nama panjang diisi";
+		}else if($scope.is_empty(i.id_fakultas)){
+			return "!!! Fakultas harus diisi";
+		}else{
+			return "";
+		}
+	}
+	$scope.add_data_fakultas = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_fakultas();
+		if($scope.is_empty(validasi)){
+			var req = FakultasSvc.create($scope.temp_fakultas);
+			req.success(function(res){
+				$scope.get_fakultass();
+				$scope.is_saving = false;
+				alert("Fakultas "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+	$scope.add_data_prodi = function(){
+		$scope.is_saving = true;
+		var validasi = $scope.val_prodi();
+		if($scope.is_empty(validasi)){
+			var req = ProdiSvc.create($scope.temp_prodi);
+			req.success(function(res){
+				$scope.get_prodis();
+				$scope.is_saving = false;
+				alert("Program Studi "+res.status);
+				$scope.fresh_fakultas();
+			});
+		}else{
+			$scope.is_saving = false;
+			alert(validasi);
+		}
+	}
+
 });
 
 
