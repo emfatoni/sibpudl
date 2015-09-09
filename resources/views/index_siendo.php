@@ -20,6 +20,7 @@
 	<script src="js/accounting.js"></script>
 	<script src="js/highcharts-ng.js"></script>
 	<script src="js/angular-spinkit.js"></script>
+	<script src="js/ng-lodash.js"></script>
 	<script src="js/siendo.js"></script>
 </head>
 

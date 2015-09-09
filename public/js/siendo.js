@@ -1,5 +1,5 @@
 /* INISIASI SISTEM */
-var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel', 'highcharts-ng']);
+var app = angular.module('siendoApp',['ngRoute', 'angularUtils.directives.dirPagination', 'angular-spinkit', 'selectionModel', 'highcharts-ng', 'ngLodash']);
  
 app.run(function(){
 	//
@@ -1207,7 +1207,83 @@ app.filter('tahun_etb', function(){
 		return terfilter;
 	};
 });
-app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter){
+app.filter('tahun_eb', function(){
+	return function(inputs, tahun){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						if(item.jenis == "Dana Lestari Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}else{
+					if(item_thn >= new_thn){
+						if(item.jenis == "Dana Lestari Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					if(item.jenis == "Dana Lestari Bersyarat"){
+						terfilter.push(item);	
+					}
+				}
+			}
+		});
+		return terfilter;
+	};
+});
+app.filter('tahun_db', function(){
+	return function(inputs, tahun){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						if(item.jenis == "Donasi Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}else{
+					if(item_thn >= new_thn){
+						if(item.jenis == "Donasi Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					if(item.jenis == "Donasi Bersyarat"){
+						terfilter.push(item);	
+					}
+				}
+			}
+		});
+		return terfilter;
+	};
+});
+app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, lodash){
 
 	// fungsi-fungsi awal
 	$scope.get_tahuns = function(){
@@ -1219,6 +1295,10 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 		req.success(function(res){
 			$scope.donasis = res;
 			$scope.set_tahun("ei", $scope.max_ei);
+			$scope.set_tahun("etbi", $scope.max_etbi);
+			$scope.set_tahun("ebi", $scope.max_ebi);
+			$scope.set_tahun("dbi", $scope.max_dbi);
+			$scope.set_tahun("jdon", $scope.max_jdon);
 		});
 	}
 	$scope.update_categorie = function(keyword, xs){
@@ -1255,21 +1335,49 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 			$scope.chart_pro.series[0].data = vals;
 		}
 	}
+	$scope.filter_graph = function(keyword, val){
+		if(keyword == "ei"){
+			return $filter('tahun')($scope.donasis, val);
+		}else if(keyword == "etbi"){
+			return $filter('tahun_etb')($scope.donasis, val);
+		}else if(keyword == "ebi"){
+			return $filter('tahun_eb')($scope.donasis, val);
+		}else if(keyword == "dbi"){
+			return $filter('tahun_db')($scope.donasis, val);
+		}else if(keyword == "jdon"){
+			return $filter('tahun')($scope.donasis, val);
+		}else if(keyword == "fak"){
+			return {};
+		}else if(keyword == "pro"){
+			return {};
+		}
+	}
 	$scope.get_data_donasi = function(keyword, tahuns){
 		var datas = [];
 		
 		angular.forEach(tahuns, function(val, key){
 			var total = 0;
-			var tot_donasi = $filter('tahun')($scope.donasis, val);
+			// var tot_donasi = $filter('tahun')($scope.donasis, val);
+			var tot_donasi = $scope.filter_graph(keyword, val);
 
-			angular.forEach(tot_donasi, function(item){
-				total += parseInt(item.nominal);
-			});
+			if(keyword != "jdon"){
+				angular.forEach(tot_donasi, function(item){
+					total += parseInt(item.nominal);
+				});
+			}else{
+				var jdonatur = lodash.groupBy(tot_donasi, 'id_donatur');
+				total = lodash.size(jdonatur);
+			}
 
 			datas.push(total);
 		});
 
 		$scope.update_value(keyword, datas);
+	}
+	$scope.cek_lodash = function(){
+		var hsl = lodash.groupBy($scope.donasis, 'jenis');
+		console.log(hsl);
+		console.log(lodash.size(hsl));
 	}
 	$scope.set_tahun = function(keyword, max_tahun){
 		var tahuns = [];

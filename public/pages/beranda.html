@@ -28,14 +28,36 @@
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund Tak Bersyarat dan Hasil Investasi</h3>
-			<div id="etbi" style="height: 250px">
+			
+			<div class="col-md-12" style="margin: 20px 0px">
+				<form class="form-inline">
+					
+					<label>Tahun Maks.</label>
+					<input class="form-control" type="number" ng-model="max_etbi" ng-blur="set_tahun('etbi', max_etbi)" ng-init="max_etbi=2015">
+				</form>
+			</div>
+
+			<div class="col-md-12">
+				<highchart config="chart_etbi" style="height: 500px">
+				</highchart>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund Bersyarat dan Hasil Investasi</h3>
-			<div id="ebi" style="height: 250px">
+			
+			<div class="col-md-12" style="margin: 20px 0px">
+				<form class="form-inline">
+					
+					<label>Tahun Maks.</label>
+					<input class="form-control" type="number" ng-model="max_ebi" ng-blur="set_tahun('ebi', max_ebi)" ng-init="max_ebi=2015">
+				</form>
+			</div>
+
+			<div class="col-md-12">
+				<highchart config="chart_ebi" style="height: 500px">
+				</highchart>
 			</div>
 		</div>
 	</div>
@@ -44,14 +66,36 @@
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Donasi Bersyarat dan Hasil Investasi</h3>
-			<div id="dbi" style="height: 250px">
+			
+			<div class="col-md-12" style="margin: 20px 0px">
+				<form class="form-inline">
+					
+					<label>Tahun Maks.</label>
+					<input class="form-control" type="number" ng-model="max_dbi" ng-blur="set_tahun('dbi', max_dbi)" ng-init="max_dbi=2015">
+				</form>
+			</div>
+
+			<div class="col-md-12">
+				<highchart config="chart_dbi" style="height: 500px">
+				</highchart>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Jumlah Donatur</h3>
-			<div id="jmldon" style="height: 250px">
+			
+			<div class="col-md-12" style="margin: 20px 0px">
+				<form class="form-inline">
+					
+					<label>Tahun Maks.</label>
+					<input class="form-control" type="number" ng-model="max_jdon" ng-blur="set_tahun('jdon', max_jdon)" ng-init="max_jdon=2015">
+				</form>
+			</div>
+
+			<div class="col-md-12">
+				<highchart config="chart_jdon" style="height: 500px">
+				</highchart>
 			</div>
 		</div>
 	</div>
