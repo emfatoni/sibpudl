@@ -9,12 +9,16 @@
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund dan Hasil Investasi per Tahun</h3>
 
-			<div class="col-md-3" style="margin: 20px 0px">
-				<input class="form-control" type="text" placeholder="Tahun max." title="Tahun max." ng-model="max_tahun_eitahun" ng-blur="set_tahun()">
+			<div class="col-md-12" style="margin: 20px 0px">
+				<form class="form-inline">
+					
+					<label>Tahun Maks.</label>
+					<input class="form-control" type="number" ng-model="max_ei" ng-blur="set_tahun('ei', max_ei)" ng-init="max_ei=2015">
+				</form>
 			</div>
 
 			<div class="col-md-12">
-				<highchart config="chart_eitahun" style="height: 500px">
+				<highchart config="chart_ei" style="height: 500px">
 				</highchart>
 			</div>
 		</div>

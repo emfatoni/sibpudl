@@ -1169,6 +1169,44 @@ app.filter('tahun', function(){
 		return terfilter;
 	};
 });
+app.filter('tahun_etb', function(){
+	return function(inputs, tahun){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						if(item.jenis == "Dana Lestari Tidak Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}else{
+					if(item_thn >= new_thn){
+						if(item.jenis == "Dana Lestari Tidak Bersyarat"){
+							terfilter.push(item);	
+						}
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					if(item.jenis == "Dana Lestari Tidak Bersyarat"){
+						terfilter.push(item);	
+					}
+				}
+			}
+		});
+		return terfilter;
+	};
+});
 app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter){
 
 	// fungsi-fungsi awal
@@ -1180,22 +1218,50 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 		var req = DonasiSvc.all();
 		req.success(function(res){
 			$scope.donasis = res;
-			$scope.get_tahuns();
+			$scope.set_tahun("ei", $scope.max_ei);
 		});
 	}
-	$scope.get_data_donasi = function(tahuns){
+	$scope.update_categorie = function(keyword, xs){
+		if(keyword == "ei"){
+			$scope.chart_ei.xAxis.categories = xs;
+		}else if(keyword == "etbi"){
+			$scope.chart_etbi.xAxis.categories = xs;
+		}else if(keyword == "ebi"){
+			$scope.chart_ebi.xAxis.categories = xs;
+		}else if(keyword == "dbi"){
+			$scope.chart_dbi.xAxis.categories = xs;
+		}else if(keyword == "jdon"){
+			$scope.chart_jdon.xAxis.categories = xs;
+		}else if(keyword == "fak"){
+			$scope.chart_fak.xAxis.categories = xs;
+		}else if(keyword == "pro"){
+			$scope.chart_pro.xAxis.categories = xs;
+		}
+	}
+	$scope.update_value = function(keyword, vals){
+		if(keyword == "ei"){
+			$scope.chart_ei.series[0].data = vals;
+		}else if(keyword == "etbi"){
+			$scope.chart_etbi.series[0].data = vals;
+		}else if(keyword == "ebi"){
+			$scope.chart_ebi.series[0].data = vals;
+		}else if(keyword == "dbi"){
+			$scope.chart_dbi.series[0].data = vals;
+		}else if(keyword == "jdon"){
+			$scope.chart_jdon.series[0].data = vals;
+		}else if(keyword == "fak"){
+			$scope.chart_fak.series[0].data = vals;
+		}else if(keyword == "pro"){
+			$scope.chart_pro.series[0].data = vals;
+		}
+	}
+	$scope.get_data_donasi = function(keyword, tahuns){
 		var datas = [];
-		// datas = $filter('jenis')($scope.donasis, "Donasi Bersyarat");
-		// console.log(datas);
+		
 		angular.forEach(tahuns, function(val, key){
 			var total = 0;
-			// var tgl = val.tanggal+"";
-			// var thn = tgl.split("-");
-
 			var tot_donasi = $filter('tahun')($scope.donasis, val);
 
-			// console.log(val);
-			// console.log(tot_donasi.length);
 			angular.forEach(tot_donasi, function(item){
 				total += parseInt(item.nominal);
 			});
@@ -1203,39 +1269,36 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 			datas.push(total);
 		});
 
-		// console.log(datas);
-
-		$scope.chart_eitahun.series[0].data = datas;
+		$scope.update_value(keyword, datas);
 	}
-	$scope.set_tahun = function(){
+	$scope.set_tahun = function(keyword, max_tahun){
 		var tahuns = [];
-		var max_tahun = $scope.max_tahun_eitahun;
 		var intval = $scope.interval;
 
-		tahuns.push("< "+(max_tahun-5));
+		// tahuns.push("< "+(max_tahun-5));
 
 		for(var i=intval-1; i>=0; i--){
 			tahuns.push(max_tahun-i);
 		}
 
-		max_tahun++;
-		tahuns.push("> "+max_tahun);
+		// max_tahun++;
+		// tahuns.push("> "+max_tahun);
 
-		$scope.chart_eitahun.xAxis.categories = tahuns;
-		$scope.get_data_donasi(tahuns);
+		$scope.update_categorie(keyword, tahuns);
+
+		$scope.get_data_donasi(keyword, tahuns);
 	}
+	
 	
 
 	// variabel-variabel
-	$scope.get_donasis();
 	$scope.eitahun_e = [20, 30, 22, 0, 0, 0, 0];
 	$scope.eitahun_i = [20000000, 2000000, 220000000, 0, 0, 0, 0];
 	$scope.tahun_eitahun = [];
 	$scope.interval = 5;
-	$scope.max_tahun_eitahun = 2015;
 
 	// pembuatan grafik
-	$scope.chart_eitahun = {
+	$scope.chart_ei = {
 		options: {
             chart: {
                 type: 'column'
@@ -1245,10 +1308,6 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
         	{
         		name: 'Endowment Fund',
         		data: $scope.eitahun_e
-        	},
-        	{
-        		name: 'Hasil Investasi',
-        		data: $scope.eitahun_i
         	}
         ],
         title: {
@@ -1264,6 +1323,159 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 		},
 		loading: false
 	}
+	$scope.chart_etbi = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Endowment Fund Tak Bersyarat',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+	$scope.chart_ebi = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Endowment Fund Bersyarat',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+	$scope.chart_dbi = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Donasi Bersyarat',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+	$scope.chart_jdon = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Donatur',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+	$scope.chart_fak = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Fakultas',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+	$scope.chart_pro = {
+		options: {
+            chart: {
+                type: 'column'
+            },
+        },
+        series: [
+        	{
+        		name: 'Program Studi',
+        		data: $scope.eitahun_e
+        	}
+        ],
+        title: {
+            text: ''
+        },
+        xAxis: {
+			categories: $scope.tahun_eitahun
+		},	
+		yAxis: {
+			title: {
+				text: 'Jumlah'
+			}
+		},
+		loading: false
+	}
+
+	// ending
+	$scope.get_donasis();
 
 });
 
