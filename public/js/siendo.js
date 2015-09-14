@@ -474,7 +474,7 @@ app.filter('organisasi_donatur', function(){
 		return terfilter;
 	};
 });
-app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $anchorScroll){
+app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $anchorScroll, FakultasSvc, ProdiSvc){
 
 	// mengambil data donatur
 	$scope.get_donaturs = function(){
@@ -485,6 +485,24 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			$scope.is_loading = false;
 		});
 	}
+	$scope.get_fakultass = function(){
+		var req = FakultasSvc.all();
+		req.success(function(res){
+			$scope.fakultass = res;
+		});
+	}
+	$scope.get_prodis = function(){
+		var req = ProdiSvc.all();
+		req.success(function(res){
+			$scope.prodis = res;
+		});
+	}
+	$scope.set_tprodi = function(val){
+		$scope.t_prodi = val;
+		$scope.nama = val;
+	}
+	$scope.get_fakultass();
+	$scope.get_prodis();
 
 	// variabel
 	$scope.selected_donatur = [];
@@ -507,6 +525,7 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 			"alamat_surat": ""
 	};
 	$scope.get_donaturs();
+	$scope.selectedColour = {};
 
 	
 	// fungsi-fungsi
@@ -523,6 +542,8 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 		$scope.nama = "";
 		$scope.jenis_lv_1 = "";
 		$scope.jenis_lv_2 = "";
+		$scope.c_fakultas = "";
+		$scope.c_prodi = "";
 	}
 	$scope.fresh_donatur();
 
@@ -542,16 +563,19 @@ app.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter, $
 		$scope.nama = "";
 		$scope.angkatan = "";
 		$scope.temp_donatur.nama_wakil = "";
+		$scope.q_prodi = "";
 	}
 	$scope.fresh_level2 = function(){
 		if($scope.jenis_lv_2 == "Satu ITB"){
 			$scope.nama = "ITB";
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
+			$scope.q_prodi = "";
 		}else{
 			$scope.nama = "";
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
+			$scope.q_prodi = "";
 		}
 	}
 
@@ -726,7 +750,7 @@ app.filter('jenis', function(){
 	};
 });
 // controller
-app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, $anchorScroll){
+app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, $anchorScroll, FakultasSvc, ProdiSvc){
 
 	// mengambil data donasi
 	$scope.get_donasis = function(){
@@ -743,6 +767,24 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 			$scope.donaturs = res;
 		});
 	}
+	$scope.get_fakultass = function(){
+		var req = FakultasSvc.all();
+		req.success(function(res){
+			$scope.fakultass = res;
+		});
+	}
+	$scope.get_prodis = function(){
+		var req = ProdiSvc.all();
+		req.success(function(res){
+			$scope.prodis = res;
+		});
+	}
+	$scope.set_tprodi = function(val){
+		$scope.t_prodi = val;
+		$scope.nama = val;
+	}
+	$scope.get_fakultass();
+	$scope.get_prodis();
 
 	// inisiasi variabel
 	$scope.selected_donasi = [];
@@ -804,22 +846,26 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 		$scope.nama = "";
 		$scope.jenis_lv_1 = "";
 		$scope.jenis_lv_2 = "";
+		$scope.q_prodi = "";
 	}
 	$scope.fresh_level1 = function(){
 		$scope.jenis_lv_2 = "";
 		$scope.nama = "";
 		$scope.angkatan = "";
 		$scope.temp_donatur.nama_wakil = "";
+		$scope.q_prodi = "";
 	}
 	$scope.fresh_level2 = function(){
 		if($scope.jenis_lv_2 == "Satu ITB"){
 			$scope.nama = "ITB";
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
+			$scope.q_prodi = "";
 		}else{
 			$scope.nama = "";
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
+			$scope.q_prodi = "";
 		}
 	}
 	$scope.val_donasi = function(){
@@ -1283,9 +1329,16 @@ app.filter('tahun_db', function(){
 		return terfilter;
 	};
 });
-app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, lodash){
+app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, lodash, FakultasSvc, ProdiSvc){
 
 	// fungsi-fungsi awal
+	$scope.get_fakultass = function(){
+		var req = FakultasSvc.all();
+		req.success(function(res){
+			$scope.fakultas = res;
+		});
+	}
+	$scope.get_fakultass();
 	$scope.get_tahuns = function(){
 		$scope.tahuns = [];
 		var newlist = $filter('orderBy')($scope.donasis, 'tanggal', false);

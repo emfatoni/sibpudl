@@ -43,5 +43,4 @@ Daftar Fakultas:
 - SBM
 
 next-next:
-- buat filter untuk masing2 jenis grafik
-- buat template untuk filter
+- buat filter untuk grafik prodi dan fakultas

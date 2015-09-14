@@ -63,10 +63,34 @@
 			</div>
 
 			<!-- ISIAN -->
-			<div ng-show="((jenis_lv_1 != '')&&(jenis_lv_2 != '')&&(jenis_lv_2 != 'Satu ITB'))||(jenis_lv_1 == 'Personal')" class="form-group">
+			<div ng-show="((jenis_lv_1 != '')&&(jenis_lv_2 != '')&&(jenis_lv_2 != 'Satu ITB')&&(jenis_lv_2 != 'Program Studi'))||(jenis_lv_1 == 'Personal')" class="form-group">
 				<label class="control-label col-md-2">Nama*</label>
 				<div class="col-md-10">
 					<input type="text" ng-model="nama" class="form-control" placeholder="nama {{get_nama();}}">
+				</div>
+			</div>
+			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 == 'Program Studi')" class="form-group">
+				<label class="control-label col-md-2">Nama Program Studi*</label>
+				<div class="col-md-10">
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							{{(nama=="")?"Pilih Program Studi ":nama}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation">
+								<div class="col-md-12">
+									<input type="text" class="form-control" placeholder="cari prodi..." ng-model="q_prodi">
+								</div>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li ng-repeat="pro in prodis | filter:q_prodi"><a href="" ng-click="set_tprodi(pro.kepanjangan)">{{pro.kepanjangan}} ({{pro.kode}})</a></li>
+						</ul>
+					</div>
+					<script type="text/javascript">
+						$('.dropdown-menu').find('input').click(function (e) {
+							e.stopPropagation();
+						});
+					</script>
 				</div>
 			</div>
 			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 != '')" class="form-group">
