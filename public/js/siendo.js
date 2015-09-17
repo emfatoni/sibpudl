@@ -1335,10 +1335,19 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 	$scope.get_fakultass = function(){
 		var req = FakultasSvc.all();
 		req.success(function(res){
-			$scope.fakultas = res;
+			$scope.fakultass = res;
+			$scope.update_categorie_fp("fakultas");
 		});
 	}
-	$scope.get_fakultass();
+	$scope.get_prodis = function(){
+		var req = ProdiSvc.all();
+		req.success(function(res){
+			$scope.prodis = res;
+		});
+	}
+
+	
+
 	$scope.get_tahuns = function(){
 		$scope.tahuns = [];
 		var newlist = $filter('orderBy')($scope.donasis, 'tanggal', false);
@@ -1352,6 +1361,8 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 			$scope.set_tahun("ebi", $scope.max_ebi);
 			$scope.set_tahun("dbi", $scope.max_dbi);
 			$scope.set_tahun("jdon", $scope.max_jdon);
+			$scope.get_fakultass();
+			$scope.get_prodis();
 		});
 	}
 	$scope.update_categorie = function(keyword, xs){
@@ -1369,6 +1380,144 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 			$scope.chart_fak.xAxis.categories = xs;
 		}else if(keyword == "pro"){
 			$scope.chart_pro.xAxis.categories = xs;
+		}
+	}
+	$scope.filter_tahun_fak = function(list, tahun, fak){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){
+			return list;
+		}
+		if(fak === undefined || fak === ''){
+			return list;
+		}
+		angular.forEach(list, function(item){
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						if(item.fakultas == fak){
+							terfilter.push(item);
+						}
+					}
+				}else{
+					if(item_thn >= new_thn){
+						if(item.fakultas == fak){
+							terfilter.push(item);
+						}
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					if(item.fakultas == fak){
+						terfilter.push(item);
+					}
+				}
+			}
+		});
+		return terfilter;
+	}
+	$scope.filter_tahun_pro = function(list, tahun, pro){
+		var terfilter = [];
+		if(tahun === undefined || tahun === ''){
+			return list;
+		}
+		if(pro === undefined || pro === ''){
+			return list;
+		}
+		angular.forEach(list, function(item){
+			var tgl = item.tanggal+"";
+			var tgls = tgl.split("-");
+
+			if(isNaN(tahun)){
+				var thns = tahun.split(" ");
+				var new_thn = parseInt(thns[1]);
+				var item_thn = parseInt(tgls[0]);
+
+				if(thns[0] === "<"){
+					if(item_thn <= new_thn){
+						if(item.prodi == pro){
+							terfilter.push(item);
+						}
+					}
+				}else{
+					if(item_thn >= new_thn){
+						if(item.prodi == pro){
+							terfilter.push(item);
+						}
+					}
+				}
+			}else{
+				if((tahun+"") === (tgls[0]+"")){
+					if(item.prodi == pro){
+						terfilter.push(item);
+					}
+				}
+			}
+		});
+		return terfilter;
+	}
+	$scope.filter_graph_fak = function(listfak){
+		var datas = [];
+		
+		angular.forEach(listfak, function(i){
+			var total = 0;
+			var faculty = $filter('filter')($scope.fakultass, {singkatan:i})[0];
+
+			var tot_donasi = $scope.filter_tahun_fak($scope.donasis, $scope.tahun_fak, faculty.id);
+
+			angular.forEach(tot_donasi, function(item){
+				total += parseInt(item.nominal);
+			});
+
+			datas.push(total);
+		});
+		$scope.chart_fak.series[0].data = datas;
+	}
+	$scope.filter_graph_pro = function(listpro){
+		var datas = [];
+		
+		angular.forEach(listpro, function(i){
+			var total = 0;
+			var prody = $filter('filter')($scope.prodis, {kepanjangan:i})[0];
+
+			var tot_donasi = $scope.filter_tahun_pro($scope.donasis, $scope.tahun_pro, prody.id);
+
+			angular.forEach(tot_donasi, function(item){
+				total += parseInt(item.nominal);
+			});
+
+			datas.push(total);
+		});
+		$scope.chart_pro.series[0].data = datas;
+	}
+	$scope.update_categorie_fp = function(keyword){
+		var vals = [];
+		var valus = [];
+		if(keyword == "fakultas"){
+			angular.forEach($scope.fakultass, function(i){
+				vals.push(i.singkatan);
+				valus.push(0);
+			});
+			$scope.chart_fak.xAxis.categories = vals;
+			$scope.chart_fak.series[0].data = valus;
+			$scope.filter_graph_fak(vals);
+		}else{
+			var prodi_per_f = $filter('fakultas_prodi')($scope.prodis, keyword);
+
+			angular.forEach(prodi_per_f, function(i){
+				vals.push(i.kepanjangan);
+				valus.push(0);
+			});
+
+			$scope.chart_pro.xAxis.categories = vals;
+			$scope.chart_pro.series[0].data = valus;
+			$scope.filter_graph_pro(vals);
 		}
 	}
 	$scope.update_value = function(keyword, vals){
