@@ -28,19 +28,21 @@ Inpoh!
 - buat ngisi migration: Schema Builder Laravel 5
 - ngecek resource path: php artisan route:list
 
-Daftar Fakultas:
-- FMIPA
-- SITH
-- SF
-- FTTM
-- FITB
-- FTI
-- STEI
-- FTMD
-- FTSL
-- SAPPK
-- FSRD
-- SBM
-
 next-next:
-- buat filter untuk grafik prodi dan fakultas
+v login
+v logout
+v siapin 3 jenis user
+v user access di menu bar
+v user access di beranda
+v user access di donasi
+v user access di donatur
+v user access di fakultas
+v user access di akun
+v user access di url
+- perbaikan login dua kali
+- pengaturan akun
+
+user contoh:
+- Donatur: fulan@gmail.com
+- Tim Fundrising: fajrin@bpudl.itb.ac.id
+- Admin: gunawan@bpudl.itb.ac.id

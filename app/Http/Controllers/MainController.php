@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -13,12 +14,16 @@ class MainController extends Controller {
 	 * @return Response
 	 */
 	public function __construct(){
-		// $this->middleware('auth');
+		//$this->middleware('auth');
 	}
 
 	public function index()
 	{
-		return view('index_siendo');
+		if(Auth::check()){
+			return view('index_siendo');	
+		}else{
+			return redirect('login');
+		}
 	}
 
 	public function login()

@@ -80,8 +80,12 @@
 				<div class="col-md-10">
 					<button class="btn btn-success" ng-click="edit_donasi()">Simpan</button>
 					<button class="btn btn-danger" ng-click="del_donasi()">Hapus Donasi</button>
+
+					<span ng-show="user_aktif.role == 'Admin BPUDL'">
 					<button ng-show="temp_donasi.status == 'ditunda'" class="btn btn-primary" ng-click="sah_donasi()">Sahkan Donasi</button>
 					<button ng-show="temp_donasi.status == 'disahkan'" class="btn btn-warning" ng-click="unsah_donasi()">Tunda Donasi</button>
+					</span>
+
 					<button class="btn btn-warning" ng-click="is_edit=false">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
@@ -145,8 +149,11 @@
 		<div ng-show="selected_donasi.length >= 1" class="row" style="margin-top: 15px">
 			<div class="col-md-12">
 				<button ng-click="del_donasi_banyak()" class="btn btn-danger">Hapus Terpilih</button>
+
+				<span ng-show="user_aktif.role == 'Admin BPUDL'">
 				<button ng-click="sah_donasi_banyak()" class="btn btn-primary">Sahkan Terpilih</button>
 				<button ng-click="unsah_donasi_banyak()" class="btn btn-warning">Tunda Terpilih</button>
+				</span>
 			</div>
 		</div>
 

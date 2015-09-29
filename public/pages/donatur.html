@@ -1,3 +1,7 @@
+<div ng-show="user_aktif.role != 'Admin BPUDL'">
+	<p>You're not allowed here!</p>
+</div>
+<div ng-show="user_aktif.role == 'Admin BPUDL'">
 <!-- FORM UNTUK EDIT -->
 <div class="row" ng-show="is_edit || is_add">
 	<div class="col-md-6" id="edit-form">
@@ -219,4 +223,5 @@
 		</div>
 		
 	</div>
+</div>
 </div>

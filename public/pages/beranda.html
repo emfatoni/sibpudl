@@ -4,7 +4,7 @@
 	</div>
 </div>
 
-<div class="row" style="margin-top: 50px">
+<div class="row" style="margin-top: 50px" ng-show="user_aktif.role != 'Donatur'">
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund dan Hasil Investasi per Tahun</h3>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="user_aktif.role != 'Donatur'">
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund Tak Bersyarat dan Hasil Investasi</h3>
@@ -62,7 +62,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="user_aktif.role != 'Donatur'">
 	<div class="col-md-6">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Donasi Bersyarat dan Hasil Investasi</h3>
@@ -125,6 +125,7 @@
 			<h3 class="text-center">Endowmentfund per Program Studi</h3>
 			
 			<div class="col-md-12" style="margin: 20px 0px">
+				
 				<form class="form-inline">
 					<label>Tahun</label>
 					<input class="form-control" type="number" ng-model="tahun_pro" ng-init="tahun_pro=2015" ng-blur="update_categorie_fp(fak_pro)">

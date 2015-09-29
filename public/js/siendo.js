@@ -17,36 +17,39 @@ app.config(function(paginationTemplateProvider) {
 app.config(function($routeProvider, $locationProvider){
 	$routeProvider.when('/',{
 		templateUrl:'pages/beranda.html',
-		controller: 'DashboardCtrl'
+		controller: 'DashboardCtrl',
+		kecuali: '',
+		kecuali2: '',
 	});
 	$routeProvider.when('/donasi',{
 		templateUrl:'pages/donasi.html',
 		controller:'DonasiCtrl as donasiCtrl',
-		kecuali: '',
+		kecuali: 'Donatur',
+		kecuali2: '',
 	});
 	$routeProvider.when('/donatur',{
 		templateUrl:'pages/donatur.html',
 		controller:'DonaturCtrl',
 		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
 	});
 	$routeProvider.when('/akun',{
 		templateUrl:'pages/akun.html',
 		controller: 'AkunCtrl',
 		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
 	});
 	$routeProvider.when('/tambah_donasi',{
 		templateUrl:'pages/form_donasi.html',
 		controller: 'DonasiCtrl',
-		kecuali: '',
-	});
-	$routeProvider.when('/tambah_akun',{
-		templateUrl:'pages/form_akun.html',
-		controller: 'AkunCtrl',
-		kecuali: 'Tim Fundrising',
+		kecuali: 'Donatur',
+		kecuali2: '',
 	});
 	$routeProvider.when('/fakultas',{
 		templateUrl:'pages/fakultas.html',
-		controller: 'FakultasCtrl'
+		controller: 'FakultasCtrl',
+		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
 	});
 	/*
 	$routeProvider.when('/tambah_donatur',{
@@ -202,13 +205,14 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 		return ((variabel === undefined)||(variabel === ''));
 	}
 
-	/*
+	
 	$rootScope.$on('$routeChangeStart', function (event, next) {
-        if ($scope.user_aktif.user.role == next.kecuali) {
+        if ($scope.user_aktif.role == next.kecuali) {
             $location.path('/');
+        }else if($scope.user_aktif.role == next.kecuali2){
+        	$location.path('/');
         }
     });
-	*/
 });
 
 /* KELOLA FAKULTAS-PRODI */
