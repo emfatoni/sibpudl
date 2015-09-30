@@ -9,6 +9,9 @@
 		<h2 ng-show="is_add && is_adddonatur">Tambah Data Akun Donatur</h2>
 
 		<form class="form-horizontal col-md-5">
+
+			<span ng-show="is_edit && (temp_akun.role != 'Donatur')">
+
 			<div class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
@@ -70,6 +73,9 @@
 					</select>
 				</div>
 			</div>
+
+			</span>
+
 			<div class="form-group" ng-show="is_add || is_editpwd">
 				<label class="control-label col-md-2">Password*</label>
 				<div class="col-md-10">
@@ -111,8 +117,16 @@
 </div>
 <div class="row" style="margin-top: 30px">
 	<div class="col-md-12">
-		<a href="" class="btn btn-primary pull-right" ng-click="is_add=true; fresh_akun()">Tambah Akun</a>
-		<br><br>
+		<form class="form-inline">
+			<select class="form-control" ng-model="fil_akun_role">
+				<option value="">- Pilih Role -</option>
+				<option value="Admin BPUDL">Admin BPUDL</option>
+				<option value="Tim Fundrising">Tim Fundrising</option>
+				<option value="Donatur">Donatur</option>
+			</select>
+			<a href="" class="btn btn-primary pull-right" ng-click="is_add=true; fresh_akun()">Tambah Akun</a>
+		</form>
+		<br>
 		<circle-spinner ng-show="is_loading"></circle-spinner>
 		<table class="table table-condensed table-bordered" ng-show="!is_loading">
 			<thead>
@@ -127,7 +141,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="akun in akuns">
+				<tr ng-repeat="akun in akuns | akun_role: fil_akun_role">
 					<td>{{$index+1}}</td>
 					<td><a href="" ng-click="get_akun(akun.id)">{{akun.nama}}</a></td>
 					<td>{{akun.jabatan}}</td>

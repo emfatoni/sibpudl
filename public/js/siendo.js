@@ -116,27 +116,27 @@ app.factory("DonasiSvc", function($http){
 app.factory("AkunSvc", function($http){
 	return{
 		all: function(){
-			var req = $http({method:'GET', url:'karyawan'});
+			var req = $http({method:'GET', url:'akun'});
 			return req;
 		},
 		create: function(data){
-			var req = $http({method:'GET', url:'karyawan/create', params:data});
+			var req = $http({method:'GET', url:'akun/create', params:data});
 			return req;
 		},
 		get: function(id){
-			var req = $http.get('karyawan/'+id);
+			var req = $http.get('akun/'+id);
 			return req;
 		},
 		update: function(id, data){
-			var req = $http.put('karyawan/'+id, data);
+			var req = $http.put('akun/'+id, data);
 			return req;
 		},
 		delete: function(id){
-			var req = $http.delete('karyawan/'+id);
+			var req = $http.delete('akun/'+id);
 			return req;
 		},
 		get_user: function(){
-			var req = $http({method:'GET', url:'karyawan/get_user'});
+			var req = $http({method:'GET', url:'akun/get_user'});
 			return req;
 		}
 	}
@@ -1018,6 +1018,19 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 
 
 /* KELOLA AKUN */
+app.filter('akun_role', function(){
+	return function(inputs, jenis){
+		var terfilter = [];
+		if(jenis === undefined || jenis === ''){return inputs;
+		}
+		angular.forEach(inputs, function(item) {
+			if(jenis === item.role){
+				terfilter.push(item);
+			}
+		});
+		return terfilter;
+	};
+});
 app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $filter, $anchorScroll){
 
 	// ambil semua data akun
@@ -1068,24 +1081,40 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 	$scope.get_donatur = function(){
 		var id_donatur = $scope.chosen_donatur;
 
+
 		if(id_donatur != ""){
 			var tdonatur = $filter('filter')($scope.donaturs, {id:id_donatur})[0];
+			
+
 			if(tdonatur.email != null){
-				$scope.temp_akun.email = tdonatur.email;
-				$scope.temp_akun.role = "Donatur";
-				$scope.temp_akun.nama = tdonatur.id;
+				var is_ada = $filter('filter')($scope.akuns, {email:tdonatur.email})[0];
+
+				if(is_ada){
+					alert("!!! Donatur ini sudah mempunyai akun.");
+					$scope.temp_akun.email = "";
+					$scope.temp_akun.role = "";
+					$scope.temp_akun.nama = "";
+				}else{
+					$scope.temp_akun.email = tdonatur.email;
+					$scope.temp_akun.role = "Donatur";
+					$scope.temp_akun.nama = tdonatur.id;
+				}
 			}else{
 				alert("!!! Alamat e-mail donatur yang terpilih belum diisi sehingga tidak bisa dibuatkan akun. Harap diisi lebih dahulu di halaman Kelola Donatur.");
 				$scope.temp_akun.email = "";
 				$scope.temp_akun.role = "";
+				$scope.temp_akun.nama = "";
 			}
 		}else{
 			$scope.temp_akun.email = "";
 			$scope.temp_akun.role = "";
+			$scope.temp_akun.nama = "";
 		}
 	}
 	$scope.val_akun = function(){
 		var akun = $scope.temp_akun;
+		var is_ada = $filter('filter')($scope.akuns, {email:$scope.temp_akun.email})[0];
+
 		if(!$scope.is_adddonatur){
 			if($scope.is_empty(akun.nama)){
 				return "!!! Nama belum diisi";
@@ -1101,6 +1130,8 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 				return "!!! Password belum diisi";
 			}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
 				return "!!! Password berbeda";
+			}else if(is_ada && $scope.is_add){
+				return "!!! Alamat e-mail sudah ada.";
 			}else{
 				return "";
 			}
@@ -1113,6 +1144,8 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 				return "!!! Password belum diisi";
 			}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
 				return "!!! Password berbeda";
+			}else if(is_ada && $scope.is_add){
+				return "!!! Alamat e-mail sudah ada.";
 			}else{
 				return "";
 			}
@@ -1172,14 +1205,19 @@ app.controller('AkunCtrl', function($scope, AkunSvc, DonaturSvc, $location, $fil
 		$scope.is_saving = true;
 
 		if(confirm("Anda yakin ingin menghapus akun ini?")){
-			var req = AkunSvc.delete($scope.temp_akun.id);
-			req.success(function(res){
-				alert("Akun "+res.status);
-				$scope.get_akuns();
-				$scope.fresh_akun();
-				$scope.is_edit = false;
+			if($scope.temp_akun.id == $scope.user_aktif.id){
+				alert("!!! User ini sedang aktif.");
 				$scope.is_saving = false;
-			});
+			}else{
+				var req = AkunSvc.delete($scope.temp_akun.id);
+				req.success(function(res){
+					alert("Akun "+res.status);
+					$scope.get_akuns();
+					$scope.fresh_akun();
+					$scope.is_edit = false;
+					$scope.is_saving = false;
+				});
+			}
 		}else{
 			$scope.is_saving = false;
 		}

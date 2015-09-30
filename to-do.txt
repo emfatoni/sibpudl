@@ -39,8 +39,30 @@ v user access di donatur
 v user access di fakultas
 v user access di akun
 v user access di url
-- perbaikan login dua kali
+v perbaikan login dua kali
 - pengaturan akun
+
+pengelolaan akun:
+v controller akun
+v controller karyawan
+v view add akun karyawan
+v add akun karyawan
+v view add akun donatur
+v add akun donatur
+v view edit akun karyawan
+v edit akun karyawan
+v view edit akun donatur
+v edit akun donatur
+v delete akun karyawan
+v delete akun donatur
+v filter akun
+
+pengaturan akun:
+- siapkan halaman dan alamat
+- view edit akun karyawan
+- edit akun karyawan
+- view edit akun donatur
+- edit akun donatur
 
 user contoh:
 - Donatur: fulan@gmail.com
