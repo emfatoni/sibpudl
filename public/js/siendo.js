@@ -51,6 +51,12 @@ app.config(function($routeProvider, $locationProvider){
 		kecuali: 'Tim Fundrising',
 		kecuali2: 'Donatur',
 	});
+	$routeProvider.when('/atur_akun',{
+		templateUrl:'pages/atur_akun.html',
+		controller: 'AturAkunCtrl',
+		kecuali: '',
+		kecuali2: '',
+	});
 	/*
 	$routeProvider.when('/tambah_donatur',{
 		templateUrl:'pages/form_donatur.html',
@@ -196,10 +202,15 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 
 	$scope.halaman = "beranda";
 
-	var get_user = AkunSvc.get_user();
-	get_user.success(function(res){
-		$scope.user_aktif = res;
-	});
+	
+
+	$scope.get_user_now = function(){
+		var get_user = AkunSvc.get_user();
+		get_user.success(function(res){
+			$scope.user_aktif = res;
+		});
+	}
+	$scope.get_user_now();
 
 	$scope.is_empty = function(variabel){
 		return ((variabel === undefined)||(variabel === ''));
@@ -213,6 +224,87 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
         	$location.path('/');
         }
     });
+});
+
+/* PENGATURAN AKUN */
+app.controller('AturAkunCtrl', function($scope, AkunSvc, $filter, $location){
+
+
+	$scope.get_akuns = function(){
+		var req = AkunSvc.all();
+		req.success(function(res){
+			$scope.akuns = res;
+		});
+	}
+	$scope.get_akuns();
+
+	$scope.is_editpwd = false;
+	$scope.repassword = "";
+	$scope.temp_akun = {
+		"nama":"",
+		"jabatan":"",
+		"telp":"",
+		"alamat":"",
+		"email":"",
+		"password":"",
+		"role":""
+	};
+	
+	$scope.get_akun = function(){
+		var get_user = AkunSvc.get_user();
+		get_user.success(function(res){
+			$scope.temp_akun = res;
+			$scope.old_email = $scope.temp_akun.email;
+		});
+	}
+	$scope.get_akun();
+
+	$scope.val_akun = function(){
+		var akun = $scope.temp_akun;
+		var is_ada = $filter('filter')($scope.akuns, {email:akun.email})[0];
+		
+			if($scope.is_empty(akun.nama)){
+				return "!!! Nama belum diisi";
+			}else if($scope.is_empty(akun.telp)){
+				return "!!! Nomor telepon belum diisi";
+			}else if($scope.is_empty(akun.alamat)){
+				return "!!! Alamat belum diisi";
+			}else if($scope.is_empty(akun.email)){
+				return "!!! Alamat E-mail belum diisi";
+			}else if($scope.is_empty(akun.role)){
+				return "!!! Peran belum diisi";
+			}else if($scope.is_empty(akun.password) && ($scope.is_edit == false)){
+				return "!!! Password belum diisi";
+			}else if(($scope.repassword != akun.password) && !$scope.is_empty(akun.password)){
+				return "!!! Password berbeda";
+			}else if(is_ada && (akun.email != $scope.old_email)){
+
+				return "!!! Alamat e-mail sudah dipakai.";
+			}else{
+				return "";
+			}
+	}
+
+	$scope.edit_akun = function(){
+		$scope.is_saving = true;
+
+		var validasi = $scope.val_akun();
+
+		if($scope.is_empty(validasi)){
+			var req = AkunSvc.update($scope.temp_akun.id, $scope.temp_akun);
+			req.success(function(res){
+				alert("Akun "+res.status);
+				$scope.get_akuns();
+				$scope.get_akun();
+				$scope.get_user_now();
+				$scope.is_saving = false;
+			});
+		}else{
+			alert(validasi);
+			$scope.is_saving = false;
+		}
+	}
+
 });
 
 /* KELOLA FAKULTAS-PRODI */

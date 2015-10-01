@@ -1,0 +1,93 @@
+<div class="row">
+	<div class="col-md-12">
+		<h2>Pengaturan Akun</h2>
+		<br>
+		<form class="form-horizontal col-md-5">
+
+			<span ng-show="temp_akun.role != 'Donatur'">
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Nama Lengkap*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_akun.nama">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Jabatan
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_akun.jabatan">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Telepon*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_akun.telp">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Alamat*
+				</label>
+				<div class="col-md-9">
+					<textarea class="form-control" ng-model="temp_akun.alamat" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					<!-- KOSONG -->
+				</label>
+				<div class="col-md-9">
+					<!-- KOSONG -->
+				</div>
+			</div>
+			</span>
+
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					E-mail*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_akun.email">
+				</div>
+			</div>
+
+			<span ng-show="is_editpwd">
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Password*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="password" ng-model="temp_akun.password">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					Tulis Kembali Password*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="password" ng-model="repassword">
+					<span>{{(repassword === temp_akun.password)?"Benar":"Tidak sama"}}</span>
+				</div>
+			</div>
+			</span>
+
+			<div class="form-group">
+				<label class="control-label col-md-3">
+					<!-- TOMBOL-TOMBOL -->
+				</label>
+				<div class="col-md-9">
+					<button class="btn btn-success" ng-click="edit_akun()">Simpan</button>
+					<button class="btn btn-primary" ng-show="!is_editpwd" ng-click="is_editpwd=true">Reset Password</button>
+					<button class="btn btn-warning" ng-show="is_editpwd" ng-click="temp_akun.password=''; repassword=''; is_editpwd=false">Batal Reset Password</button>
+					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>

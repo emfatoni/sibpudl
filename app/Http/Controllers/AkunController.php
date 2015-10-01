@@ -157,13 +157,13 @@ class AkunController extends Controller {
 				return array('status'=>'Failed!');
 			}else{
 				$password = $req->input('password');
+				$edit->email = $req->input('email');
+
 				if($password != ""){
 					$edit->password = bcrypt($password);
-					
-					if($edit->save()){
-						return array('status'=>'Saved!');
-					}
-					return array('status'=>'Failed!');
+				}
+				if($edit->save()){
+					return array('status'=>'Saved!');
 				}
 				return array('status'=>'Failed!');
 			}
@@ -216,10 +216,16 @@ class AkunController extends Controller {
             	$id_karyawan = $pengguna->id_pengguna;
             	$karyawan = Karyawan::find($id_karyawan);
             	$pengguna["nama"] = $karyawan->nama;
+            	$pengguna["jabatan"] = $karyawan->jabatan;
+				$pengguna["telp"] = $karyawan->telp;
+				$pengguna["alamat"] = $karyawan->alamat;
             }else{
             	$id_donatur = $pengguna->id_pengguna;
             	$donatur = Donatur::find($id_donatur);
             	$pengguna["nama"] = $donatur->nama;
+            	$pengguna["jabatan"] = "";
+				$pengguna["telp"] = $donatur->telp;
+				$pengguna["alamat"] = $donatur->alamat_surat;
             }
             return $pengguna;
         }

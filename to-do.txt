@@ -58,11 +58,11 @@ v delete akun donatur
 v filter akun
 
 pengaturan akun:
-- siapkan halaman dan alamat
-- view edit akun karyawan
-- edit akun karyawan
-- view edit akun donatur
-- edit akun donatur
+v siapkan halaman dan alamat
+v view edit akun karyawan
+v edit akun karyawan
+v view edit akun donatur
+v edit akun donatur
 
 user contoh:
 - Donatur: fulan@gmail.com
