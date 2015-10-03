@@ -46,7 +46,18 @@
 						<input class="form-control" type="password" name="password">
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary pull-right">Login</button>
+						<button type="submit" class="btn btn-primary pull-right form-control">Login</button>
+					</div>
+					<br>
+					<div class="form-group" style="color: white; margin-top: 25px">
+						@if (count($errors) > 0)
+								<strong>Whoops!</strong> There were some problems with your input.<br><br>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+						@endif
 					</div>
 				</form>
 				</div>

@@ -17,8 +17,8 @@ class CreateProdis extends Migration {
 			$table->increments('id');
 
 			$table->string('kode')->nullable();
-			$table->string('singkatan');
-			$table->string('kepanjangan')->nullable();
+			$table->string('singkatan')->nullable();
+			$table->string('kepanjangan');
 
 			$table->integer('id_fakultas')->unsigned();
 			$table->foreign('id_fakultas')->references('id')->on('fakultass');

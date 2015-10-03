@@ -64,7 +64,38 @@ v edit akun karyawan
 v view edit akun donatur
 v edit akun donatur
 
-user contoh:
-- Donatur: fulan@gmail.com
-- Tim Fundrising: fajrin@bpudl.itb.ac.id
-- Admin: gunawan@bpudl.itb.ac.id
+polesan:
+v cek kesesuaian migration dan database
+- buat ERD dan Physical RD
+v buat seed 3 jenis akun
+
+<login>
+v tampilkan pesan eror
+- Indonesiakan pesan eror
+- lama session login
+
+<beranda>
+- warna grafik
+- tampilan:
+	v EF total difullkan width-nya dan rentang tahun = 10
+	v hapus tulisan 'hasil investasi'
+	v EF per prodi ditengahkan
+	v beri data 0 untuk awal
+v filter yang belum disahkan
+
+<donasi>
+- buat file upload dengan 100 data
+v select donatur bisa search
+x masalah selected row
+- periksa validasi
+
+<donatur>
+- periksa validasi
+- masalah selected row
+
+<akun>
+- periksa validasi
+
+<fakultas>
+
+<pengaturan akun>

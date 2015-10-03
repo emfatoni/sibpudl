@@ -912,8 +912,13 @@ app.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location, 
 	};
 	$scope.get_donaturs();
 	$scope.get_donasis();
+	$scope.donatur_terpilih = "";
 
 	// fungsi-fungsi
+	$scope.pilih_donatur = function(don){
+		$scope.temp_donasi.id_donatur = don.id;
+		$scope.donatur_terpilih = don.nama;
+	}
 	$scope.get_donasi = function(id_donasi){
 		$anchorScroll('edit-form');
 		$scope.is_edit = true;
@@ -1698,7 +1703,9 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 
 			if(keyword != "jdon"){
 				angular.forEach(tot_donasi, function(item){
-					total += parseInt(item.nominal);
+					if(item.status == "disahkan"){
+						total += parseInt(item.nominal);
+					}
 				});
 			}else{
 				var jdonatur = lodash.groupBy(tot_donasi, 'id_donatur');
@@ -1719,6 +1726,10 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 		var tahuns = [];
 		var intval = $scope.interval;
 
+		if(keyword == "ei"){
+			intval = intval*2;
+		}
+
 		// tahuns.push("< "+(max_tahun-5));
 
 		for(var i=intval-1; i>=0; i--){
@@ -1736,7 +1747,7 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 	
 
 	// variabel-variabel
-	$scope.eitahun_e = [20, 30, 22, 0, 0, 0, 0];
+	$scope.eitahun_e = [0, 0, 0, 0, 0, 0, 0];
 	$scope.eitahun_i = [20000000, 2000000, 220000000, 0, 0, 0, 0];
 	$scope.tahun_eitahun = [];
 	$scope.interval = 5;

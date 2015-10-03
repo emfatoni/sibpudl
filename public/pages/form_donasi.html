@@ -13,10 +13,31 @@
 			<div class="form-group">
 				<label class="control-label col-md-2">Donatur*</label>
 				<div class="col-md-10">
-					<select ng-model="temp_donasi.id_donatur" class="form-control">
+					<select ng-show="false" ng-model="temp_donasi.id_donatur" class="form-control">
 						<option value="">- Pilih Donatur -</option>
 						<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
 					</select>
+
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							{{(temp_donasi.id_donatur=="")?"Pilih Donatur ":donatur_terpilih}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation">
+								<div class="col-md-12">
+									<input type="text" class="form-control" placeholder="cari donatur..." ng-model="q_donatur">
+								</div>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li ng-repeat="donatur in donaturs | filter:q_donatur"><a href="" ng-click="pilih_donatur(donatur)">{{donatur.nama}}</a></li>
+						</ul>
+					</div>
+					<script type="text/javascript">
+						$('.dropdown-menu').find('input').click(function (e) {
+							e.stopPropagation();
+						});
+					</script>
+				
 				</div>
 			</div>
 			<div class="form-group">
