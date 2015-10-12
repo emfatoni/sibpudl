@@ -64,7 +64,7 @@
 			</div>
 		</div>
 		<div class="col-md-12" style="padding: 20px 5px; margin-top: 145px; border-top: solid 1px white">
-			<p class="text-center white-text">Copyright &copy Almighty Gunawan</p>
+			<p class="text-center white-text">Copyright &copy Tim BPUDL</p>
 		</div>
 	</div>
 </body>

@@ -64,10 +64,9 @@ v edit akun karyawan
 v view edit akun donatur
 v edit akun donatur
 
-polesan:
-v cek kesesuaian migration dan database
+<polesan>
 - buat ERD dan Physical RD
-v buat seed 3 jenis akun
+- ganti nama copyright
 
 <login>
 v tampilkan pesan eror
@@ -99,3 +98,35 @@ x masalah selected row
 <fakultas>
 
 <pengaturan akun>
+
+revisi:
+v ganti nama copyrigth
+v pewarnaan grafik
+- hapus fakultas
+- perbaiki access control
+- ubah email akun donatur
+- print screen
+	v login
+	v beranda
+		- histori donasi
+	v kelola donasi
+		v add donasi
+		v edit donasi
+		v hapus dan sahkan donasi
+	v kelola donatur
+		v add donatur
+		v edit donatur
+		v hapus donatur
+	v kelola akun
+		- add akun karyawan
+		- add donatur
+		- edit akun
+		- hapus akun
+	v kelola fakultas & prodi
+		v add fakultas
+		v add prodi
+		v edit fakultas
+		v edit prodi
+	v pengaturan akun
+- histori donasi
+- control access jenis donatur

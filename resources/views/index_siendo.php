@@ -68,7 +68,7 @@
 	<div class="container">
 		<div ng-view></div>
 		<div class="col-md-12" style="padding: 20px 5px; margin-top: 145px; border-top: solid 1px black">
-			<p class="text-center">Copyright &copy Almighty Gunawan</p>
+			<p class="text-center">Copyright &copy Tim BPUDL</p>
 		</div>
 	</div>
 </body>

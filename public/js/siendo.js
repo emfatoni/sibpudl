@@ -12,64 +12,6 @@ app.config(function(paginationTemplateProvider) {
     paginationTemplateProvider.setPath('dirPagination.tpl.html');
 });
 
-
-/* ROUTING */
-app.config(function($routeProvider, $locationProvider){
-	$routeProvider.when('/',{
-		templateUrl:'pages/beranda.html',
-		controller: 'DashboardCtrl',
-		kecuali: '',
-		kecuali2: '',
-	});
-	$routeProvider.when('/donasi',{
-		templateUrl:'pages/donasi.html',
-		controller:'DonasiCtrl as donasiCtrl',
-		kecuali: 'Donatur',
-		kecuali2: '',
-	});
-	$routeProvider.when('/donatur',{
-		templateUrl:'pages/donatur.html',
-		controller:'DonaturCtrl',
-		kecuali: 'Tim Fundrising',
-		kecuali2: 'Donatur',
-	});
-	$routeProvider.when('/akun',{
-		templateUrl:'pages/akun.html',
-		controller: 'AkunCtrl',
-		kecuali: 'Tim Fundrising',
-		kecuali2: 'Donatur',
-	});
-	$routeProvider.when('/tambah_donasi',{
-		templateUrl:'pages/form_donasi.html',
-		controller: 'DonasiCtrl',
-		kecuali: 'Donatur',
-		kecuali2: '',
-	});
-	$routeProvider.when('/fakultas',{
-		templateUrl:'pages/fakultas.html',
-		controller: 'FakultasCtrl',
-		kecuali: 'Tim Fundrising',
-		kecuali2: 'Donatur',
-	});
-	$routeProvider.when('/atur_akun',{
-		templateUrl:'pages/atur_akun.html',
-		controller: 'AturAkunCtrl',
-		kecuali: '',
-		kecuali2: '',
-	});
-	/*
-	$routeProvider.when('/tambah_donatur',{
-		templateUrl:'pages/form_donatur.html',
-		controller: 'DonaturCtrl',
-		kecuali: 'Tim Fundrising',
-	});
-	$routeProvider.when('/edit_donatur/:id',{
-		templateUrl:'aset/siendo/pages/form_donatur.html',
-		controller: 'EditDonaturCtrl',
-		kecuali: 'Tim Fundrising',
-	});*/
-});
-
 /* FACTORY */
 app.factory("DonaturSvc", function($http){
 	return{
@@ -197,7 +139,78 @@ app.factory("ProdiSvc", function($http){
 });
 
 
+/* ROUTING */
+app.config(function($routeProvider, $locationProvider){
+	$routeProvider.when('/',{
+		templateUrl:'pages/beranda.html',
+		controller: 'DashboardCtrl',
+		kecuali: '',
+		kecuali2: '',
+		/*resolve: {
+			Uaktif: ['$q', '$http', function($q, $http){
+				var hsl = $q.defer();
+				var req = $http({method:'GET', url:'akun/get_user'});
+				req.success(function(res){
+					hsl.resolve(res);
+				});
+				return hsl.promise;
+			}]
+		}*/
+	});
+	$routeProvider.when('/donasi',{
+		templateUrl:'pages/donasi.html',
+		controller:'DonasiCtrl as donasiCtrl',
+		kecuali: 'Donatur',
+		kecuali2: '',
+	});
+	$routeProvider.when('/donatur',{
+		templateUrl:'pages/donatur.html',
+		controller:'DonaturCtrl',
+		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
+	});
+	$routeProvider.when('/akun',{
+		templateUrl:'pages/akun.html',
+		controller: 'AkunCtrl',
+		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
+	});
+	$routeProvider.when('/tambah_donasi',{
+		templateUrl:'pages/form_donasi.html',
+		controller: 'DonasiCtrl',
+		kecuali: 'Donatur',
+		kecuali2: '',
+	});
+	$routeProvider.when('/fakultas',{
+		templateUrl:'pages/fakultas.html',
+		controller: 'FakultasCtrl',
+		kecuali: 'Tim Fundrising',
+		kecuali2: 'Donatur',
+	});
+	$routeProvider.when('/atur_akun',{
+		templateUrl:'pages/atur_akun.html',
+		controller: 'AturAkunCtrl',
+		kecuali: '',
+		kecuali2: '',
+	});
+	/*
+	$routeProvider.when('/tambah_donatur',{
+		templateUrl:'pages/form_donatur.html',
+		controller: 'DonaturCtrl',
+		kecuali: 'Tim Fundrising',
+	});
+	$routeProvider.when('/edit_donatur/:id',{
+		templateUrl:'aset/siendo/pages/form_donatur.html',
+		controller: 'EditDonaturCtrl',
+		kecuali: 'Tim Fundrising',
+	});*/
+});
+
+
+
+
 /* MAIN CONTROLLERS */
+
 app.controller('MainController', function($scope, AkunSvc, $rootScope, $location){
 
 	$scope.halaman = "beranda";
@@ -218,13 +231,34 @@ app.controller('MainController', function($scope, AkunSvc, $rootScope, $location
 
 	
 	$rootScope.$on('$routeChangeStart', function (event, next) {
-        if ($scope.user_aktif.role == next.kecuali) {
-            $location.path('/');
-        }else if($scope.user_aktif.role == next.kecuali2){
-        	$location.path('/');
-        }
+		if($scope.user_aktif){
+			if ($scope.user_aktif.role == next.kecuali){
+	            $location.path('/');
+    	    }else if($scope.user_aktif.role == next.kecuali2){
+       		 	$location.path('/');
+        	}
+		}else{
+			var get_user = AkunSvc.get_user();
+			get_user.success(function(res){
+				$scope.user_aktif = res;
+				if ($scope.user_aktif.role == next.kecuali) {
+		            $location.path('/');
+	    	    }else if($scope.user_aktif.role == next.kecuali2){
+	       		 	$location.path('/');
+	        	}
+			});
+		}
     });
 });
+
+/*MainController.resolve = {
+	uaktif : function(AkunSvc){
+		var get_user = AkunSvc.get_user();
+		get_user.success(function(res){
+			return res;
+		});
+	}
+}*/
 
 /* PENGATURAN AKUN */
 app.controller('AturAkunCtrl', function($scope, AkunSvc, $filter, $location){
@@ -1758,6 +1792,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#27ae60'],
+				}
+			},
         },
         series: [
         	{
@@ -1783,6 +1823,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#f39c12'],
+				}
+			},
         },
         series: [
         	{
@@ -1808,6 +1854,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#d35400'],
+				}
+			},
         },
         series: [
         	{
@@ -1833,6 +1885,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#2980b9'],
+				}
+			},
         },
         series: [
         	{
@@ -1858,6 +1916,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#2c3e50'],
+				}
+			},
         },
         series: [
         	{
@@ -1881,8 +1945,14 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 	$scope.chart_fak = {
 		options: {
             chart: {
-                type: 'column'
+                type: 'column' 
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#e74c3c'],
+				}
+			},
         },
         series: [
         	{
@@ -1908,6 +1978,12 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
             chart: {
                 type: 'column'
             },
+            plotOptions: {
+				column: {
+					colorByPoint: true,
+					colors: ['#c0392b'],
+				}
+			},
         },
         series: [
         	{
