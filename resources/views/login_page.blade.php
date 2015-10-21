@@ -33,7 +33,24 @@
 			</div>
 		</div>
 		<div class="row" style="padding: 10px;">
-			<div class="col-md-4 col-md-offset-4 white-border">
+			<div class="col-md-5 col-md-offset-1" style="color: white">
+				<h3>Bagaimana Mendapatkan Akun Donatur?</h3>
+				<p>
+					Untuk mendapatkan Akun Donatur, Anda bisa mengirimkan e-mail ke <strong>aw@skd.itb.ac.id</strong> dengan subject <strong>Request Akun</strong>
+				</p>
+				<p>
+					Isi badan e-mail dengan:
+				</p>
+				<ul>
+					<li>Alamat e-mail untuk login</li>
+					<li>Nama (jika Anda mewakili sebuah instansi maka isi dengan nama instansi tersebut)</li>
+					<li>Nama perwakilan (jika Anda mewakili sebuah instansi maka isi dengan nama Anda. Jika tidak maka kosongkan saja)</li>
+					<li>Nomor telepon Anda/instansi</li>
+					<li>Alamat (alamat jelas untuk mendapatkan surat laporan donasi Anda)</li>
+				</ul>
+				<p>Setelah Anda mengirimkan request pembuatan akun donatur, Anda akan mendapatakn balasan berupa e-mail dan password untuk login. Untuk selanjutnya Anda bisa mengubah password Anda.</p>
+			</div>
+			<div class="col-md-5 white-border" style="margin-top: 50px">
 				<div class="row" style="padding: 15px;">
 				<form method="POST" action="{{ url('auth/login') }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -130,3 +130,11 @@ v pewarnaan grafik
 	v pengaturan akun
 - histori donasi
 - control access jenis donatur
+
+hari ini banget:
+v edit teks
+- tambahin cara daftar akun donatur
+- histori donasi
+- perbaikan upload
+- cek eror fajrin
+
