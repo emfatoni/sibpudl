@@ -194,8 +194,8 @@ class DonasiController extends Controller {
 	}
 
 	public function download_template(){
-		$file= public_path()."/template/template_donasi.xlsx";
-		return response()->download($file, "Template Donasi.xlsx");
+		$file= public_path()."/template/template_donasi.xlsm";
+		return response()->download($file, "Template Donasi.xlsm");
 	}
 
 }
