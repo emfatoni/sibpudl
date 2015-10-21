@@ -1519,16 +1519,27 @@ app.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locatio
 		});
 	}
 
-	
 
+
+	$scope.is_loading = false;
+	$scope.pageSize = 5;
+	$scope.page_now = 1;
+	$scope.filtered_donasi = {};
+
+	$scope.fil_owner = function(){
+		$scope.filtered_donasi = $filter('filter')($scope.donasis, {id_donatur:$scope.user_aktif.id_pengguna});
+	}
 	$scope.get_tahuns = function(){
 		$scope.tahuns = [];
 		var newlist = $filter('orderBy')($scope.donasis, 'tanggal', false);
 	}
 	$scope.get_donasis = function(){
+		$scope.is_loading = true;
 		var req = DonasiSvc.all();
 		req.success(function(res){
 			$scope.donasis = res;
+			$scope.fil_owner();
+			$scope.is_loading = false;
 			$scope.set_tahun("ei", $scope.max_ei);
 			$scope.set_tahun("etbi", $scope.max_etbi);
 			$scope.set_tahun("ebi", $scope.max_ebi);

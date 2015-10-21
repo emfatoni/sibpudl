@@ -144,3 +144,94 @@
 		</div>
 	</div>
 </div>
+
+<div class="row" ng-show="user_aktif.role == 'Donatur'">
+	<div class="col-md-12">
+
+		<h1 class="text-center" style="margin-bottom: 40px">Histori Donasi</h1>
+		
+		<br><br> <!-- KARAKTER ENTER -->
+
+		<!-- BAR UNTUK PENCARIAN, TAMBAH DATA, FILTER -->
+		<div class="row">
+			<div class="col-md-12">
+				<form class="form-inline">
+					<div class="form-group">
+						<select class="form-control" ng-model="fil_channel">
+							<option value="">- Filter Channel -</option>
+							<option value="Cash">Cash</option>
+							<option value="Non-cash">Non-cash</option>
+							<option value="Cek">Cek</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<select class="form-control" ng-model="fil_jenis">
+							<option value="">- Filter Jenis -</option>
+							<option value="Dana Lestari Tidak Bersyarat">Dana Lestari Tidak Bersyarat</option>
+							<option value="Dana Lestari Bersyarat">Dana Lestari Bersyarat</option>
+							<option value="Donasi Bersyarat">Donasi Bersyarat</option>
+						</select>
+					</div>
+					
+					<div class="form-group pull-right">
+						<label>Cari: </label>
+						<input type="text" class="form-control" placeholder="filter and search" ng-model="q">
+					</div>
+
+					<div class="form-group pull-right" style="margin-right: 15px">
+						<label>Tampilan per Halaman: </label>
+						<input type="number" class="form-control" ng-model="pageSize" style="width: 70px">
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+		<circle-spinner ng-show="is_loading"></circle-spinner>
+
+		<table ng-show="!is_loading" id="tabel_donasi" class="table table-bordered table-condensed table-hover" style="margin-top: 20px">
+			<thead>
+				<tr>
+					<th class="text-center" rowspan="2">No.</th>
+					<th class="text-center" rowspan="2">Tanggal</th>
+					<th class="text-center" rowspan="2">Nama</th>
+					<th class="text-center" rowspan="2">Jml. Donasi</th>
+					<th class="text-center" rowspan="2">Termin</th>
+					<th class="text-center" rowspan="2">Channel</th>
+					<th colspan="3" class="text-center">Jenis</th>
+					<th class="text-center" rowspan="2">Syarat</th>
+					<th class="text-center" rowspan="2">Kota</th>
+				</tr>
+				<tr>
+					<th class="text-center">Dana Lestari<br>Tidak Bersyarat</th>
+					<th class="text-center">Dana Lestari<br>Bersyarat</th>
+					<th class="text-center">Donasi<br>Bersyarat</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr dir-paginate="donasi in filtered_donasi | filter:q | itemsPerPage: pageSize | channel: fil_channel | jenis: fil_jenis" current-page="page_now">
+					<td>{{($index+1)+(pageSize*(page_now-1))}}</td>
+					<td>{{donasi.tanggal | date:'dd-MM-yyyy'}}</td>
+					<td>{{donasi.nama_donatur}}</td>
+					<td class="text-right">{{donasi.nominal | currency:"Rp. "}}</td>
+					<td>{{donasi.termin}}</td>
+					<td>{{donasi.channel}}</td>
+					<td class="text-center"><i class="{{(donasi.jenis=='Dana Lestari Tidak Bersyarat')?'glyphicon glyphicon-ok-sign':''}}"></i></td>
+					<td class="text-center"><i class="{{(donasi.jenis=='Dana Lestari Bersyarat')?'glyphicon glyphicon-ok-sign':''}}"></i></td>
+					<td class="text-center"><i class="{{(donasi.jenis=='Donasi Bersyarat')?'glyphicon glyphicon-ok-sign':''}}"></i></td>
+					<td>{{donasi.syarat}}</td>
+					<td>{{donasi.kota}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="row">
+			<div class="text-center col-md-12">
+				<dir-pagination-controls boundary-links="true">
+				</dir-pagination-controls>
+			</div>
+		</div>
+	</div>
+</div>

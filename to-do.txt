@@ -133,8 +133,8 @@ v pewarnaan grafik
 
 hari ini banget:
 v edit teks
-- tambahin cara daftar akun donatur
+v tambahin cara daftar akun donatur
 - histori donasi
 - perbaikan upload
-- cek eror fajrin
+v cek eror fajrin
 
