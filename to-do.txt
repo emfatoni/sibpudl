@@ -40,7 +40,7 @@ v user access di fakultas
 v user access di akun
 v user access di url
 v perbaikan login dua kali
-- pengaturan akun
+v pengaturan akun
 
 pengelolaan akun:
 v controller akun
@@ -65,8 +65,8 @@ v view edit akun donatur
 v edit akun donatur
 
 <polesan>
-- buat ERD dan Physical RD
-- ganti nama copyright
+v buat ERD dan Physical RD
+v ganti nama copyright
 
 <login>
 v tampilkan pesan eror
@@ -74,8 +74,8 @@ v tampilkan pesan eror
 - lama session login
 
 <beranda>
-- warna grafik
-- tampilan:
+v warna grafik
+v tampilan:
 	v EF total difullkan width-nya dan rentang tahun = 10
 	v hapus tulisan 'hasil investasi'
 	v EF per prodi ditengahkan
@@ -90,7 +90,7 @@ x masalah selected row
 
 <donatur>
 - periksa validasi
-- masalah selected row
+x masalah selected row
 
 <akun>
 - periksa validasi
@@ -103,12 +103,12 @@ revisi:
 v ganti nama copyrigth
 v pewarnaan grafik
 - hapus fakultas
-- perbaiki access control
+v perbaiki access control
 - ubah email akun donatur
-- print screen
+v print screen
 	v login
 	v beranda
-		- histori donasi
+		v histori donasi
 	v kelola donasi
 		v add donasi
 		v edit donasi
@@ -118,23 +118,35 @@ v pewarnaan grafik
 		v edit donatur
 		v hapus donatur
 	v kelola akun
-		- add akun karyawan
-		- add donatur
-		- edit akun
-		- hapus akun
+		v add akun karyawan
+		v add donatur
+		v edit akun
+		v hapus akun
 	v kelola fakultas & prodi
 		v add fakultas
 		v add prodi
 		v edit fakultas
 		v edit prodi
 	v pengaturan akun
-- histori donasi
+v histori donasi
 - control access jenis donatur
 
 hari ini banget:
 v edit teks
 v tambahin cara daftar akun donatur
-- histori donasi
+v histori donasi
 - perbaikan upload
 v cek eror fajrin
 
+OMG, masih banyak:
+v Indonesiakan pesan eror login
+v perbaiki halaman login
+v lama session login
+- periksa validasi (donatur, donasi, akun, fakultas, prodi, pengaturan akun)
+v perbaiki hapus fakultas (hapus juga prodinya)
+- perbaiki pengaturan akun untuk donatur
+- perbaiki access control untuk akun donatur
+- perbaiki pemrosesan file excel
+- perbaiki filter dalam pembuatan grafik
+- Alumni individu juga masuk dalam penghitungan grafik fakultas-prodi
+v perbaiki form di pengelolaan akun

@@ -43,6 +43,8 @@ class DonaturController extends Controller {
 		$new->telp = $req->input('telp');
 		$new->email = $req->input('email');
 		$new->alamat_surat = $req->input('alamat_surat');
+		$new->id_prodi = $req->input('id_prodi');
+		$new->angkatan = $req->input('angkatan');
 
 		if($new->save()){
 			return array('status'=>'Saved!');
@@ -98,6 +100,8 @@ class DonaturController extends Controller {
 			$edit->telp = $req->input('telp');
 			$edit->email = $req->input('email');
 			$edit->alamat_surat = $req->input('alamat_surat');
+			$edit->id_prodi = $req->input('id_prodi');
+			$edit->angkatan = $req->input('angkatan');
 
 			if($edit->save()){
 				return array('status'=>'Saved!');

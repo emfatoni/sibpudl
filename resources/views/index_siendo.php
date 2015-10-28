@@ -4,23 +4,33 @@
 <head>
 	<title>BPUDL</title>
 
+	<!-- Memuat file css -->
 	<link rel="stylesheet" type="text/css" href="css/my-style.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/angular-spinkit.min.css">
 	<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
 
 	<script src="js/jquery-2.1.3.min.js"></script>
+
+	<!-- Memuat library js yang dipakai -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="js/angular.js"></script>
 	<script src="js/angular-route.js"></script>
 	<script src="js/dirPagination.js"></script>
 	<script src="js/selection-model.js"></script>
 	<script src="js/highcharts.js"></script>
-
 	<script src="js/accounting.js"></script>
 	<script src="js/highcharts-ng.js"></script>
 	<script src="js/angular-spinkit.js"></script>
 	<script src="js/ng-lodash.js"></script>
+
+	<!-- Memuat js buatan sendiri -->
+	<script src="js/siendo_factories.js"></script>
+	<script src="js/controller_fakultas.js"></script>
+	<script src="js/controller_donasi.js"></script>
+	<script src="js/controller_donatur.js"></script>
+	<script src="js/controller_dashboard.js"></script>
+	<script src="js/controller_akun.js"></script>
 	<script src="js/siendo.js"></script>
 </head>
 

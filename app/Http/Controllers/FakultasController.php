@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Fakultas;
+use App\Prodi;
 
 use Illuminate\Http\Request;
 
@@ -102,6 +103,14 @@ class FakultasController extends Controller {
 		$del = Fakultas::find($id);
 		if($del)
 		{
+			$prodis = Prodi::where('id_fakultas', '=', $id)->get();
+
+			if(count($prodis) > 0){
+				foreach($prodis as $prodi){
+					$req = $prodi->delete();
+				}
+			}
+
 			if($del->delete())
 			{
 				return array('status'=>'Deleted!');

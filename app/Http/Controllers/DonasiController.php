@@ -22,17 +22,11 @@ class DonasiController extends Controller {
 		foreach($donasis as $donasi){
 			$donatur = Donatur::find($donasi->id_donatur);
 			if($donatur->jenis == "Alumni Program Studi"){
-				$nama = explode(" ", $donatur->nama);
-				$tahun = $nama[count($nama)-1];
-				$nama_prodi = str_replace($tahun, "", $donatur->nama);
-				$nama_prodi = trim($nama_prodi);
+				$donasi["prodi"] = $donatur->id_prodi;
 
-				$prodi = Prodi::where('kepanjangan', '=', $nama_prodi)->take(1)->get();
-				$temp = $prodi->toArray();
-				$prodi = $temp[0];
-
-				$donasi["prodi"] = $prodi["id"];
-				$donasi["fakultas"] = $prodi["id_fakultas"];
+				$prodi = Prodi::find($donatur->id_prodi);
+				
+				$donasi["fakultas"] = $prodi->id_fakultas;
 			}else{
 				$donasi["prodi"] = "";
 				$donasi["fakultas"] = "";

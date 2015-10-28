@@ -68,10 +68,18 @@
 					<br>
 					<div class="form-group" style="color: white; margin-top: 25px">
 						@if (count($errors) > 0)
-								<strong>Whoops!</strong> There were some problems with your input.<br><br>
+								<strong>Whoops!</strong><br><br>
 								<ul>
 									@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
+										@if ($error == "The email field is required.")
+											<li>Alamat e-mail harus diisi.</li>
+										@elseif ($error == "The password field is required.")
+											<li>Password harus diisi.</li>
+										@elseif ($error == "These credentials do not match our records.")
+											<li>Ada kesalahan alamat e-mail dan/atau password yang Anda masukkan.</li>
+										@else
+											<li>{{$error}}</li>
+										@endif
 									@endforeach
 								</ul>
 						@endif

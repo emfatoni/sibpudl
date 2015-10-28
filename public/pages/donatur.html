@@ -63,7 +63,7 @@
 								</div>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li ng-repeat="pro in prodis | filter:q_prodi"><a href="" ng-click="set_tprodi(pro.kepanjangan)">{{pro.kepanjangan}} ({{pro.kode}})</a></li>
+							<li ng-repeat="pro in prodis | filter:q_prodi"><a href="" ng-click="set_tprodi(pro.kepanjangan, pro.id)">{{pro.kepanjangan}} ({{pro.kode}})</a></li>
 						</ul>
 					</div>
 					<script type="text/javascript">

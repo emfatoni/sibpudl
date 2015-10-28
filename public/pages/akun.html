@@ -10,7 +10,7 @@
 
 		<form class="form-horizontal col-md-5">
 
-			<span ng-show="(temp_akun.role != 'Donatur')">
+			
 
 			<div class="form-group">
 				<label class="control-label col-md-2"></label>
@@ -19,15 +19,27 @@
 					<button ng-show="is_adddonatur" class="btn btn-primary" ng-click="is_adddonatur=false">Buat Akun Karyawan</button>
 				</div>
 			</div>
-			<div class="form-group" ng-show="is_adddonatur">
+			<div class="form-group" ng-show="is_adddonatur && !is_edit">
 				<label class="control-label col-md-2">Pilih Donatur*</label>
 				<div class="col-md-10">
-					<select class="form-control" ng-model="chosen_donatur" ng-change="get_donatur()">
+					<select class="form-control" ng-model="chosen_donatur" ng-change="sial()">
 						<option value="">- Pilih Donatur -</option>
-						<option ng-repeat="donatur in donaturs" value="{{donatur.id}}">{{donatur.nama}}</option>
+						<option ng-repeat="donatur in akunable" value="{{donatur.id}}">{{donatur.nama}}</option>
 					</select>
 				</div>
 			</div>
+
+			<span ng-show="!is_editdonatur">
+
+			<div class="form-group" ng-show="is_adddonatur">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<span><strong>E-mail: </strong>{{temp_akun.email}}</span>
+					<br>
+					<span><strong>Role: </strong>{{temp_akun.role}}</span>
+				</div>
+			</div>
+
 			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Nama Lengkap*</label>
 				<div class="col-md-10">
@@ -52,17 +64,19 @@
 					<textarea class="form-control" rows="4" placeholder="alamat lengkap" ng-model="temp_akun.alamat"></textarea>
 				</div>
 			</div>
+
 			<div class="form-group">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10"></div>
 			</div>
-			<div class="form-group">
+
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">E-mail*</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" placeholder="e-mail untuk login" ng-model="temp_akun.email">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" ng-show="!is_adddonatur">
 				<label class="control-label col-md-2">Peran*</label>
 				<div class="col-md-10">
 					<select class="form-control" ng-model="temp_akun.role">
@@ -76,6 +90,13 @@
 
 			</span>
 
+			<div class="form-group" ng-show="is_editdonatur">
+				<label class="control-label col-md-2"></label>
+				<div class="col-md-10">
+					<p>Untuk mengubah data akun Donatur harap melakukannya di halaman <strong>Pengelolaan Donatur</strong>. Di halaman ini hanya untuk reset password akun Donatur.</p>
+				</div>
+			</div>
+
 			<div class="form-group" ng-show="is_add || is_editpwd">
 				<label class="control-label col-md-2">Password*</label>
 				<div class="col-md-10">
@@ -88,6 +109,7 @@
 					<input type="password" class="form-control" ng-model="repassword"> <span>{{(repassword === temp_akun.password)?"Benar":"Tidak sama"}}</span>
 				</div>
 			</div>
+
 			<div class="form-group" ng-show="is_edit">
 				<label class="control-label col-md-2"></label>
 				<div class="col-md-10">
@@ -101,7 +123,7 @@
 					<button class="btn btn-success" ng-show="is_add" ng-click="add_akun()">Simpan</button>
 					<button class="btn btn-success" ng-show="is_edit" ng-click="edit_akun()">Simpan</button>
 					<button class="btn btn-danger" ng-show="is_edit" ng-click="del_akun()">Hapus</button>
-					<button class="btn btn-warning" ng-click="is_add=false; is_edit=false; chosen_donatur=''; is_adddonatur=false; is_editpwd=false">Batal</button>
+					<button class="btn btn-warning" ng-click="is_add=false; is_edit=false; chosen_donatur=''; is_adddonatur=false; is_editpwd=false; is_editdonatur=false">Batal</button>
 					<br><br>
 					<p ng-show="is_saving"><i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...</p>
 				</div>
