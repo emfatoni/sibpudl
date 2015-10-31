@@ -541,7 +541,7 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 		if(keyword == "fak"){
 			angular.forEach(xaxis, function(i){
 				var total = 0;
-				var fakultas_filtered_donasi = $filter('filter')($scope.donasis, {fakultas:i+""});
+				var fakultas_filtered_donasi = $filter('filter')($scope.donasis, {fakultas:i});
 
 				var tahun_filtered_donasi = $filter('filter')(fakultas_filtered_donasi, {tahun:tahun_f});
 
