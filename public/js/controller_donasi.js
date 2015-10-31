@@ -61,8 +61,10 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 	$scope.set_tprodi = function(val, id){
 		$scope.t_prodi = val;
 		$scope.t_idprodi = id;
-		
-		$scope.nama = val;
+		$scope.nama_prodi = val;
+		if($scope.jenis_lv_2 == "Program Studi"){
+			$scope.nama = val;	
+		}
 	}
 	$scope.get_fakultass();
 	$scope.get_prodis();
@@ -77,6 +79,7 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 	$scope.new_donatur = false;
 	$scope.angkatan = "";
 	$scope.nama = "";
+	$scope.nama_prodi = "";
 	$scope.jenis_lv_1 = "";
 	$scope.jenis_lv_2 = "";
 	$scope.temp_donasi = {
@@ -137,6 +140,7 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 		$scope.jenis_lv_1 = "";
 		$scope.jenis_lv_2 = "";
 		$scope.q_prodi = "";
+		$scope.nama_prodi = "";
 	}
 	$scope.fresh_level1 = function(){
 		$scope.jenis_lv_2 = "";
@@ -144,6 +148,7 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 		$scope.angkatan = "";
 		$scope.temp_donatur.nama_wakil = "";
 		$scope.q_prodi = "";
+		$scope.nama_prodi = "";
 	}
 	$scope.fresh_level2 = function(){
 		if($scope.jenis_lv_2 == "Satu ITB"){
@@ -157,6 +162,7 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 			$scope.temp_donatur.nama_wakil = "";
 			$scope.q_prodi = "";
 		}
+		$scope.nama_prodi = "";
 	}
 	$scope.val_donasi = function(){
 		if($scope.is_empty($scope.temp_donasi.id_donatur)){

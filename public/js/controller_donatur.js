@@ -68,8 +68,10 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 	$scope.set_tprodi = function(val, idp){
 		$scope.t_prodi = val;
 		$scope.t_idprodi = idp;
-		alert(idp);
-		$scope.nama = val;
+		$scope.nama_prodi = val;
+		if($scope.jenis_lv_2 == "Program Studi"){
+			$scope.nama = val;
+		}
 	}
 	$scope.get_fakultass();
 	$scope.get_prodis();
@@ -84,6 +86,7 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 	$scope.page_now = 1;
 	$scope.angkatan = "";
 	$scope.nama = "";
+	$scope.nama_prodi = "";
 	$scope.jenis_lv_1 = "";
 	$scope.jenis_lv_2 = "";
 	$scope.temp_donatur = {
@@ -113,6 +116,7 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 			"angkatan": ""
 		};
 		$scope.angkatan = "";
+		$scope.nama_prodi = "";
 		$scope.nama = "";
 		$scope.jenis_lv_1 = "";
 		$scope.jenis_lv_2 = "";
@@ -132,12 +136,21 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 			return "donatur";
 		}
 	}
+	$scope.get_nama_prodi = function(tid){
+		var prodi = $filter('filter')($scope.prodis, {id:tid})[0];
+		if(prodi != undefined){
+			return prodi.kepanjangan;
+		}else{
+			return "";
+		}
+	}
 	$scope.fresh_level1 = function(){
 		$scope.jenis_lv_2 = "";
 		$scope.nama = "";
 		$scope.angkatan = "";
 		$scope.temp_donatur.nama_wakil = "";
 		$scope.q_prodi = "";
+		$scope.nama_prodi = "";
 	}
 	$scope.fresh_level2 = function(){
 		if($scope.jenis_lv_2 == "Satu ITB"){
@@ -145,11 +158,13 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
 			$scope.q_prodi = "";
+			$scope.nama_prodi = "";
 		}else{
 			$scope.nama = "";
 			$scope.angkatan = "";
 			$scope.temp_donatur.nama_wakil = "";
 			$scope.q_prodi = "";
+			$scope.nama_prodi = "";
 		}
 	}
 
@@ -180,6 +195,10 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 			if($scope.jenis_lv_2 != "Satu ITB"){
 				$scope.nama = $scope.temp_donatur.nama.replace(nama[nama.length-1], "");
 				$scope.t_idprodi = $scope.temp_donatur.id_prodi;
+				$scope.nama_prodi = $scope.get_nama_prodi($scope.t_idprodi);
+				if($scope.jenis_lv_2 == "Program Studi"){
+					$scope.nama_prodi = $scope.nama;
+				}
 			}else{
 				$scope.nama = "ITB";
 			}

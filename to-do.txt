@@ -146,7 +146,7 @@ v lama session login
 v perbaiki hapus fakultas (hapus juga prodinya)
 - perbaiki pengaturan akun untuk donatur
 - perbaiki access control untuk akun donatur
-- perbaiki pemrosesan file excel
-- perbaiki filter dalam pembuatan grafik
-- Alumni individu juga masuk dalam penghitungan grafik fakultas-prodi
+v perbaiki pemrosesan file excel
+v perbaiki filter dalam pembuatan grafik
+v Alumni individu juga masuk dalam penghitungan grafik fakultas-prodi
 v perbaiki form di pengelolaan akun

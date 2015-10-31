@@ -13,7 +13,7 @@
 				<form class="form-inline">
 					
 					<label>Tahun Maks.</label>
-					<input class="form-control" type="number" ng-model="max_ei" ng-blur="set_tahun('ei', max_ei)" ng-init="max_ei=2015">
+					<input class="form-control" type="number" ng-model="max_ei" ng-blur="update_grafik_tahun('ei', max_ei)" ng-init="max_ei=2015">
 				</form>
 			</div>
 
@@ -33,7 +33,7 @@
 				<form class="form-inline">
 					
 					<label>Tahun Maks.</label>
-					<input class="form-control" type="number" ng-model="max_etbi" ng-blur="set_tahun('etbi', max_etbi)" ng-init="max_etbi=2015">
+					<input class="form-control" type="number" ng-model="max_etbi" ng-blur="update_grafik_tahun('etbi', max_etbi)" ng-init="max_etbi=2015">
 				</form>
 			</div>
 
@@ -51,7 +51,7 @@
 				<form class="form-inline">
 					
 					<label>Tahun Maks.</label>
-					<input class="form-control" type="number" ng-model="max_ebi" ng-blur="set_tahun('ebi', max_ebi)" ng-init="max_ebi=2015">
+					<input class="form-control" type="number" ng-model="max_ebi" ng-blur="update_grafik_tahun('ebi', max_ebi)" ng-init="max_ebi=2015">
 				</form>
 			</div>
 
@@ -71,7 +71,7 @@
 				<form class="form-inline">
 					
 					<label>Tahun Maks.</label>
-					<input class="form-control" type="number" ng-model="max_dbi" ng-blur="set_tahun('dbi', max_dbi)" ng-init="max_dbi=2015">
+					<input class="form-control" type="number" ng-model="max_dbi" ng-blur="update_grafik_tahun('dbi', max_dbi)" ng-init="max_dbi=2015">
 				</form>
 			</div>
 
@@ -89,7 +89,7 @@
 				<form class="form-inline">
 					
 					<label>Tahun Maks.</label>
-					<input class="form-control" type="number" ng-model="max_jdon" ng-blur="set_tahun('jdon', max_jdon)" ng-init="max_jdon=2015">
+					<input class="form-control" type="number" ng-model="max_jdon" ng-blur="update_grafik_tahun('jdon', max_jdon)" ng-init="max_jdon=2015">
 				</form>
 			</div>
 
@@ -108,7 +108,7 @@
 			<div class="col-md-12" style="margin: 20px 0px">
 				<form class="form-inline">
 					<label>Tahun</label>
-					<input class="form-control" type="number" ng-model="tahun_fak" ng-init="tahun_fak=2015" ng-blur="update_categorie_fp('fakultas')">
+					<input class="form-control" type="number" ng-model="tahun_fak" ng-init="tahun_fak=2015" ng-blur="update_grafik_faknpro('fak', tahun_fak, '')">
 				</form>
 			</div>
 
@@ -128,9 +128,9 @@
 				
 				<form class="form-inline">
 					<label>Tahun</label>
-					<input class="form-control" type="number" ng-model="tahun_pro" ng-init="tahun_pro=2015" ng-blur="update_categorie_fp(fak_pro)">
+					<input class="form-control" type="number" ng-model="tahun_pro" ng-init="tahun_pro=2015" ng-blur="update_grafik_faknpro('pro', tahun_pro, fak_pro)">
 					<label>Fakultas</label>
-					<select class="form-control" ng-model="fak_pro" ng-change="update_categorie_fp(fak_pro)">
+					<select class="form-control" ng-model="fak_pro" ng-change="update_grafik_faknpro('pro', tahun_pro, fak_pro)">
 						<option value="">- Pilih Fakultas -</option>
 						<option ng-repeat="fk in fakultass" value="{{fk.id}}">{{fk.singkatan}} ({{fk.kode}})</option>
 					</select>

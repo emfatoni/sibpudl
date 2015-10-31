@@ -21,17 +21,23 @@ class DonasiController extends Controller {
 		$donasis = Donasi::all();
 		foreach($donasis as $donasi){
 			$donatur = Donatur::find($donasi->id_donatur);
-			if($donatur->jenis == "Alumni Program Studi"){
+			if(($donatur->jenis == "Alumni Program Studi")||($donatur->jenis == "Alumni Individu")){
 				$donasi["prodi"] = $donatur->id_prodi;
 
-				$prodi = Prodi::find($donatur->id_prodi);
-				
-				$donasi["fakultas"] = $prodi->id_fakultas;
+				if($donatur->id_prodi != null){
+					$prodi = Prodi::find($donatur->id_prodi);
+					$donasi["fakultas"] = $prodi->id_fakultas;
+				}else{
+					$donasi["fakultas"] = null;
+				}
 			}else{
 				$donasi["prodi"] = "";
 				$donasi["fakultas"] = "";
 			}
 			$donasi["nama_donatur"] = $donatur->nama;
+
+			$tahuns = explode("-", $donasi->tanggal);
+			$donasi["tahun"] = $tahuns[0];
 		}
 		return $donasis;
 	}
@@ -155,10 +161,36 @@ class DonasiController extends Controller {
 				$donasi = new Donasi();
 				$row = $siap_proses[$i];
 
-				if($row["tanggal"] != null){
+				if(($row["tanggal"] != null)&&($row["nama"] != null)){
 					$donatur->nama = $row["nama"];
 					$donatur->jenis = $row["jenis_donatur"];
 					$donatur->nama_wakil = $row["perwakilan"];
+					$donatur->angkatan = $row["angkatan"];
+
+					if($row["program_studi"]){
+						$try = 3;
+						$temp = [];
+						while((count($temp) == 0)&&($try > 0)){
+
+							$prodi_excel = $row["program_studi"];
+							if($try == 3){
+								$prodi = Prodi::where('kepanjangan', '=', $prodi_excel)->take(1)->get();
+							}else if($try == 1){
+								$prodi = Prodi::where('kode', '=', $prodi_excel)->take(1)->get();
+							}else if($try == 2){
+								$prodi = Prodi::where('singkatan', '=', $prodi_excel)->take(1)->get();
+							}
+							$temp = $prodi->toArray();
+							$try -= 1;
+						}
+						if(count($temp) == 0){
+							$donatur->id_prodi = null;
+						}else{
+							$prodi = $temp[0];
+							$donatur->id_prodi = $prodi["id"];
+						}
+						
+					}
 
 					if($donatur->save()){
 						$donasi->tanggal = $row["tanggal"];

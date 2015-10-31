@@ -49,12 +49,12 @@
 					<input type="text" ng-model="nama" class="form-control" placeholder="nama {{get_nama();}}">
 				</div>
 			</div>
-			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 == 'Program Studi')" class="form-group">
-				<label class="control-label col-md-2">Nama Program Studi*</label>
+			<div ng-show="(jenis_lv_1 == 'Alumni')&&(jenis_lv_2 != 'Satu ITB')&&(jenis_lv_2 != '')" class="form-group">
+				<label class="control-label col-md-2">Nama Program Studi<span ng-show="jenis_lv_2 == 'Program Studi'">*</span></label>
 				<div class="col-md-10">
 					<div class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							{{(nama=="")?"Pilih Program Studi ":nama}} <span class="caret"></span>
+							{{(nama_prodi=="")?"Pilih Program Studi ":nama_prodi}} <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li role="presentation">

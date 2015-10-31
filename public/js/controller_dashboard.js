@@ -153,7 +153,6 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 		var req = FakultasSvc.all();
 		req.success(function(res){
 			$scope.fakultass = res;
-			$scope.update_categorie_fp("fakultas");
 		});
 	}
 	$scope.get_prodis = function(){
@@ -182,17 +181,22 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 		var req = DonasiSvc.all();
 		req.success(function(res){
 			$scope.donasis = res;
-			$scope.fil_owner();
-			$scope.is_loading = false;
-			$scope.set_tahun("ei", $scope.max_ei);
-			$scope.set_tahun("etbi", $scope.max_etbi);
-			$scope.set_tahun("ebi", $scope.max_ebi);
-			$scope.set_tahun("dbi", $scope.max_dbi);
-			$scope.set_tahun("jdon", $scope.max_jdon);
 			$scope.get_fakultass();
 			$scope.get_prodis();
+			$scope.fil_owner();
+			$scope.is_loading = false;
+
+			$scope.update_grafik_tahun('ei', $scope.max_ei);
+			$scope.update_grafik_tahun('etbi', $scope.max_etbi);
+			$scope.update_grafik_tahun('ebi', $scope.max_ebi);
+			$scope.update_grafik_tahun('dbi', $scope.max_dbi);
+			$scope.update_grafik_tahun('jdon', $scope.max_jdon);
+			$scope.update_grafik_faknpro('fak', 2015, '');
+			$scope.update_grafik_faknpro('pro', 2015, 2);
 		});
 	}
+
+	/*
 	$scope.update_categorie = function(keyword, xs){
 		if(keyword == "ei"){
 			$scope.chart_ei.xAxis.categories = xs;
@@ -433,6 +437,162 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 		$scope.update_categorie(keyword, tahuns);
 
 		$scope.get_data_donasi(keyword, tahuns);
+	}
+	*/
+
+
+	// new filter
+	$scope.update_xaxis = function(keyword, xs){
+		if(keyword == "ei"){
+			$scope.chart_ei.xAxis.categories = xs;
+		}else if(keyword == "etbi"){
+			$scope.chart_etbi.xAxis.categories = xs;
+		}else if(keyword == "ebi"){
+			$scope.chart_ebi.xAxis.categories = xs;
+		}else if(keyword == "dbi"){
+			$scope.chart_dbi.xAxis.categories = xs;
+		}else if(keyword == "jdon"){
+			$scope.chart_jdon.xAxis.categories = xs;
+		}else if(keyword == "fak"){
+			$scope.chart_fak.xAxis.categories = xs;
+		}else if(keyword == "pro"){
+			$scope.chart_pro.xAxis.categories = xs;
+		}
+	}
+	$scope.update_yaxis = function(keyword, vals){
+		if(keyword == "ei"){
+			$scope.chart_ei.series[0].data = vals;
+		}else if(keyword == "etbi"){
+			$scope.chart_etbi.series[0].data = vals;
+		}else if(keyword == "ebi"){
+			$scope.chart_ebi.series[0].data = vals;
+		}else if(keyword == "dbi"){
+			$scope.chart_dbi.series[0].data = vals;
+		}else if(keyword == "jdon"){
+			$scope.chart_jdon.series[0].data = vals;
+		}else if(keyword == "fak"){
+			$scope.chart_fak.series[0].data = vals;
+		}else if(keyword == "pro"){
+			$scope.chart_pro.series[0].data = vals;
+		}
+	}
+	$scope.update_nilai = function(keyword, tahuns){
+		var datas = [];
+
+		angular.forEach(tahuns, function(val, key){
+			var total = 0;
+			var tahun_filtered_donasi = $filter('filter')($scope.donasis, {tahun:val});
+			var jenis_filtered_donasi = {};
+
+			// filter berdasarkan jenis grafik
+			if(keyword == "ei"){
+				jenis_filtered_donasi = tahun_filtered_donasi;
+			}else if(keyword == "etbi"){
+				jenis_filtered_donasi = $filter('filter')(tahun_filtered_donasi, {jenis:"Dana Lestari Tidak Bersyarat"});
+			}else if(keyword == "ebi"){
+				jenis_filtered_donasi = $filter('filter')(tahun_filtered_donasi, {jenis:"Dana Lestari Bersyarat"});
+			}else if(keyword == "dbi"){
+				jenis_filtered_donasi = $filter('filter')(tahun_filtered_donasi, {jenis:"Donasi Bersyarat"});
+			}else if(keyword == "jdon"){
+				jenis_filtered_donasi = tahun_filtered_donasi;
+			}
+
+			// perhitungan total donasi per tahun
+			if(keyword != "jdon"){
+				angular.forEach(jenis_filtered_donasi, function(item){
+					if(item.status == "disahkan"){
+						total += parseInt(item.nominal);
+					}
+				});
+			}else{
+				var jdonatur = lodash.groupBy(jenis_filtered_donasi, 'id_donatur');
+				total = lodash.size(jdonatur);
+			}
+
+			datas.push(total);
+		});
+
+		$scope.update_yaxis(keyword, datas);
+	}
+	$scope.update_grafik_tahun = function(keyword, max_tahun){
+		var tahuns = [];
+		var intval = $scope.interval;
+
+		// untuk grafik utama, intervalnya 10 tahun
+		if(keyword == "ei"){
+			intval = intval*2;
+		}
+
+		// pembuatan ukuran xaxis
+		for(var i=intval-1; i>=0; i--){
+			tahuns.push(max_tahun-i);
+		}
+
+		$scope.update_xaxis(keyword, tahuns);
+		$scope.update_nilai(keyword, tahuns);
+	}
+	
+	$scope.update_nilai_faknpro = function(keyword, tahun_f, xaxis){
+		var datas = [];
+
+		if(keyword == "fak"){
+			angular.forEach(xaxis, function(i){
+				var total = 0;
+				var fakultas_filtered_donasi = $filter('filter')($scope.donasis, {fakultas:i+""});
+
+				var tahun_filtered_donasi = $filter('filter')(fakultas_filtered_donasi, {tahun:tahun_f});
+
+				angular.forEach(tahun_filtered_donasi, function(item){
+					if(item.status == "disahkan"){
+						total += parseInt(item.nominal);
+					}
+				});
+				datas.push(total);
+			});
+		}else{
+			angular.forEach(xaxis, function(i){
+				var total = 0;
+				var prodi_filtered_donasi = $filter('filter')($scope.donasis, {prodi:i});
+
+				console.log(i);
+				console.log(prodi_filtered_donasi);
+
+				var tahun_filtered_donasi = $filter('filter')(prodi_filtered_donasi, {tahun:tahun_f});
+
+				angular.forEach(tahun_filtered_donasi, function(item){
+					if(item.status == "disahkan"){
+						total += parseInt(item.nominal);
+					}
+				});
+				datas.push(total);
+			});
+		}
+		$scope.update_yaxis(keyword, datas);
+	}
+	$scope.update_grafik_faknpro = function(keyword, tahun, idfakultas){
+		var faculties = [];
+		var majors = [];
+		var faculties_id = [];
+		var majors_id = [];
+		var fakultas_filtered_prodi = {};
+
+		// pembuatan ukuran xaxis sekaligus update nilai yaxis
+		if(keyword == "fak"){
+			angular.forEach($scope.fakultass, function(i){
+				faculties.push(i.singkatan);
+				faculties_id.push(i.id);
+			});
+			$scope.update_xaxis(keyword, faculties);
+			$scope.update_nilai_faknpro(keyword, tahun, faculties_id);
+		}else{
+			fakultas_filtered_prodi = $filter('filter')($scope.prodis, {id_fakultas:idfakultas});
+			angular.forEach(fakultas_filtered_prodi, function(i){
+				majors.push(i.kepanjangan);
+				majors_id.push(i.id);
+			});
+			$scope.update_xaxis(keyword, majors);
+			$scope.update_nilai_faknpro(keyword, tahun, majors_id);
+		}
 	}
 	
 	
