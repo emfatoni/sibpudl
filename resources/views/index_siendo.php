@@ -65,7 +65,7 @@
 
 			    <ul class="nav navbar-nav navbar-right">
 			        <li class="dropdown">
-			        	<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="margin-right: 10px" class="glyphicon glyphicon-user"></span> {{(user_aktif.role == 'Donatur')?user_aktif.email:user_aktif.nama}} ({{user_aktif.role}}) <span class="caret"></span></a>
+			        	<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="margin-right: 10px" class="glyphicon glyphicon-user"></span> {{(user_aktif.role == 'Donatur')?user_aktif.email:user_aktif.nama}} ({{(user_aktif.role=="Tim Fundrising")?"Tim Fundraising":user_aktif.role}}) <span class="caret"></span></a>
 				        <ul class="dropdown-menu" role="menu">
 							<li><a href="<?php echo url('/auth/logout'); ?>">Logout</a></li>
 				            <li><a href="#/atur_akun">Pengaturan Akun</a></li>

@@ -82,7 +82,7 @@
 					<select class="form-control" ng-model="temp_akun.role">
 						<option value="">- Pilih Peran -</option>
 						<option value="Admin BPUDL">Admin BPUDL</option>
-						<option value="Tim Fundrising">Tim Fundrising</option>
+						<option value="Tim Fundrising">Tim Fundraising</option>
 						<option ng-show="is_adddonatur" value="Donatur">Donatur</option>
 					</select>
 				</div>
@@ -143,7 +143,7 @@
 			<select class="form-control" ng-model="fil_akun_role">
 				<option value="">- Pilih Role -</option>
 				<option value="Admin BPUDL">Admin BPUDL</option>
-				<option value="Tim Fundrising">Tim Fundrising</option>
+				<option value="Tim Fundrising">Tim Fundraising</option>
 				<option value="Donatur">Donatur</option>
 			</select>
 			<a href="" class="btn btn-primary pull-right" ng-click="is_add=true; fresh_akun()">Tambah Akun</a>
@@ -170,7 +170,7 @@
 					<td>{{akun.email}}</td>
 					<td>{{akun.telp}}</td>
 					<td>{{akun.alamat}}</td>
-					<td>{{akun.role}}</td>
+					<td>{{(akun.role=="Tim Fundrising")?"Tim Fundraising":akun.role}}</td>
 				</tr>
 			</tbody>
 		</table>

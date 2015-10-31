@@ -226,6 +226,7 @@ class AkunController extends Controller {
             	$pengguna["jabatan"] = "";
 				$pengguna["telp"] = $donatur->telp;
 				$pengguna["alamat"] = $donatur->alamat_surat;
+				$pengguna["jenis"] = $donatur->jenis;
             }
             return $pengguna;
         }

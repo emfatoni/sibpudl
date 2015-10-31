@@ -149,18 +149,31 @@ ctrls.filter('tahun_db', function(){
 ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $location, $filter, lodash, FakultasSvc, ProdiSvc){
 
 	// fungsi-fungsi awal
-	$scope.get_fakultass = function(){
-		var req = FakultasSvc.all();
-		req.success(function(res){
-			$scope.fakultass = res;
-		});
-	}
 	$scope.get_prodis = function(){
 		var req = ProdiSvc.all();
 		req.success(function(res){
 			$scope.prodis = res;
+
+			$scope.fil_owner();
+			$scope.is_loading = false;
+
+			$scope.update_grafik_tahun('ei', $scope.max_ei);
+			$scope.update_grafik_tahun('etbi', $scope.max_etbi);
+			$scope.update_grafik_tahun('ebi', $scope.max_ebi);
+			$scope.update_grafik_tahun('dbi', $scope.max_dbi);
+			$scope.update_grafik_tahun('jdon', $scope.max_jdon);
+			$scope.update_grafik_faknpro('fak', 2015, '');
+			$scope.update_grafik_faknpro('pro', 2015, 2);
 		});
 	}
+	$scope.get_fakultass = function(){
+		var req = FakultasSvc.all();
+		req.success(function(res){
+			$scope.fakultass = res;
+			$scope.get_prodis();
+		});
+	}
+	
 
 
 
@@ -182,17 +195,7 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 		req.success(function(res){
 			$scope.donasis = res;
 			$scope.get_fakultass();
-			$scope.get_prodis();
-			$scope.fil_owner();
-			$scope.is_loading = false;
-
-			$scope.update_grafik_tahun('ei', $scope.max_ei);
-			$scope.update_grafik_tahun('etbi', $scope.max_etbi);
-			$scope.update_grafik_tahun('ebi', $scope.max_ebi);
-			$scope.update_grafik_tahun('dbi', $scope.max_dbi);
-			$scope.update_grafik_tahun('jdon', $scope.max_jdon);
-			$scope.update_grafik_faknpro('fak', 2015, '');
-			$scope.update_grafik_faknpro('pro', 2015, 2);
+			
 		});
 	}
 
@@ -553,9 +556,6 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 			angular.forEach(xaxis, function(i){
 				var total = 0;
 				var prodi_filtered_donasi = $filter('filter')($scope.donasis, {prodi:i});
-
-				console.log(i);
-				console.log(prodi_filtered_donasi);
 
 				var tahun_filtered_donasi = $filter('filter')(prodi_filtered_donasi, {tahun:tahun_f});
 

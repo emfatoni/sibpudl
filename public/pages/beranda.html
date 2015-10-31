@@ -4,7 +4,7 @@
 	</div>
 </div>
 
-<div class="row" style="margin-top: 50px" ng-show="user_aktif.role != 'Donatur'">
+<div class="row" style="margin-top: 50px" ng-show="(user_aktif.role != 'Donatur')||(user_aktif.jenis == 'Organisasi ITB')||(user_aktif.jenis == 'Organisasi Non-ITB')">
 	<div class="col-md-12">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund per Tahun</h3>
@@ -100,7 +100,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="(user_aktif.jenis == 'Alumni Individu')||(user_aktif.jenis == 'Alumni Program Studi')||(user_aktif.jenis == 'Alumni Satu ITB')||(user_aktif.role == 'Admin BPUDL')||(user_aktif.role == 'Tim Fundrising')">
 	<div class="col-md-12">
 		<div class="col-md-12 well">
 			<h3 class="text-center">Endowment Fund per Fakultas</h3>
@@ -119,7 +119,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="(user_aktif.jenis == 'Alumni Individu')||(user_aktif.jenis == 'Alumni Program Studi')||(user_aktif.jenis == 'Alumni Satu ITB')||(user_aktif.role == 'Admin BPUDL')||(user_aktif.role == 'Tim Fundrising')">
 	<div class="col-md-12">
 		<div class="col-md-8 col-md-offset-2 well">
 			<h3 class="text-center">Endowment Fund per Program Studi</h3>

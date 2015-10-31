@@ -250,15 +250,17 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 		}
 	}
 	$scope.del_donasi = function(){
-		$scope.is_saving = true;
-		
-		var req = DonasiSvc.delete($scope.temp_donasi.id);
-		req.success(function(res){
-			$scope.is_saving = false;
-			$scope.get_donasis();
-			alert("Donasi "+res.status);
-			$scope.is_edit = false;
-		});
+		if(confirm("Anda yakin ingin menghapus data donasi ini?") == true){
+			$scope.is_saving = true;
+			
+			var req = DonasiSvc.delete($scope.temp_donasi.id);
+			req.success(function(res){
+				$scope.is_saving = false;
+				$scope.get_donasis();
+				alert("Donasi "+res.status);
+				$scope.is_edit = false;
+			});
+		}
 	}
 	$scope.sah_donasi = function(){
 		$scope.is_saving = true;
