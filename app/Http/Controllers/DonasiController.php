@@ -35,6 +35,7 @@ class DonasiController extends Controller {
 				$donasi["fakultas"] = "";
 			}
 			$donasi["nama_donatur"] = $donatur->nama;
+			$donasi["jenis_donatur"] = $donatur->jenis;
 
 			$tahuns = explode("-", $donasi->tanggal);
 			$donasi["tahun"] = $tahuns[0];

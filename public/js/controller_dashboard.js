@@ -164,6 +164,7 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 			$scope.update_grafik_tahun('jdon', $scope.max_jdon);
 			$scope.update_grafik_faknpro('fak', 2015, '');
 			$scope.update_grafik_faknpro('pro', 2015, 2);
+			$scope.get_top_donatur();
 		});
 	}
 	$scope.get_fakultass = function(){
@@ -479,6 +480,28 @@ ctrls.controller('DashboardCtrl', function($scope, DonasiSvc, DonaturSvc, $locat
 			$scope.chart_pro.series[0].data = vals;
 		}
 	}
+
+	$scope.get_top_donatur = function(){
+
+		var temp_itb = $filter('filter')($scope.donasis, {jenis_donatur:"Organisasi ITB"});
+
+		var temp_itb_group = lodash.groupBy(temp_itb, 'id_donatur');
+
+		$scope.top_itb = lodash.sortBy(temp_itb_group, 'nominal');
+
+
+		var temp_nonitb = $filter('filter')($scope.donasis, {jenis_donatur:"Organisasi Non-ITB"});
+
+		var temp_nonitb_group = lodash.groupBy(temp_nonitb, 'id_donatur');
+
+		$scope.top_nonitb = lodash.sortBy(temp_nonitb_group, 'nominal');
+
+
+
+		//console.log($scope.top_itb);
+		//console.log($scope.top_nonitb);
+	}
+
 	$scope.update_nilai = function(keyword, tahuns){
 		var datas = [];
 
