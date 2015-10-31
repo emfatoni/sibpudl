@@ -4,7 +4,7 @@
 		<br>
 		<form class="form-horizontal col-md-5">
 
-			<span ng-show="temp_akun.role != 'Donatur'">
+			<!-- <span ng-show="temp_akun.role != 'Donatur'"> -->
 			<div class="form-group">
 				<label class="control-label col-md-3">
 					Nama Lengkap*
@@ -13,7 +13,47 @@
 					<input class="form-control" type="text" ng-model="temp_akun.nama">
 				</div>
 			</div>
-			<div class="form-group">
+			<div ng-show="(temp_akun.role == 'Donatur')&&((temp_donatur.jenis == 'Alumni Individu')||(temp_donatur.jenis == 'Alumni Program Studi'))" class="form-group">
+				<label class="control-label col-md-3">Nama Program Studi*</label>
+				<div class="col-md-9">
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							{{(nama_prodi=="")?"Pilih Program Studi ":nama_prodi}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation">
+								<div class="col-md-12">
+									<input type="text" class="form-control" placeholder="cari prodi..." ng-model="q_prodi">
+								</div>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li ng-repeat="pro in prodis | filter:q_prodi"><a href="" ng-click="set_tprodi(pro.kepanjangan, pro.id)">{{pro.kepanjangan}} ({{pro.kode}})</a></li>
+						</ul>
+					</div>
+					<script type="text/javascript">
+						$('.dropdown-menu').find('input').click(function (e) {
+							e.stopPropagation();
+						});
+					</script>
+				</div>
+			</div>
+			<div class="form-group" ng-show="(temp_donatur.jenis == 'Alumni Individu')||(temp_donatur.jenis == 'Alumni Program Studi')||(temp_donatur.jenis == 'Alumni Satu ITB')">
+				<label class="control-label col-md-3">
+					Angkatan*
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_donatur.angkatan">
+				</div>
+			</div>
+			<div class="form-group" ng-show="(temp_donatur.jenis == 'Organisasi ITB')||(temp_donatur.jenis == 'Alumni Program Studi')||(temp_donatur.jenis == 'Alumni Satu ITB')||(temp_donatur.jenis == 'Organisasi Non-ITB')">
+				<label class="control-label col-md-3">
+					Nama Perwakilan
+				</label>
+				<div class="col-md-9">
+					<input class="form-control" type="text" ng-model="temp_donatur.nama_wakil">
+				</div>
+			</div>
+			<div class="form-group" ng-show="temp_akun.role != 'Donatur'">
 				<label class="control-label col-md-3">
 					Jabatan
 				</label>
@@ -45,7 +85,7 @@
 					<!-- KOSONG -->
 				</div>
 			</div>
-			</span>
+			<!-- </span> -->
 
 			<div class="form-group">
 				<label class="control-label col-md-3">

@@ -144,7 +144,7 @@ v perbaiki halaman login
 v lama session login
 - periksa validasi (donatur, donasi, akun, fakultas, prodi, pengaturan akun)
 v perbaiki hapus fakultas (hapus juga prodinya)
-- perbaiki pengaturan akun untuk donatur
+v perbaiki pengaturan akun untuk donatur
 - perbaiki access control untuk akun donatur
 v perbaiki pemrosesan file excel
 v perbaiki filter dalam pembuatan grafik

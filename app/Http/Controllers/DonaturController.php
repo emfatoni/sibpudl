@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Donatur;
 use App\Donasi;
+use App\User;
 
 use Illuminate\Http\Request;
 
@@ -104,6 +105,17 @@ class DonaturController extends Controller {
 			$edit->angkatan = $req->input('angkatan');
 
 			if($edit->save()){
+				$users = User::where('id_pengguna', '=', $id)->get();
+
+				if(count($users) > 0){
+					foreach ($users as $u) {
+						if($u->role == 'Donatur'){
+							$u->email = $edit->email;
+							$req = $u->save();
+						}
+					}
+				}
+
 				return array('status'=>'Saved!');
 			}
 			return array('status'=>'Not Saved!');
@@ -124,6 +136,16 @@ class DonaturController extends Controller {
 		if(count($donasis) > 0){
 			foreach ($donasis as $donasi){
 				$req = $donasi->delete();
+			}
+		}
+
+		$users = User::where('id_pengguna', '=', $id)->get();
+
+		if(count($users) > 0){
+			foreach ($users as $u) {
+				if($u->role == 'Donatur'){
+					$req = $u->delete();
+				}
 			}
 		}
 

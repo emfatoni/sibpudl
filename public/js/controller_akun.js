@@ -1,18 +1,63 @@
 var ctrls = angular.module('AkunController',[]);
 
 // controller untuk pengaturan akun
-ctrls.controller('AturAkunCtrl', function($scope, AkunSvc, $filter, $location){
+ctrls.controller('AturAkunCtrl', function($scope, AkunSvc, DonaturSvc, ProdiSvc, $filter, $location){
 
+	$scope.get_prodis = function(){
+		var req = ProdiSvc.all();
+		req.success(function(res){
+			$scope.prodis = res;
+		});
+	}
+	$scope.get_prodis();
+	$scope.nama_prodi = "";
+
+	$scope.set_tprodi = function(val, id){
+		$scope.nama_prodi = val;
+		$scope.temp_donatur.id_prodi = id;
+	}
+
+	$scope.get_akun = function(){
+		var get_user = AkunSvc.get_user();
+		get_user.success(function(res){
+			$scope.temp_akun = res;
+			$scope.old_email = $scope.temp_akun.email;
+
+			if($scope.temp_akun.role == "Donatur"){
+				$scope.temp_donatur = $filter('filter')($scope.donaturs, {id:$scope.temp_akun.id_pengguna})[0];
+
+				var prodi = $filter('filter')($scope.prodis, {id:$scope.temp_donatur.id_prodi})[0];
+
+				$scope.nama_prodi = prodi.kepanjangan;
+
+				$scope.temp_akun.nama = $scope.temp_donatur.nama;
+				$scope.temp_akun.telp = $scope.temp_donatur.telp;
+				$scope.temp_akun.alamat = $scope.temp_donatur.alamat_surat;
+			}
+		});
+	}
+	$scope.get_donaturs = function(){
+		var req = DonaturSvc.all();
+		req.success(function(res){
+			$scope.donaturs = res;
+			$scope.get_akun();
+		});
+	}
 	$scope.get_akuns = function(){
 		var req = AkunSvc.all();
 		req.success(function(res){
 			$scope.akuns = res;
+			$scope.get_donaturs();
 		});
 	}
 	$scope.get_akuns();
 
+	
+	
+
 	$scope.is_editpwd = false;
 	$scope.repassword = "";
+	$scope.temp_donatur = {};
 	$scope.temp_akun = {
 		"nama":"",
 		"jabatan":"",
@@ -22,15 +67,6 @@ ctrls.controller('AturAkunCtrl', function($scope, AkunSvc, $filter, $location){
 		"password":"",
 		"role":""
 	};
-	
-	$scope.get_akun = function(){
-		var get_user = AkunSvc.get_user();
-		get_user.success(function(res){
-			$scope.temp_akun = res;
-			$scope.old_email = $scope.temp_akun.email;
-		});
-	}
-	$scope.get_akun();
 
 	$scope.val_akun = function(){
 		var akun = $scope.temp_akun;
@@ -66,11 +102,22 @@ ctrls.controller('AturAkunCtrl', function($scope, AkunSvc, $filter, $location){
 		if($scope.is_empty(validasi)){
 			var req = AkunSvc.update($scope.temp_akun.id, $scope.temp_akun);
 			req.success(function(res){
-				alert("Akun "+res.status);
-				$scope.get_akuns();
-				$scope.get_akun();
-				$scope.get_user_now();
-				$scope.is_saving = false;
+				if($scope.temp_akun.role == "Donatur"){
+					$scope.temp_donatur.nama = $scope.temp_akun.nama;
+					$scope.temp_donatur.telp = $scope.temp_akun.telp;
+					$scope.temp_donatur.alamat_surat = $scope.temp_akun.alamat;
+					$scope.temp_donatur.email = $scope.temp_akun.email;
+
+					var req2 = DonaturSvc.update($scope.temp_donatur.id, $scope.temp_donatur);
+
+					req2.success(function(res){
+						alert("Akun "+res.status);
+						$scope.get_akuns();
+						$scope.get_akun();
+						$scope.get_user_now();
+						$scope.is_saving = false;
+					});
+				}
 			});
 		}else{
 			alert(validasi);

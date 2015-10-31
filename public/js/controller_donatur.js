@@ -193,7 +193,7 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 			var nama = $scope.temp_donatur.nama.split(' ');
 
 			if($scope.jenis_lv_2 != "Satu ITB"){
-				$scope.nama = $scope.temp_donatur.nama.replace(nama[nama.length-1], "");
+				$scope.nama = $scope.temp_donatur.nama;
 				$scope.t_idprodi = $scope.temp_donatur.id_prodi;
 				$scope.nama_prodi = $scope.get_nama_prodi($scope.t_idprodi);
 				if($scope.jenis_lv_2 == "Program Studi"){
@@ -225,7 +225,7 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 		$scope.is_saving = true;
 		var validasi = $scope.val_donatur();
 		if($scope.is_empty(validasi)){
-			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.nama = $scope.nama;
 			$scope.temp_donatur.id_prodi = $scope.t_idprodi;
 			$scope.temp_donatur.angkatan = $scope.angkatan;
 			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
@@ -247,7 +247,7 @@ ctrls.controller('DonaturCtrl', function($scope, DonaturSvc, $location, $filter,
 		$scope.is_saving = true;
 		var validasi = $scope.val_donatur();
 		if($scope.is_empty(validasi)){
-			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.nama = $scope.nama;
 			$scope.temp_donatur.id_prodi = $scope.t_idprodi;
 			$scope.temp_donatur.angkatan = $scope.angkatan;
 			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;

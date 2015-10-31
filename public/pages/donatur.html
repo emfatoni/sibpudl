@@ -204,7 +204,7 @@
 				<tr dir-paginate="donatur in donaturs | filter:q | itemsPerPage: pageSize | jenis_donatur: fil_jenis | alumni_donatur: fil_alumni | organisasi_donatur: fil_organisasi"selection-model selection-model-type="checkbox" selection-model-mode="multiple-additive" selection-model-selected-items="selected_donatur" current-page="page_now">
 					<td><input type="checkbox"></td>
 					<td>{{($index+1)+(pageSize*(page_now-1))}}</td>
-					<td><a href="" ng-click="get_donatur(donatur.id)">{{donatur.nama}}</a></td>
+					<td><a href="" ng-click="get_donatur(donatur.id)">{{donatur.nama}} {{donatur.angkatan}}</a></td>
 					<td>{{donatur.jenis}}</td>
 					<td>{{donatur.nama_wakil}}</td>
 					<td>{{donatur.telp}}</td>

@@ -200,7 +200,7 @@ ctrls.controller('DonasiCtrl', function($scope, DonasiSvc, DonaturSvc, $location
 		$scope.is_saving = true;
 		var validasi = $scope.val_donatur();
 		if($scope.is_empty(validasi)){
-			$scope.temp_donatur.nama = $scope.nama+' '+$scope.angkatan;
+			$scope.temp_donatur.nama = $scope.nama;
 			$scope.temp_donatur.id_prodi = $scope.t_idprodi;
 			$scope.temp_donatur.angkatan = $scope.angkatan;
 			$scope.temp_donatur.jenis = $scope.jenis_lv_1+' '+$scope.jenis_lv_2;
